@@ -3,16 +3,16 @@ import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getImages, getImagesPopular } from '../../../api/galleryAPI';
-import { send, subscribe } from '../../../utils/WebSocket';
-import ImageList from '../../../components/Lists/ImageList';
-import ImageGrid from '../../../components/imagesComponent/ImageGrid';
+import { send, subscribe } from '../../../utils/webSocket';
+import ImageList from '../../../components/lists/ImageList';
+import ImageGrid from '../../../components/images-component/ImageGrid';
 import Button from '../../../components/buttons/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faBackspace, faBackward, faClose, faPlus } from '@fortawesome/free-solid-svg-icons';
 import ImageDropImage from '../../../components/popup/ImageDropImage';
 import clsx from 'clsx';
 import { isAdmin, url } from '../../../utils/utils';
-import LoadingContainer from '../../../components/Error/LoadingContainer';
+import LoadingContainer from '../../../components/error/LoadingContainer';
 
 const GalleryPage = () => {
 	const [images, setImages] = useState([]);

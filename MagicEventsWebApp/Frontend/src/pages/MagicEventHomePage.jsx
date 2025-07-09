@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Calendar from '../components/Lists/Calendar/Calendar';
+import Calendar from '../components/lists/Calendar/Calendar';
 import { getEventsp } from '../api/eventAPI';
 import { getUpcomingEvents, getNextNDaysFormatted, mergeDaysAndEvents } from '../utils/dataFormatter'
 

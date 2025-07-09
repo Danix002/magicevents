@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { getEvent, getEventService } from '../../api/eventAPI';
-import Image from '../../components/imagesComponent/Image';
+import Image from '../../components/images-component/Image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
 	faArrowAltCircleRight,
@@ -15,12 +15,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Menu from '../../components/navigation/Menu';
 import { APIProvider, Map, Marker, useMapsLibrary } from '@vis.gl/react-google-maps';
-import ErrorContainer from '../../components/Error/ErrorContainer';
+import ErrorContainer from '../../components/error/ErrorContainer';
 import { convertDataTime } from '../../utils/dataFormatter';
 import { setAdmin } from '../../utils/utils';
 import Button from '../../components/buttons/Button';
 import clsx from 'clsx';
-import LoadingContainer from '../../components/Error/LoadingContainer';
+import LoadingContainer from '../../components/error/LoadingContainer';
 
 const EventsPage = () => {
 	const { eventId } = useParams();

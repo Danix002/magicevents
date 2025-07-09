@@ -1,7 +1,7 @@
 import { url } from '../../utils/utils';
 
 function GoogleButton() {
-	const userManagementUrl = url === 'localhost' ? `${url}:8443` : `${url}/api/users`;
+	const userManagementUrl = `${url}:8443`;
 	const googleClientId = '856285122317-g1d4mlarfh9s00pubcj8uc1lij9h0peq.apps.googleusercontent.com';
 	const redirectUri = `https://${userManagementUrl}/login/grantcode`;
 	const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${encodeURIComponent(

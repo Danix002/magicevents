@@ -10,12 +10,12 @@ import {
 	removeAdmin,
 	modifyEvent,
 } from '../../api/eventAPI';
-import ErrorContainer from '../../components/Error/ErrorContainer';
+import ErrorContainer from '../../components/error/ErrorContainer';
 import Input from '../../components/inputs/Input';
-import ImageEdit from '../../components/imagesComponent/ImageEdit';
+import ImageEdit from '../../components/images-component/ImageEdit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { convertDataTime } from '../../utils/dataFormatter';
-import LoadingContainer from '../../components/Error/LoadingContainer';
+import LoadingContainer from '../../components/error/LoadingContainer';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 

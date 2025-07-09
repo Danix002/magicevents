@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import ImageCard from '../imagesComponent/ImageCard';
+import ImageCard from '../images-component/ImageCard';
 import Button from '../buttons/Button';
 
 const ImageList = ({

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Button from '../buttons/Button';
-import MessageCard from '../Card/MessageCard';
+import MessageCard from '../card/MessageCard';
 import Input from '../inputs/Input';
 
 const MessageList = ({

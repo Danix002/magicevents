@@ -1,5 +1,5 @@
 import React from 'react';
-import EventCard from '../Card/EventCard';
+import EventCard from '../card/EventCard';
 
 const EventList = ({ events = [] }) => {
 	return (

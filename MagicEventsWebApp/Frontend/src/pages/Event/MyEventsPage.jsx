@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getEventsc } from '../../api/eventAPI';
 import { mapEventDTOtoCardProps } from '../../utils/eventObjectMapping';
-import EventList from '../../components/Lists/EventList';
+import EventList from '../../components/lists/EventList';
 
 const MyEventsPage = () => {
 	const [events, setEvents] = useState([]);

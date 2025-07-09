@@ -1,6 +1,6 @@
 import { url } from '../utils/utils';
 
-const userManagementUrl = url === 'localhost' ? `https://${url}:8443` : `https://${url}/api/users`;
+const userManagementUrl = `https://${url}:8443`;
 
 export function login(formData) {
 	const params = new URLSearchParams();

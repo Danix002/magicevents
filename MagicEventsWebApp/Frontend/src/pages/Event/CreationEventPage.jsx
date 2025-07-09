@@ -1,6 +1,6 @@
 import { faClose, faGamepad, faImages, faMapMarker } from '@fortawesome/free-solid-svg-icons';
 import Button from '../../components/buttons/Button';
-import ServiceCard from '../../components/Card/ServiceCard';
+import ServiceCard from '../../components/card/ServiceCard';
 import Input from '../../components/inputs/Input';
 import InputArea from '../../components/inputs/InputArea';
 import { useEffect, useRef, useState } from 'react';

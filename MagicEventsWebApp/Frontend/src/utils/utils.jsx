@@ -19,4 +19,4 @@ export function setAdmin(eventId) {
 	}
 }
 
-export const url = 'localhost';
+export const url = 'italiamagicevents.it';

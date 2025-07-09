@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import GameNode from '../../../components/gameComponents/GameNode';
+import GameNode from '../../../components/game-component/GameNode';
 import { useEffect } from 'react';
 import { getGame, isDataInGame } from '../../../api/gameAPI';
 import { useNavigate, useParams } from 'react-router-dom';

@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
-import MessageList from '../../../components/Lists/MessageList';
+import MessageList from '../../../components/lists/MessageList';
 import { getMessages } from '../../../api/boardApi';
 import { useNavigate, useParams } from 'react-router-dom';
-import { subscribe } from '../../../utils/WebSocket';
+import { subscribe } from '../../../utils/webSocket';
 import Button from '../../../components/buttons/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { isAdmin, url } from '../../../utils/utils';
-import LoadingContainer from '../../../components/Error/LoadingContainer';
+import LoadingContainer from '../../../components/error/LoadingContainer';
 
 const BoardPage = () => {
 	const [messages, setMessages] = useState([]);
