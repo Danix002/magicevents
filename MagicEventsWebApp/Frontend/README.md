@@ -1,12 +1,9 @@
-### Setting https protocol 
-In Windows:
-```shell
-$env:HTTPS="true"
-```
-In Linux or MacOS:
+### Step for running frontend
+
 ```bash
-export HTTPS=true
+npm install
 ```
+
 ```bash
 npm start
 ```
