@@ -35,7 +35,7 @@ const GalleryPage = () => {
 	const { eventId } = useParams();
 	const [isAdminVar, setIsAdminVar] = useState(isAdmin(eventId));
 
-	const galleryUrl = url === 'localhost' ? `https://${url}:8085` : `https://${url}/api/galleries`;
+	const galleryUrl = `https://${url}:8085`;
 
 	async function loadMore() {
 		if (messageFinish) {

@@ -29,7 +29,7 @@ const BoardPage = () => {
 
 	const [isAdminVar, setIsAdminVar] = useState(isAdmin(eventId));
 
-	const boardUrl = url === 'localhost' ? `https://${url}:8081` : `https://${url}/api/boards`;
+	const boardUrl = `https://${url}:8081`;
 
 	async function loadMore() {
 		if (messageFinish) {
