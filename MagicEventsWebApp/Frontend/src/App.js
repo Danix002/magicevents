@@ -43,7 +43,7 @@ function App() {
 			<NavBar
 				logo={
 					<NavLink to="/" className="flex items-center gap-2 hover:scale-105 transition-transform">
-						<FontAwesomeIcon className="text-2xl" icon={faSparkles} color="#EE0E51" />
+						<FontAwesomeIcon className="text-2xl"  color="#EE0E51" />
 						<span className="hidden sm:block text-xl font-bold text-[#E4DCEF]">MagicEvents</span>
 					</NavLink>
 				}

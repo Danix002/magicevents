@@ -1,75 +1,133 @@
-import { faClose, faMap, faUsers } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import clsx from 'clsx';
-import Button from '../buttons/Button';
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faTimes, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import Button from '../buttons/Button';
+import clsx from 'clsx';
 
-const Menu = ({ open, onClose, onOpen, direction = 'right', tabs }) => {
-	const [content, setContent] = useState(null);
-	const [activeTab, setActiveTab] = useState(null);
+const Menu = ({ tabs, open, onOpen, onClose }) => {
+	const [activeTab, setActiveTab] = useState(0);
 
-	const renderTabButton = (tab, index, isActive) => (
-		<button
-			key={index}
-			onClick={() => {
-				setActiveTab(index);
-				setContent(tab.content);
-				onOpen();
-			}}
-			className={`flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-200 min-w-[120px] ${
-				isActive 
-					? 'bg-[#EE0E51] text-white shadow-lg transform scale-105' 
-					: 'bg-[#363540] hover:bg-[#505458] text-[#E4DCEF] hover:text-white'
-			}`}
-		>
-			<FontAwesomeIcon 
-				icon={tab.action} 
-				className={`text-2xl ${isActive ? 'text-white' : 'text-[#EE0E51]'}`} 
-			/>
-			<span className="text-sm font-semibold text-center leading-tight">
-				{tab.label}
-			</span>
-			{tab.label === 'Partecipanti' && (
-				<span className="text-xs opacity-75">Vedi chi partecipa</span>
-			)}
-			{tab.label === 'Mappa' && (
-				<span className="text-xs opacity-75">Posizione evento</span>
-			)}
-			{tab.label === 'Servizi' && (
-				<span className="text-xs opacity-75">Funzioni disponibili</span>
-			)}
-		</button>
-	);
+	const handleTabClick = (index) => {
+		setActiveTab(index);
+		if (window.innerWidth < 768) {
+			// Auto-close on mobile after selection
+			setTimeout(() => onClose(), 300);
+		}
+	};
 
-	return open ? (
-		<div
-			className={clsx({
-				' absolute flex flex-col p-2 gap-2  top-0  h-full bg-[#363540] min-w-[10rem] border border-[#505458] shadow-xl ': true,
-				hidden: content === null,
-				'left-0': direction === 'left',
-				'right-0': direction !== 'left',
-			})}
-		>
+	return (
+		<>
+			{/* Menu Toggle Button */}
 			<Button
-				onClick={onClose}
-				text={<FontAwesomeIcon className="text-2xl cursor-pointer " icon={faClose} />}
-				link
-			></Button>
+				onClick={open ? onClose : onOpen}
+				custom={clsx({
+					'fixed top-4 right-4 z-50 !rounded-full !p-3 shadow-lg transition-all duration-300': true,
+					'!bg-[#EE0E51] !text-white hover:!bg-[#ff4574]': !open,
+					'!bg-gray-800 !text-white hover:!bg-gray-700': open,
+				})}
+				text={<FontAwesomeIcon icon={open ? faTimes : faBars} className="text-lg" />}
+			/>
 
-			{content}
-		</div>
-	) : (
-		<div
-			className={clsx({
-				' absolute rounded-full flex flex-row items-center justify-evenly p-2 gap-4  top-6  min-h-[3rem] bg-[#363540]  border border-[#505458] shadow-xl ': true,
-				'left-6': direction === 'left',
-				'right-6': direction !== 'left',
-			})}
-		>
-			<div className="flex gap-3 mb-6 overflow-x-auto pb-2">
-				{tabs.map((tab, index) => renderTabButton(tab, index, activeTab === index))}
+			{/* Backdrop */}
+			<div
+				className={clsx({
+					'fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300': true,
+					'opacity-100': open,
+					'opacity-0 pointer-events-none': !open,
+				})}
+				onClick={onClose}
+			/>
+
+			{/* Sidebar */}
+			<div
+				className={clsx({
+					'fixed top-0 right-0 h-full bg-black bg-opacity-95 backdrop-blur-md shadow-2xl z-50 transition-all duration-300 overflow-hidden': true,
+					'w-full sm:w-[500px] md:w-[600px] lg:w-[700px] translate-x-0': open,
+					'w-0 translate-x-full': !open,
+				})}
+			>
+				<div className="flex h-full">
+					{/* Tab Navigation */}
+					<div className="w-20 sm:w-24 md:w-32 bg-[#363540] border-r border-[#E4DCEF] border-opacity-20 flex flex-col py-16">
+						{tabs.map((tab, index) => (
+							<button
+								key={index}
+								onClick={() => handleTabClick(index)}
+								disabled={tab.available === false}
+								className={clsx({
+									'relative p-3 sm:p-4 md:p-6 transition-all duration-200 flex flex-col items-center gap-2 text-center': true,
+									'bg-[#EE0E51] text-white': activeTab === index && tab.available !== false,
+									'hover:bg-[#505458] text-[#E4DCEF]': activeTab !== index && tab.available !== false,
+									'opacity-50 cursor-not-allowed text-gray-500': tab.available === false,
+								})}
+							>
+								<FontAwesomeIcon 
+									icon={tab.action} 
+									className={clsx({
+										'text-lg sm:text-xl md:text-2xl': true,
+										[tab.iconSize]: !!tab.iconSize,
+									})}
+								/>
+								<span className="text-xs sm:text-sm font-medium hidden sm:block">{tab.label}</span>
+								{tab.count !== undefined && tab.count > 0 && (
+									<span className="absolute -top-1 -right-1 bg-[#EE0E51] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+										{tab.count}
+									</span>
+								)}
+								{tab.available === false && (
+									<span className="absolute inset-0 bg-gray-600 bg-opacity-50 rounded-lg flex items-center justify-center">
+										<span className="text-xs font-bold">N/A</span>
+									</span>
+								)}
+							</button>
+						))}
+					</div>
+
+					{/* Tab Content */}
+					<div className="flex-1 overflow-y-auto">
+						<div className="p-4 sm:p-6 md:p-8">
+							{tabs[activeTab]?.available !== false ? (
+								<div className="text-[#E4DCEF]">
+									{/* Tab Header */}
+									<div className="flex items-center gap-3 mb-6 pb-4 border-b border-[#E4DCEF] border-opacity-20">
+										<FontAwesomeIcon 
+											icon={tabs[activeTab]?.action} 
+											className="text-[#EE0E51] text-xl" 
+										/>
+										<div>
+											<h2 className="text-xl sm:text-2xl font-bold text-[#1a1a1a]">
+												{tabs[activeTab]?.label}
+											</h2>
+											<p className="text-sm text-[#E4DCEF] opacity-70">
+												{tabs[activeTab]?.description}
+											</p>
+										</div>
+									</div>
+
+									{/* Tab Content */}
+									<div className="space-y-4">
+										{tabs[activeTab]?.content}
+									</div>
+								</div>
+							) : (
+								<div className="flex flex-col items-center justify-center py-16 text-center">
+									<FontAwesomeIcon 
+										icon={tabs[activeTab]?.action} 
+										className="text-6xl text-gray-500 mb-4" 
+									/>
+									<h3 className="text-xl font-bold text-gray-400 mb-2">
+										Servizio non disponibile
+									</h3>
+									<p className="text-gray-500">
+										Questa funzione non è stata abilitata per questo evento
+									</p>
+								</div>
+							)}
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 

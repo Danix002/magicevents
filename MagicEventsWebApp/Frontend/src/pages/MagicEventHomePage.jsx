@@ -50,11 +50,6 @@ const MagicEventHomePage = () => {
 							<p className="text-white text-opacity-90">Scopri tutti gli eventi che ti aspettano</p>
 						</div>
 					</div>
-					
-					<div className="flex items-center gap-2 bg-white bg-opacity-10 rounded-full px-4 py-2 w-fit">
-						<div className="h-3 w-3 bg-[#E4DCEF] rounded-full animate-pulse"></div>
-						<p className="text-[#E4DCEF] font-semibold text-sm">Live</p>
-					</div>
 				</div>
 			</div>
 
@@ -68,7 +63,7 @@ const MagicEventHomePage = () => {
 						</div>
 					) : ready ? (
 						events.length > 0 ? (
-							<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
+							<div className="bg-black bg-opacity-20 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
 								<Calendar days={events} />
 							</div>
 						) : (
