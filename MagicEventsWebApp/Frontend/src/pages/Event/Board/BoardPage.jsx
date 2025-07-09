@@ -176,13 +176,13 @@ const BoardPage = () => {
 	return loading ? (
 		<LoadingContainer />
 	) : (
-		<div className="h-screen bg-gradient-to-br from-[#E4DCEF] via-[#B8A9C9] to-[#363540] flex">
+		<div className="h-screen bg-gradient-to-br from-[#505458] to-[#363540] flex">
 			{/* Desktop Sidebar */}
 			<div className="hidden lg:flex lg:w-80 xl:w-96">
 				<div className="m-6 w-full">
-					<div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl h-full flex flex-col">
+					<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl shadow-xl h-full flex flex-col">
 						{/* Header */}
-						<div className="p-6 border-b border-gray-200">
+						<div className="p-6 border-b border-[#E4DCEF] border-opacity-20">
 							<Button 
 								onClick={() => navigate('/' + eventId)} 
 								custom="!bg-[#363540] !text-white hover:!bg-[#EE0E51] transition-all duration-300 !rounded-full !p-3 mb-4"
@@ -192,19 +192,19 @@ const BoardPage = () => {
 								<div className="w-10 h-10 bg-gradient-to-r from-[#EE0E51] to-[#FF6B9D] rounded-full flex items-center justify-center">
 									<FontAwesomeIcon icon={faComments} className="text-white" />
 								</div>
-								<h1 className="text-xl font-bold text-[#363540]">{title}</h1>
+								<h1 className="text-xl font-bold text-[#E4DCEF]">{title}</h1>
 							</div>
-							<p className="text-[#666] text-sm leading-relaxed">{description}</p>
+							<p className="text-[#E4DCEF] text-opacity-70 text-sm leading-relaxed">{description}</p>
 						</div>
 						
 						{/* Event Info */}
 						<div className="p-6 flex-1">
-							<div className="bg-gradient-to-r from-[#EE0E51]/10 to-[#FF6B9D]/10 rounded-xl p-4">
+							<div className="bg-[#EE0E51] bg-opacity-10 rounded-xl p-4">
 								<div className="flex items-center gap-2 mb-2">
 									<FontAwesomeIcon icon={faUsers} className="text-[#EE0E51]" />
-									<span className="text-sm font-medium text-[#363540]">Bacheca dell'evento</span>
+									<span className="text-sm font-medium text-[#E4DCEF]">Bacheca dell'evento</span>
 								</div>
-								<p className="text-xs text-[#666]">
+								<p className="text-xs text-[#E4DCEF] text-opacity-70">
 									Condividi pensieri e aggiornamenti con tutti i partecipanti
 								</p>
 							</div>
@@ -215,7 +215,7 @@ const BoardPage = () => {
 
 			{/* Mobile Header */}
 			<div className="lg:hidden absolute top-0 left-0 right-0 z-10 p-4">
-				<div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg p-4">
+				<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl shadow-lg p-4">
 					<div className="flex items-center gap-3">
 						<Button 
 							onClick={() => navigate('/' + eventId)} 
@@ -223,8 +223,8 @@ const BoardPage = () => {
 							text={<FontAwesomeIcon icon={faArrowLeft} />}
 						/>
 						<div>
-							<h1 className="font-bold text-[#363540] text-lg">{title}</h1>
-							<p className="text-xs text-[#666] line-clamp-1">{description}</p>
+							<h1 className="font-bold text-[#E4DCEF] text-lg">{title}</h1>
+							<p className="text-xs text-[#E4DCEF] text-opacity-70 line-clamp-1">{description}</p>
 						</div>
 					</div>
 				</div>
@@ -232,7 +232,7 @@ const BoardPage = () => {
 
 			{/* Chat Area */}
 			<div className="flex-1 flex flex-col lg:m-6 lg:mr-6">
-				<div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl h-full flex flex-col lg:mt-0 mt-20">
+				<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl shadow-xl h-full flex flex-col lg:mt-0 mt-20">
 					<MessageList
 						isAdmin={isAdminVar}
 						displayOnloadMore={!messageFinish}

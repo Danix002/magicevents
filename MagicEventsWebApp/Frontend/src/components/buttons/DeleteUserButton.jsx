@@ -1,5 +1,6 @@
 import { deleteUser } from '../../api/authentication';
 import { useNavigate } from 'react-router-dom';
+import Button from './Button';
 
 function DeleteUserButton({ user, setLogged }) {
 	const navigate = useNavigate();
@@ -25,19 +26,11 @@ function DeleteUserButton({ user, setLogged }) {
 	};
 
 	return (
-		<button
+		<Button
 			onClick={handleDeleteUser}
-			style={{
-				padding: '10px 20px',
-				backgroundColor: '#FF0000',
-				color: 'white',
-				border: 'none',
-				borderRadius: '4px',
-				cursor: 'pointer',
-			}}
-		>
-			Elimina Account
-		</button>
+			text="Elimina Account"
+			custom="bg-red-600 border-red-600 hover:bg-red-700 text-white text-sm"
+		/>
 	);
 }
 

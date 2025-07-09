@@ -172,9 +172,9 @@ const CreationEventPage = () => {
 								}
 								onClick={() => setTab(tabItem.id)}
 								custom={clsx({
-									'px-4 py-2 rounded-lg font-semibold transition-all': true,
-									'bg-white text-[#EE0E51] shadow-lg': tab === tabItem.id,
-									'bg-white bg-opacity-20 text-white hover:bg-opacity-30': tab !== tabItem.id,
+									'px-4 py-2 rounded-lg font-semibold transition-all border-2': true,
+									'bg-white text-[#EE0E51] border-white shadow-lg': tab === tabItem.id,
+									'bg-transparent text-white border-white border-opacity-30 hover:border-opacity-50': tab !== tabItem.id,
 								})}
 							/>
 						))}
@@ -236,7 +236,7 @@ const CreationEventPage = () => {
 									customClass="bg-white text-[#363540]"
 									rigthComponent={
 										<Button
-											custom="!bg-transparent !hover:bg-black/50 !border-none mt-[0.15rem]"
+											custom="!bg-transparent !hover:bg-red-500 !hover:bg-opacity-20 !border-none mt-[0.15rem] text-red-500 hover:text-red-400"
 											onClick={handleRemoveImage}
 											text={<FontAwesomeIcon icon={faClose} />}
 										/>
@@ -348,7 +348,7 @@ const CreationEventPage = () => {
 																	participants: prev.participants.filter((p) => p !== item),
 																}));
 															}}
-															custom="!bg-transparent text-red-400 hover:text-red-300 !border-none"
+															custom="!bg-transparent text-red-400 hover:text-red-300 !border-none p-1"
 															text={<FontAwesomeIcon icon={faClose} />}
 														/>
 													</div>
@@ -385,7 +385,7 @@ const CreationEventPage = () => {
 																	admins: prev.admins.filter((p) => p !== item),
 																}));
 															}}
-															custom="!bg-transparent text-red-400 hover:text-red-300 !border-none"
+															custom="!bg-transparent text-red-400 hover:text-red-300 !border-none p-1"
 															text={<FontAwesomeIcon icon={faClose} />}
 														/>
 													</div>
@@ -413,13 +413,13 @@ const CreationEventPage = () => {
 							onClick={() => navigate('/')} 
 							text="Annulla" 
 							secondary
-							custom="px-6 py-2"
+							custom="px-6 py-3"
 						/>
 						<Button 
 							disabled={loading} 
 							onClick={handleCreate} 
 							text={loading ? "Creando..." : "Crea Evento"}
-							custom="px-6 py-2"
+							custom="px-6 py-3 font-semibold"
 						/>
 					</div>
 				</div>

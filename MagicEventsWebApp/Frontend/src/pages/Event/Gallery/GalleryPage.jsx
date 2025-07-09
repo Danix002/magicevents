@@ -249,10 +249,10 @@ const GalleryPage = () => {
 	return loading ? (
 		<LoadingContainer />
 	) : (
-		<div className="min-h-screen bg-gradient-to-br from-[#E4DCEF] via-[#B8A9C9] to-[#363540] p-4 sm:p-6">
+		<div className="min-h-screen bg-gradient-to-br from-[#505458] to-[#363540] p-4 sm:p-6">
 			{/* Header */}
 			<div className="mb-6 sm:mb-8">
-				<div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 sm:p-6">
+				<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl shadow-xl p-4 sm:p-6">
 					<div className="flex items-center gap-4">
 						<Button 
 							onClick={() => navigate('/' + eventId)} 
@@ -260,10 +260,10 @@ const GalleryPage = () => {
 							text={<FontAwesomeIcon icon={faArrowLeft} />}
 						/>
 						<div>
-							<h1 className="text-2xl sm:text-3xl font-bold text-[#363540] mb-1">
+							<h1 className="text-2xl sm:text-3xl font-bold text-[#E4DCEF] mb-1">
 								{title || 'Galleria Evento'}
 							</h1>
-							<p className="text-[#666] text-sm sm:text-base">Condividi i tuoi momenti speciali</p>
+							<p className="text-[#E4DCEF] text-opacity-70 text-sm sm:text-base">Condividi i tuoi momenti speciali</p>
 						</div>
 					</div>
 				</div>
@@ -271,12 +271,12 @@ const GalleryPage = () => {
 
 			{/* Popular Images Section */}
 			<div className="mb-8">
-				<div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6">
+				<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl shadow-xl p-6">
 					<div className="flex items-center gap-3 mb-6">
 						<div className="w-8 h-8 bg-gradient-to-r from-[#EE0E51] to-[#FF6B9D] rounded-full flex items-center justify-center">
 							<FontAwesomeIcon icon={faHeart} className="text-white text-sm" />
 						</div>
-						<h2 className="text-xl sm:text-2xl font-semibold text-[#363540]">Immagini Popolari</h2>
+						<h2 className="text-xl sm:text-2xl font-semibold text-[#E4DCEF]">Immagini Popolari</h2>
 					</div>
 					<ImageList
 						isAdmin={isAdminVar}
@@ -292,8 +292,8 @@ const GalleryPage = () => {
 
 			{/* All Images Section */}
 			<div className="mb-8">
-				<div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6">
-					<h2 className="text-xl sm:text-2xl font-semibold text-[#363540] mb-6">Tutte le Immagini</h2>
+				<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl shadow-xl p-6">
+					<h2 className="text-xl sm:text-2xl font-semibold text-[#E4DCEF] mb-6">Tutte le Immagini</h2>
 					<ImageGrid
 						isAdmin={isAdminVar}
 						displayOnloadMore={!messageFinish}
@@ -317,7 +317,7 @@ const GalleryPage = () => {
 				onClick={() => setOpenPopup(false)}
 			>
 				<div 
-					className="relative max-w-4xl max-h-[90vh] w-full bg-white rounded-2xl overflow-hidden shadow-2xl"
+					className="relative max-w-4xl max-h-[90vh] w-full bg-[#363540] rounded-2xl overflow-hidden shadow-2xl"
 					onClick={(e) => e.stopPropagation()}
 				>
 					{/* Image */}
@@ -332,12 +332,12 @@ const GalleryPage = () => {
 						<div className="absolute top-4 right-4 flex gap-2">
 							<Button
 								onClick={downloadImage}
-								custom="!bg-white/90 !text-[#363540] hover:!bg-white transition-all duration-300 !rounded-full !p-3"
+								custom="!bg-[#505458] !text-[#E4DCEF] hover:!bg-[#EE0E51] transition-all duration-300 !rounded-full !p-3 !border-none"
 								text={<FontAwesomeIcon icon={faDownload} />}
 							/>
 							<Button
 								onClick={() => setOpenPopup(false)}
-								custom="!bg-white/90 !text-[#363540] hover:!bg-[#EE0E51] hover:!text-white transition-all duration-300 !rounded-full !p-3"
+								custom="!bg-[#505458] !text-[#E4DCEF] hover:!bg-red-500 transition-all duration-300 !rounded-full !p-3 !border-none"
 								text={<FontAwesomeIcon icon={faClose} />}
 							/>
 						</div>
@@ -345,7 +345,7 @@ const GalleryPage = () => {
 
 					{/* Image Title */}
 					<div className="p-6">
-						<h3 className="text-xl font-semibold text-[#363540] leading-relaxed">
+						<h3 className="text-xl font-semibold text-[#E4DCEF] leading-relaxed">
 							{titlePopup || 'Senza titolo'}
 						</h3>
 					</div>

@@ -141,9 +141,9 @@ const ModifyEventPage = () => {
 								}
 								onClick={() => setActiveTab(tab.id)}
 								custom={clsx({
-									'px-4 py-2 rounded-lg font-semibold transition-all': true,
-									'bg-white text-[#EE0E51] shadow-lg': activeTab === tab.id,
-									'bg-white bg-opacity-20 text-white hover:bg-opacity-30': activeTab !== tab.id,
+									'px-4 py-2 rounded-lg font-semibold transition-all border-2': true,
+									'bg-white text-[#EE0E51] border-white shadow-lg': activeTab === tab.id,
+									'bg-transparent text-white border-white border-opacity-30 hover:border-opacity-50': activeTab !== tab.id,
 								})}
 							/>
 						))}
@@ -311,7 +311,7 @@ const ModifyEventPage = () => {
 												</div>
 												<Button
 													custom={clsx({ 
-														'!bg-transparent text-red-400 hover:text-red-300 !border-none': true,
+														'!bg-transparent text-red-400 hover:text-red-300 !border-none p-1': true,
 														'hidden': p === user.email 
 													})}
 													onClick={async () => {
@@ -371,7 +371,7 @@ const ModifyEventPage = () => {
 																participants: prev.participants.filter((p) => p !== item),
 															}));
 														}}
-														custom="!bg-transparent text-red-400 hover:text-red-300 !border-none"
+														custom="!bg-transparent text-red-400 hover:text-red-300 !border-none p-1"
 														text={<FontAwesomeIcon icon={faClose} />}
 													/>
 												</div>
@@ -444,7 +444,7 @@ const ModifyEventPage = () => {
 															setError(err.message);
 														}
 													}}
-													custom="!bg-transparent text-red-400 hover:text-red-300 !border-none"
+													custom="!bg-transparent text-red-400 hover:text-red-300 !border-none p-1"
 													text={<FontAwesomeIcon icon={faClose} />}
 												/>
 											</div>
@@ -484,7 +484,7 @@ const ModifyEventPage = () => {
 																admins: prev.admins.filter((a) => a !== item),
 															}));
 														}}
-														custom="!bg-transparent text-red-400 hover:text-red-300 !border-none"
+														custom="!bg-transparent text-red-400 hover:text-red-300 !border-none p-1"
 														text={<FontAwesomeIcon icon={faClose} />}
 													/>
 												</div>
