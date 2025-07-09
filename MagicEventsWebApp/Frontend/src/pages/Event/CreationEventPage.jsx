@@ -185,10 +185,10 @@ const CreationEventPage = () => {
 			{/* Content */}
 			<div className="flex-1 overflow-y-auto p-4 md:p-6">
 				<div className="max-w-4xl mx-auto">
-					<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
+					<div className="bg-black bg-opacity-20 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
 						{tab === 'event' && (
 							<div className="space-y-6">
-								<h2 className="text-2xl font-bold text-[#E4DCEF] mb-6">Dettagli Evento</h2>
+								<h2 className="text-2xl font-bold text-[#1a1a1a] mb-6">Dettagli Evento</h2>
 								
 								<Input
 									onChange={(e) => handleChange(e, 'title')}
@@ -247,7 +247,7 @@ const CreationEventPage = () => {
 
 						{tab === 'board' && (
 							<div className="space-y-6">
-								<h2 className="text-2xl font-bold text-[#E4DCEF] mb-6">Configurazione Bacheca</h2>
+								<h2 className="text-2xl font-bold text-[#1a1a1a] mb-6">Configurazione Bacheca</h2>
 								
 								<Input
 									onChange={(e) => handleChange(e, 'boardTitle')}
@@ -270,7 +270,7 @@ const CreationEventPage = () => {
 
 						{tab === 'services' && (
 							<div className="space-y-6">
-								<h2 className="text-2xl font-bold text-[#E4DCEF] mb-6">Servizi Aggiuntivi</h2>
+								<h2 className="text-2xl font-bold text-[#1a1a1a] mb-6">Servizi Aggiuntivi</h2>
 								
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 									<ServiceCard
@@ -317,12 +317,12 @@ const CreationEventPage = () => {
 
 						{tab === 'participants' && (
 							<div className="space-y-6">
-								<h2 className="text-2xl font-bold text-[#E4DCEF] mb-6">Gestione Partecipanti</h2>
+								<h2 className="text-2xl font-bold text-[#1a1a1a] mb-6">Gestione Partecipanti</h2>
 								
 								<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 									{/* Participants */}
 									<div className="space-y-4">
-										<h3 className="text-lg font-semibold text-[#E4DCEF]">Partecipanti</h3>
+										<h3 className="text-lg font-semibold text-[#1a1a1a]">Partecipanti</h3>
 										<Input
 											onEnterPress={() => {
 												setEventDetail((prev) => ({ ...prev, participants: [...prev.participants, partecipantInput] }));
@@ -359,7 +359,7 @@ const CreationEventPage = () => {
 
 									{/* Admins */}
 									<div className="space-y-4">
-										<h3 className="text-lg font-semibold text-[#E4DCEF]">Amministratori</h3>
+										<h3 className="text-lg font-semibold text-[#1a1a1a]">Amministratori</h3>
 										<Input
 											onEnterPress={() => {
 												setEventDetail((prev) => ({ ...prev, admins: [...prev.admins, adminInput] }));
