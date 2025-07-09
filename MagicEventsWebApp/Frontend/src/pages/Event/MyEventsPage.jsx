@@ -87,7 +87,7 @@ const MyEventsPage = () => {
 							<div className="text-center py-16">
 								<div className="mb-8">
 									<div className="mx-auto w-24 h-24 bg-[#E4DCEF] bg-opacity-20 rounded-full flex items-center justify-center mb-4">
-										<FontAwesomeIcon icon={faCalendarPlus} className="text-4xl text-[#E4DCEF]" />
+										<FontAwesomeIcon icon={faCalendarPlus} className="text-4xl text-[#505458]" />
 									</div>
 									<h3 className="text-2xl font-bold text-[#E4DCEF] mb-2">Non hai creato ancora nessun evento</h3>
 									<p className="text-[#E4DCEF] text-opacity-70 mb-6 max-w-md mx-auto">
