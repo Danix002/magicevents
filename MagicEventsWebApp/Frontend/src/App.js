@@ -15,7 +15,7 @@ import LogoutButton from './components/buttons/LogoutButton';
 import CreationEventPage from './pages/Event/CreationEventPage';
 import MyEventsPage from './pages/Event/MyEventsPage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBoxArchive, faHome, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faBoxArchive, faPen } from '@fortawesome/free-solid-svg-icons';
 import { APIProvider } from '@vis.gl/react-google-maps';
 import EventsPage from './pages/Event/EventPage';
 import clsx from 'clsx';
@@ -43,8 +43,8 @@ function App() {
 			<NavBar
 				logo={
 					<NavLink to="/" className="flex items-center gap-2 hover:scale-105 transition-transform">
-						<FontAwesomeIcon className="text-2xl"  color="#EE0E51" />
-						<span className="hidden sm:block text-xl font-bold text-[#E4DCEF]">MagicEvents</span>
+						<FontAwesomeIcon icon="fa-solid fa-sparkles" className="text-2xl"  color="#EE0E51" />
+						<span className="hidden sm:block text-xl font-bold text-[#E4DCEF]">magicevents</span>
 					</NavLink>
 				}
 				actions={

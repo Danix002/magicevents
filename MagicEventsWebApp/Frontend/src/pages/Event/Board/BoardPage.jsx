@@ -200,9 +200,9 @@ const BoardPage = () => {
 						{/* Event Info */}
 						<div className="p-6 flex-1">
 							<div className="bg-[#EE0E51] bg-opacity-10 rounded-xl p-4">
-								<div className="flex items-center gap-2 mb-2">
-									<FontAwesomeIcon icon={faUsers} className="text-[#EE0E51]" />
-									<span className="text-sm font-medium text-[#E4DCEF]">Bacheca dell'evento</span>
+								<div className="flex justify-center mb-2">
+									<FontAwesomeIcon icon={faUsers} className="text-black" />
+									<span className="text-sm font-medium text-[#E4DCEF]">Bacheca</span>
 								</div>
 								<p className="text-xs text-[#E4DCEF] text-opacity-70">
 									Condividi pensieri e aggiornamenti con tutti i partecipanti

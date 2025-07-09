@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import Calendar from '../components/lists/Calendar/Calendar';
+import Calendar from '../components/lists/calendar/Calendar';
 import { getEventsp } from '../api/eventAPI';
 import { getUpcomingEvents, getNextNDaysFormatted, mergeDaysAndEvents } from '../utils/dataFormatter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarDays, faSparkles } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 
 const MagicEventHomePage = () => {
 	const [events, setEvents] = useState([]);
@@ -43,7 +43,7 @@ const MagicEventHomePage = () => {
 				<div className="max-w-6xl mx-auto">
 					<div className="flex items-center gap-4 mb-4">
 						<div className="p-3 bg-white bg-opacity-20 rounded-full">
-							<FontAwesomeIcon icon={faCalendarDays} className="text-2xl text-white" />
+							<FontAwesomeIcon icon={faCalendarDays} className="text-2xl text-[#505458]" />
 						</div>
 						<div>
 							<h1 className="text-3xl font-bold text-white">Eventi in Programma</h1>
@@ -63,13 +63,13 @@ const MagicEventHomePage = () => {
 						</div>
 					) : ready ? (
 						events.length > 0 ? (
-							<div className="bg-black bg-opacity-20 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
+							<div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
 								<Calendar days={events} />
 							</div>
 						) : (
 							<div className="text-center py-16">
 								<div className="mb-6">
-									<FontAwesomeIcon icon={faSparkles} className="text-6xl text-[#E4DCEF] opacity-50" />
+									<FontAwesomeIcon icon="fa-solid fa-sparkles" className="text-6xl text-[#E4DCEF] opacity-50" />
 								</div>
 								<h3 className="text-2xl font-bold text-[#E4DCEF] mb-2">Nessun evento in programma</h3>
 								<p className="text-[#E4DCEF] text-opacity-70">Crea il tuo primo evento per iniziare!</p>

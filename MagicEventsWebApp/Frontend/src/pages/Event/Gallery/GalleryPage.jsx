@@ -252,7 +252,7 @@ const GalleryPage = () => {
 		<div className="min-h-screen bg-gradient-to-br from-[#505458] to-[#363540] p-4 sm:p-6">
 			{/* Header */}
 			<div className="mb-6 sm:mb-8">
-				<div className="bg-black bg-opacity-20 backdrop-blur-sm rounded-2xl shadow-xl p-4 sm:p-6">
+				<div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl shadow-xl p-4 sm:p-6">
 					<div className="flex items-center gap-4">
 						<Button 
 							onClick={() => navigate('/' + eventId)} 
@@ -263,7 +263,7 @@ const GalleryPage = () => {
 							<h1 className="text-2xl sm:text-3xl font-bold text-[#1a1a1a] mb-1">
 								{title || 'Galleria Evento'}
 							</h1>
-							<p className="text-[#E4DCEF] text-opacity-70 text-sm sm:text-base">Condividi i tuoi momenti speciali</p>
+							<p className="text-[#1a1a1a] text-opacity-70 text-sm sm:text-base">Condividi i tuoi momenti speciali</p>
 						</div>
 					</div>
 				</div>
@@ -271,7 +271,7 @@ const GalleryPage = () => {
 
 			{/* Popular Images Section */}
 			<div className="mb-8">
-				<div className="bg-black bg-opacity-20 backdrop-blur-sm rounded-2xl shadow-xl p-6">
+				<div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl shadow-xl p-6">
 					<div className="flex items-center gap-3 mb-6">
 						<div className="w-8 h-8 bg-gradient-to-r from-[#EE0E51] to-[#FF6B9D] rounded-full flex items-center justify-center">
 							<FontAwesomeIcon icon={faHeart} className="text-white text-sm" />
@@ -292,7 +292,7 @@ const GalleryPage = () => {
 
 			{/* All Images Section */}
 			<div className="mb-8">
-				<div className="bg-black bg-opacity-20 backdrop-blur-sm rounded-2xl shadow-xl p-6">
+				<div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl shadow-xl p-6">
 					<h2 className="text-xl sm:text-2xl font-semibold text-[#1a1a1a] mb-6">Tutte le Immagini</h2>
 					<ImageGrid
 						isAdmin={isAdminVar}
@@ -311,7 +311,7 @@ const GalleryPage = () => {
 			{/* Enhanced Image Popup */}
 			<div
 				className={clsx({
-					'fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4': openPopup,
+					'fixed inset-0 z-50 bg-black/50 backdrop-blur-md flex items-center justify-center p-4': openPopup,
 					'hidden': !openPopup,
 				})}
 				onClick={() => setOpenPopup(false)}

@@ -63,14 +63,14 @@ function UserProfilePage({ setLogged }) {
 				{/* Action Buttons */}
 				<div className="p-6 space-y-3 bg-gray-50">
 					<div className="text-center">
-						<LogoutButton setLogged={setLogged} />
+						<LogoutButton setLogged={setLogged}/>
 					</div>
-					<div className="flex flex-col sm:flex-row gap-3">
-						<div className="flex-1">
-							<DeleteUserButton user={user} setLogged={setLogged} style={{ width: '100%' }} />
+					<div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+						<div>
+							<DeleteUserButton user={user} setLogged={setLogged} className="w-64"/>
 						</div>
-						<div className="flex-1">
-							<ModifierUserButton style={{ width: '100%' }} />
+						<div>
+							<ModifierUserButton className="w-64"/>
 						</div>
 					</div>
 				</div>

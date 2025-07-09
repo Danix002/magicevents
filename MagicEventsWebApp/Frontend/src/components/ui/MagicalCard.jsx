@@ -11,7 +11,7 @@ const MagicalCard = ({ children, className = '', variant = 'default' }) => {
   return (
     <div className={`
       ${variants[variant]}
-      backdrop-blur-md border rounded-2xl p-6 shadow-2xl
+      border rounded-2xl p-6 shadow-2xl
       transform transition-all duration-300 hover:scale-105 hover:shadow-purple-500/25
       ${className}
     `}>

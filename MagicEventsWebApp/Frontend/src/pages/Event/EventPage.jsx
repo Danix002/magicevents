@@ -130,13 +130,13 @@ const EventsPage = () => {
 						iconSize: "text-3xl",
 						count: event.partecipants.length + event.admins.length,
 						content: (
-							<div className="flex flex-col gap-4 h-full">
+							<div className="flex flex-col gap-4 h-full bg-white">
 								<div>
 									<h2 className="text-xl font-bold mb-3 flex items-center gap-2 text-[#1a1a1a]">
 										<FontAwesomeIcon icon={faUsers} className="text-[#EE0E51]" />
 										Partecipanti ({event.partecipants.length})
 									</h2>
-									<div className="max-h-48 overflow-y-auto bg-[#505458] rounded-lg p-3 space-y-2">
+									<div className="max-h-48 overflow-y-auto bg-white rounded-lg p-3 space-y-2">
 										{event.partecipants.map((p, index) => (
 											<div key={index} className="bg-[#363540] rounded-lg p-3 flex items-center gap-3">
 												<div className="w-8 h-8 bg-[#EE0E51] rounded-full flex items-center justify-center text-white font-bold text-sm">
@@ -147,13 +147,13 @@ const EventsPage = () => {
 										))}
 									</div>
 								</div>
-								
+
 								<div>
 									<h2 className="text-xl font-bold mb-3 flex items-center gap-2 text-[#1a1a1a]">
 										<FontAwesomeIcon icon={faUsers} className="text-[#EE0E51]" />
 										Amministratori ({event.admins.length})
 									</h2>
-									<div className="max-h-48 overflow-y-auto bg-[#505458] rounded-lg p-3 space-y-2">
+									<div className="max-h-48 overflow-y-auto bg-white rounded-lg p-3 space-y-2">
 										{event.admins.map((p, index) => (
 											<div key={index} className="bg-[#363540] rounded-lg p-3 flex items-center gap-3">
 												<div className="w-8 h-8 bg-gradient-to-r from-[#EE0E51] to-[#ff4574] rounded-full flex items-center justify-center text-white font-bold text-sm">
@@ -174,7 +174,7 @@ const EventsPage = () => {
 						iconSize: "text-3xl",
 						available: !!event.location,
 						content: event.location ? (
-							<div>
+							<div className="bg-white">
 								<h2 className="text-xl font-bold mb-3 flex items-center gap-2 text-[#1a1a1a]">
 									<FontAwesomeIcon icon={faMapMarkerAlt} className="text-[#EE0E51]" />
 									Posizione
@@ -273,9 +273,9 @@ const EventsPage = () => {
 					</div>
 
 					{/* Event Info Card */}
-					<div className="bg-black bg-opacity-20 backdrop-blur-sm rounded-2xl p-6 shadow-xl mb-6">
-						<h1 className="text-3xl md:text-4xl font-bold text-[#1a1a1a] mb-4">{event.title}</h1>
-						
+					<div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl p-6 shadow-xl mb-6">
+						<h1 className="text-3xl md:text-4xl font-bold text-[#363540] mb-4">{event.title}</h1>
+
 						<div className="bg-[#363540] border border-[#E4DCEF] border-opacity-20 rounded-xl p-4 mb-6">
 							<p className="text-[#E4DCEF] leading-relaxed">{event.description}</p>
 						</div>
@@ -286,14 +286,14 @@ const EventsPage = () => {
 								<FontAwesomeIcon icon={faCalendarDays} className="text-[#EE0E51]" />
 								<span>Durata evento:</span>
 							</div>
-							
+
 							<div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
 								<div className="bg-[#E4DCEF] text-[#363540] rounded-full px-4 py-2 font-bold text-center">
 									{convertDataTime(event.starting)}
 								</div>
-								<FontAwesomeIcon 
-									icon={faArrowRight} 
-									className="text-[#EE0E51] text-xl hidden sm:block" 
+								<FontAwesomeIcon
+									icon={faArrowRight}
+									className="text-[#EE0E51] text-xl hidden sm:block"
 								/>
 								<div className="bg-[#E4DCEF] text-[#363540] rounded-full px-4 py-2 font-bold text-center">
 									{convertDataTime(event.ending)}
@@ -304,17 +304,17 @@ const EventsPage = () => {
 
 					{/* Popular Images Section */}
 					{popularImages.length > 0 && (
-						<div className="bg-black bg-opacity-20 backdrop-blur-sm rounded-2xl p-6 shadow-xl mb-6">
+						<div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl p-6 shadow-xl mb-6">
 							<div className="flex items-center justify-between mb-6">
 								<div className="flex items-center gap-3">
 									<div className="w-8 h-8 bg-gradient-to-r from-[#EE0E51] to-[#FF6B9D] rounded-full flex items-center justify-center">
 										<FontAwesomeIcon icon={faHeart} className="text-white text-sm" />
 									</div>
-									<h2 className="text-xl sm:text-2xl font-semibold text-[#1a1a1a]">Immagini Popolari</h2>
+									<h2 className="text-xl sm:text-2xl font-semibold text-[#363540]">Immagini Popolari</h2>
 								</div>
 								{eventServices?.gallery && (
 									<NavLink to={`/${eventId}/gallery`}>
-										<Button 
+										<Button
 											text="Vedi tutte"
 											custom="text-sm px-4 py-2"
 										/>
@@ -335,12 +335,12 @@ const EventsPage = () => {
 			{/* Enhanced Image Popup */}
 			<div
 				className={clsx({
-					'fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4': openPopup,
+					'fixed inset-0 z-50 bg-black/50 backdrop-blur-md flex items-center justify-center p-4': openPopup,
 					'hidden': !openPopup,
 				})}
 				onClick={() => setOpenPopup(false)}
 			>
-				<div 
+				<div
 					className="relative max-w-4xl max-h-[90vh] w-full bg-[#363540] rounded-2xl overflow-hidden shadow-2xl"
 					onClick={(e) => e.stopPropagation()}
 				>
@@ -351,7 +351,7 @@ const EventsPage = () => {
 							src={'data:image/*;base64,' + popupImage}
 							alt="Event image"
 						/>
-						
+
 						{/* Action buttons */}
 						<div className="absolute top-4 right-4 flex gap-2">
 							<Button
