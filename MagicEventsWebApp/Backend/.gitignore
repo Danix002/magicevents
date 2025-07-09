@@ -32,3 +32,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+user-management-service/src/main/resources/keystore.p12
+guest-game-service/src/main/resources/keystore.p12
+gallery-service/src/main/resources/keystore.p12
+eventsetup-service/src/main/resources/keystore.p12
+events-management-service/src/main/resources/keystore.p12
+board-service/src/main/resources/keystore.p12
