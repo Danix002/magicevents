@@ -8,7 +8,7 @@ import ImageList from '../../../components/lists/ImageList';
 import ImageGrid from '../../../components/images-component/ImageGrid';
 import Button from '../../../components/buttons/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faBackspace, faBackward, faClose, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faClose, faHeart, faDownload } from '@fortawesome/free-solid-svg-icons';
 import ImageDropImage from '../../../components/popup/ImageDropImage';
 import clsx from 'clsx';
 import { isAdmin, url } from '../../../utils/utils';
@@ -239,57 +239,117 @@ const GalleryPage = () => {
 		setOpenPopup(true);
 	}
 
+	const downloadImage = () => {
+		const link = document.createElement('a');
+		link.href = 'data:image/*;base64,' + imagePopup;
+		link.download = titlePopup || 'image';
+		link.click();
+	};
+
 	return loading ? (
 		<LoadingContainer />
 	) : (
-		<div className="h-full  bg-[#363540]  bg-gradient-to-r   p-2 to-[#363540] gap-1 from-[#E4DCEF] flex flex-col overflow-y-auto ">
-			<div className=" mt-4  flex items-center flex-row gap-2  h-fit rounded-r-2xl text-[#363540] p-4 max-sm:hidden ">
-				<Button onClick={() => navigate('/' + eventId)} text={<FontAwesomeIcon icon={faArrowLeft} />}></Button>
-				<h1 className="font-bold text-2xl">{title ? title : 'Nessun titolo'}</h1>
+		<div className="min-h-screen bg-gradient-to-br from-[#E4DCEF] via-[#B8A9C9] to-[#363540] p-4 sm:p-6">
+			{/* Header */}
+			<div className="mb-6 sm:mb-8">
+				<div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 sm:p-6">
+					<div className="flex items-center gap-4">
+						<Button 
+							onClick={() => navigate('/' + eventId)} 
+							custom="!bg-[#363540] !text-white hover:!bg-[#EE0E51] transition-all duration-300 !rounded-full !p-3"
+							text={<FontAwesomeIcon icon={faArrowLeft} />}
+						/>
+						<div>
+							<h1 className="text-2xl sm:text-3xl font-bold text-[#363540] mb-1">
+								{title || 'Galleria Evento'}
+							</h1>
+							<p className="text-[#666] text-sm sm:text-base">Condividi i tuoi momenti speciali</p>
+						</div>
+					</div>
+				</div>
 			</div>
-			<ImageList
-				isAdmin={isAdminVar}
-				displayOnloadMore={!messageFinishp}
-				onLoadMore={loadMorep}
-				onClickImage={(img) => openImage(img)}
-				onLike={(img) => likeImage(img)}
-				onDelete={(img) => deleteImage(img)}
-				images={imagesPopular}
-			/>
-			<h1>Galleria</h1>
-			<ImageGrid
-				isAdmin={isAdminVar}
-				displayOnloadMore={!messageFinish}
-				onLoadMore={loadMore}
-				onClickImage={(img) => openImage(img)}
-				onLike={(img) => likeImage(img)}
-				onDelete={(img) => deleteImage(img)}
-				images={images}
-			/>
-			<ImageDropImage onSend={(title, image) => sendImage(title, image)} />
-			{/* Popup image open */}
-			<div
-				className={clsx({
-					'absolute p-4  top-0 left-0 bg-[#363540]/20 backdrop-blur-[4px]  h-full w-full flex max-sm:flex-col items-center justify-center ':
-						openPopup,
-					hidden: !openPopup,
-				})}
-			>
-				<div className="sm:h-full max-sm:h-[calc(100%-5.5rem)]">
-					<img
-						className="aspect-4/5 object-cover h-full  rounded-sm "
-						src={'data:image/*;base64,' + imagePopup}
-						alt="test"
+
+			{/* Popular Images Section */}
+			<div className="mb-8">
+				<div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6">
+					<div className="flex items-center gap-3 mb-6">
+						<div className="w-8 h-8 bg-gradient-to-r from-[#EE0E51] to-[#FF6B9D] rounded-full flex items-center justify-center">
+							<FontAwesomeIcon icon={faHeart} className="text-white text-sm" />
+						</div>
+						<h2 className="text-xl sm:text-2xl font-semibold text-[#363540]">Immagini Popolari</h2>
+					</div>
+					<ImageList
+						isAdmin={isAdminVar}
+						displayOnloadMore={!messageFinishp}
+						onLoadMore={loadMorep}
+						onClickImage={(img) => openImage(img)}
+						onLike={(img) => likeImage(img)}
+						onDelete={(img) => deleteImage(img)}
+						images={imagesPopular}
 					/>
 				</div>
-				<p className="text-lg text-[#E4DCEF] max-sm:w-full bg-[#363540] rounded-md p-4 sm:w-max sm:max-w-80 text-ellipsis max-sm:line-clamp-2 max-sm:h-[4.89rem]   ">
-					{titlePopup}
-				</p>
-				<Button
-					onClick={() => setOpenPopup(false)}
-					custom="absolute top-4 right-4"
-					text={<FontAwesomeIcon icon={faClose} />}
-				></Button>
+			</div>
+
+			{/* All Images Section */}
+			<div className="mb-8">
+				<div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6">
+					<h2 className="text-xl sm:text-2xl font-semibold text-[#363540] mb-6">Tutte le Immagini</h2>
+					<ImageGrid
+						isAdmin={isAdminVar}
+						displayOnloadMore={!messageFinish}
+						onLoadMore={loadMore}
+						onClickImage={(img) => openImage(img)}
+						onLike={(img) => likeImage(img)}
+						onDelete={(img) => deleteImage(img)}
+						images={images}
+					/>
+				</div>
+			</div>
+
+			<ImageDropImage onSend={(title, image) => sendImage(title, image)} />
+
+			{/* Enhanced Image Popup */}
+			<div
+				className={clsx({
+					'fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4': openPopup,
+					'hidden': !openPopup,
+				})}
+				onClick={() => setOpenPopup(false)}
+			>
+				<div 
+					className="relative max-w-4xl max-h-[90vh] w-full bg-white rounded-2xl overflow-hidden shadow-2xl"
+					onClick={(e) => e.stopPropagation()}
+				>
+					{/* Image */}
+					<div className="relative">
+						<img
+							className="w-full h-auto max-h-[70vh] object-contain"
+							src={'data:image/*;base64,' + imagePopup}
+							alt="Gallery image"
+						/>
+						
+						{/* Action buttons */}
+						<div className="absolute top-4 right-4 flex gap-2">
+							<Button
+								onClick={downloadImage}
+								custom="!bg-white/90 !text-[#363540] hover:!bg-white transition-all duration-300 !rounded-full !p-3"
+								text={<FontAwesomeIcon icon={faDownload} />}
+							/>
+							<Button
+								onClick={() => setOpenPopup(false)}
+								custom="!bg-white/90 !text-[#363540] hover:!bg-[#EE0E51] hover:!text-white transition-all duration-300 !rounded-full !p-3"
+								text={<FontAwesomeIcon icon={faClose} />}
+							/>
+						</div>
+					</div>
+
+					{/* Image Title */}
+					<div className="p-6">
+						<h3 className="text-xl font-semibold text-[#363540] leading-relaxed">
+							{titlePopup || 'Senza titolo'}
+						</h3>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

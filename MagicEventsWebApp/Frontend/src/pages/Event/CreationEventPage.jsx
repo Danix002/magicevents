@@ -1,4 +1,4 @@
-import { faClose, faGamepad, faImages, faMapMarker } from '@fortawesome/free-solid-svg-icons';
+import { faClose, faGamepad, faImages, faMapMarker, faCalendarDays, faUsers, faCog } from '@fortawesome/free-solid-svg-icons';
 import Button from '../../components/buttons/Button';
 import ServiceCard from '../../components/card/ServiceCard';
 import Input from '../../components/inputs/Input';
@@ -14,7 +14,7 @@ const CreationEventPage = () => {
 	const [partecipantInput, setPartecipantInput] = useState('');
 	const [adminInput, setAdminInput] = useState('');
 	const [mapEnabled, setMapEnabled] = useState(false);
-	const [tab, setTab] = useState('services');
+	const [tab, setTab] = useState('event');
 	const [eventDetail, setEventDetail] = useState({
 		title: '',
 		description: '',
@@ -37,6 +37,10 @@ const CreationEventPage = () => {
 
 	const geocodingAPILoaded = useMapsLibrary('geocoding');
 	const [geocodingService, setGeocodingService] = useState();
+	const [error, setError] = useState('');
+	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate();
+	const imgInput = useRef(null);
 
 	useEffect(() => {
 		if (!geocodingAPILoaded) return;
@@ -44,19 +48,13 @@ const CreationEventPage = () => {
 	}, [geocodingAPILoaded]);
 
 	const onLocationSet = async (address) => {
-		if (!geocodingService || !address) return; // errore o impossibile fare la chiamata
-
+		if (!geocodingService || !address) return;
 		await geocodingService.geocode({ address }, (results, status) => {
 			if (results && status === 'OK') {
 				if (!results[0]) {
 					console.log('result non valid? ', results[0]);
-
 					return;
 				}
-				// setEventDetail((prev) => ({
-				// 	...prev,
-				// 	location: (results[0].geometry.location.lat() + '-' + results[0].geometry.location.lng()).toString(),
-				// }));
 				setTimeout(() => {
 					createEventForm((results[0].geometry.location.lat() + '-' + results[0].geometry.location.lng()).toString());
 				}, 1);
@@ -67,11 +65,8 @@ const CreationEventPage = () => {
 		});
 	};
 
-	const navigate = useNavigate();
-
 	function handleChange(e, name) {
 		const { value } = e.target;
-
 		setEventDetail((prev) => ({ ...prev, [name]: value }));
 	}
 
@@ -79,10 +74,7 @@ const CreationEventPage = () => {
 		setEventDetail((prev) => ({ ...prev, [name]: !prev[name] }));
 	};
 
-	const imgInput = useRef(null);
-
 	const handleChangeImage = (e) => {
-		alert('Handled');
 		imageUploaded(e.target.files[0]);
 	};
 
@@ -92,22 +84,14 @@ const CreationEventPage = () => {
 	};
 
 	function imageUploaded(file) {
-		let base64String = '';
-
 		let reader = new FileReader();
-		console.log('next');
-
 		reader.onload = function () {
-			base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
-
+			const base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
 			setEventDetail((prev) => ({ ...prev, image: base64String }));
-			console.log(base64String);
 		};
 		reader.readAsDataURL(file);
 	}
 
-	const [error, setError] = useState('');
-	const [loading, setLoading] = useState(false);
 	async function handleCreate() {
 		if (eventDetail.location) {
 			onLocationSet(eventDetail.location);
@@ -142,7 +126,6 @@ const CreationEventPage = () => {
 			return;
 		}
 		setError('');
-
 		setLoading(true);
 
 		createEvent({
@@ -152,8 +135,6 @@ const CreationEventPage = () => {
 			.then(async (value) => {
 				setLoading(false);
 				const jsno = await value.json();
-				console.log(jsno);
-
 				if (jsno.setupSuccessful) {
 					navigate('/myevents');
 				}
@@ -161,234 +142,287 @@ const CreationEventPage = () => {
 			.catch((error) => {
 				setLoading(false);
 				setError(error);
-				alert('Finished with error');
 			});
 	}
 
+	const tabs = [
+		{ id: 'event', label: 'Evento', icon: faCalendarDays },
+		{ id: 'board', label: 'Bacheca', icon: faUsers },
+		{ id: 'services', label: 'Servizi', icon: faCog },
+		{ id: 'participants', label: 'Partecipanti', icon: faUsers },
+	];
+
 	return (
-		<div className="h-full bg-[#363540] flex flex-col ">
-			<div className="flex-auto flex flex-row p-4 gap-2 overflow-x-auto ">
-				<div className=" border border-[#E8F2FC]/60 text-[#E8F2FC] rounded-md p-4 gap-2 flex flex-col ">
-					<h1 className="font-semibold mb-4">A quale evento stai pensando?</h1>
-					<Input
-						onChange={(e) => handleChange(e, 'title')}
-						value={eventDetail.title}
-						label="Titolo evento"
-						name="titolo"
-					/>
-
-					<div className="flex flex-row gap-2 ">
-						<Input
-							onChange={(e) => handleChange(e, 'starting')}
-							value={eventDetail.starting}
-							type="datetime-local"
-							customClassContainer="flex-auto"
-							label="Inizia il"
-							name="starting"
-						/>
-						<Input
-							onChange={(e) => handleChange(e, 'ending')}
-							value={eventDetail.ending}
-							type="datetime-local"
-							customClassContainer="flex-auto"
-							label="Finisce il"
-							name="ending"
-						/>
-					</div>
-					<InputArea
-						minLength={10}
-						onChange={(e) => handleChange(e, 'description')}
-						value={eventDetail.description}
-						name="descrizione"
-						label="Descrizione"
-						customClass="flex-auto "
-						customClassContainer="flex-auto"
-					/>
-					<Input
-						onChange={handleChangeImage}
-						ref={imgInput}
-						label={'Immagine del evento'}
-						name="immagine"
-						type="file"
-						accept="image/*"
-						rigthComponent={
+		<div className="h-full bg-gradient-to-br from-[#505458] to-[#363540] flex flex-col">
+			{/* Header */}
+			<div className="bg-gradient-to-r from-[#EE0E51] to-[#ff4574] p-6 shadow-lg">
+				<div className="max-w-6xl mx-auto">
+					<h1 className="text-3xl font-bold text-white mb-4">Crea il tuo evento</h1>
+					
+					{/* Tab Navigation */}
+					<div className="flex flex-wrap gap-2">
+						{tabs.map((tabItem) => (
 							<Button
-								custom="!bg-transparent !hover:bg-black/50 !border-none mt-[0.15rem]"
-								onClick={handleRemoveImage}
-								text={<FontAwesomeIcon icon={faClose} />}
-							></Button>
-						}
-					></Input>
-				</div>
-				<div className=" border border-[#E8F2FC]/60 text-[#E8F2FC] bg-[#505458] rounded-md p-4 gap-2 flex flex-col ">
-					<h1 className="font-semibold mb-4">Informazioni bacheca</h1>
-					<Input
-						onChange={(e) => handleChange(e, 'boardTitle')}
-						value={eventDetail.boardTitle}
-						label="Titolo della bacheca"
-						name="titolo"
-					/>
-					<InputArea
-						minLength={10}
-						onChange={(e) => handleChange(e, 'boardDescription')}
-						value={eventDetail.boardDescription}
-						name="descrizione bacheca"
-						label="Descrizione"
-						customClass="flex-auto "
-						customClassContainer="flex-auto"
-					/>
-				</div>
-				<div className=" border border-[#363540]/60 text-[#363540] bg-[#E4DCEF] flex-auto rounded-md gap-1 flex overflow-y-auto flex-col min-w-[20rem] ">
-					<div className=" !mb-2  flex flex-row justify-evenly ">
-						<Button
-							text="Servizi"
-							link
-							custom={clsx({
-								' !font-semibold hover:bg-current/20 p-2 w-full !text-lg !text-[#363540]': true,
-								'bg-current/10 shadow-inner ': tab === 'services',
-							})}
-							onClick={() => setTab('services')}
-						/>
-						<Button
-							text="Partecipanti"
-							link
-							custom={clsx({
-								' !font-semibold hover:bg-current/20 p-2 w-full !text-lg !text-[#363540]': true,
-								'bg-current/10 shadow-inner ': tab === 'users',
-							})}
-							onClick={() => setTab('users')}
-						/>
-						<Button
-							text="Admins"
-							link
-							custom={clsx({
-								' !font-semibold hover:bg-current/20 p-2 w-full !text-lg !text-[#363540]': true,
-								'bg-current/10 shadow-inner ': tab === 'admins',
-							})}
-							onClick={() => setTab('admins')}
-						/>
+								key={tabItem.id}
+								text={
+									<div className="flex items-center gap-2">
+										<FontAwesomeIcon icon={tabItem.icon} />
+										<span className="hidden sm:inline">{tabItem.label}</span>
+									</div>
+								}
+								onClick={() => setTab(tabItem.id)}
+								custom={clsx({
+									'px-4 py-2 rounded-lg font-semibold transition-all': true,
+									'bg-white text-[#EE0E51] shadow-lg': tab === tabItem.id,
+									'bg-white bg-opacity-20 text-white hover:bg-opacity-30': tab !== tabItem.id,
+								})}
+							/>
+						))}
 					</div>
-					{tab === 'services' ? (
-						<div className="text-[#363540] bg-[#e4dcefb7] flex-auto rounded-md px-2 gap-1 flex flex-col">
-							<ServiceCard
-								onChange={() => setMapEnabled((prev) => !prev)}
-								icon={faMapMarker}
-								value={mapEnabled}
-								name="Maps"
-							/>
-							<ServiceCard
-								onChange={() => handleChangeService('galleryEnabled')}
-								icon={faImages}
-								value={eventDetail.galleryEnabled}
-								name="Galleria"
-							/>
-							<ServiceCard
-								onChange={() => handleChangeService('gameEnabled')}
-								icon={faGamepad}
-								value={eventDetail.gameEnabled}
-								name="Mystery Guest Game"
-							/>
-							<div></div>
-							{mapEnabled ? (
-								<Input
-									onChange={(e) => handleChange(e, 'location')}
-									value={eventDetail.location}
-									label="Indirizzo"
-									customClass="bg-[#363540] text-[#E8F2FC]"
-									name="indirizzo"
-								/>
-							) : (
-								''
-							)}
-							{eventDetail.galleryEnabled ? (
-								<Input
-									onChange={(e) => handleChange(e, 'galleryTitle')}
-									value={eventDetail.galleryTitle}
-									label="Titolo galleria"
-									customClass="bg-[#363540] text-[#E8F2FC]"
-									name="titolo"
-								/>
-							) : (
-								''
-							)}
-							{eventDetail.gameEnabled ? '' : ''}{' '}
-						</div>
-					) : tab === 'users' ? (
-						<div className="text-[#363540] border-2 border-[#363540] p-2 bg-[#e4dcefb7] flex-auto rounded-md  gap-1 flex flex-col">
-							<Input
-								onEnterPress={() => {
-									setEventDetail((prev) => ({ ...prev, participants: [...prev.participants, partecipantInput] }));
-									setPartecipantInput('');
-								}}
-								onChange={(e) => setPartecipantInput(e.target.value)}
-								value={partecipantInput}
-								customClass="bg-[#363540] text-[#E8F2FC]"
-								name="email utente da invitare"
-							/>
-							<div className=" h-[19rem] flex flex-col gap-1 overflow-y-auto">
-								{eventDetail.participants.length === 0 ? <p className="text-center">Nessun utente invitato</p> : ''}
-								{eventDetail.participants.map((item) => (
-									<div className="p-2 flex flex-row items-center justify-between px-8 bg-[#363540]/75 text-[#E8F2FC] rounded-full text-center ">
-										<p>{item}</p>
-
-										<Button
-											onClick={() => {
-												setEventDetail((prev) => ({
-													...prev,
-													participants: prev.participants.filter((p) => p !== item),
-												}));
-											}}
-											link
-											custom="cursor-pointer"
-											text={<FontAwesomeIcon icon={faClose} />}
-										></Button>
-									</div>
-								))}
-							</div>
-						</div>
-					) : (
-						<div className="text-[#363540] border-2 border-[#363540] p-2 bg-[#e4dcefb7] flex-auto rounded-md  gap-1 flex flex-col">
-							<Input
-								onEnterPress={() => {
-									setEventDetail((prev) => ({ ...prev, admins: [...prev.admins, adminInput] }));
-									setAdminInput('');
-								}}
-								onChange={(e) => setAdminInput(e.target.value)}
-								value={adminInput}
-								customClass="bg-[#363540] text-[#E8F2FC]"
-								name="email degli utenti admin"
-							/>
-							<div className=" h-[19rem] flex flex-col gap-1 overflow-y-auto">
-								{eventDetail.admins.length === 0 ? (
-									<p className="text-center">Nessun utente invitato come admin</p>
-								) : (
-									''
-								)}
-								{eventDetail.admins.map((item) => (
-									<div className="p-2 flex flex-row items-center justify-between px-8 bg-[#363540]/75 text-[#E8F2FC] rounded-full text-center">
-										<p>{item}</p>
-										<Button
-											onClick={() => {
-												setEventDetail((prev) => ({
-													...prev,
-													admins: prev.admins.filter((p) => p !== item),
-												}));
-											}}
-											link
-											custom="cursor-pointer"
-											text={<FontAwesomeIcon icon={faClose} />}
-										></Button>
-									</div>
-								))}
-							</div>
-						</div>
-					)}
 				</div>
 			</div>
-			<div className="flex flex-row gap-4 items-center p-4 justify-end px-8">
-				<p className="text-[#EE0E51]">{error}</p>
-				<Button onClick={() => navigate('/')} text="Annulla" secondary></Button>
-				<Button disabled={loading} onClick={handleCreate} text="Crea Evento"></Button>
+
+			{/* Content */}
+			<div className="flex-1 overflow-y-auto p-4 md:p-6">
+				<div className="max-w-4xl mx-auto">
+					<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
+						{tab === 'event' && (
+							<div className="space-y-6">
+								<h2 className="text-2xl font-bold text-[#E4DCEF] mb-6">Dettagli Evento</h2>
+								
+								<Input
+									onChange={(e) => handleChange(e, 'title')}
+									value={eventDetail.title}
+									label="Titolo evento"
+									name="titolo"
+									customClass="bg-white text-[#363540]"
+								/>
+
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+									<Input
+										onChange={(e) => handleChange(e, 'starting')}
+										value={eventDetail.starting}
+										type="datetime-local"
+										label="Inizia il"
+										name="starting"
+										customClass="bg-white text-[#363540]"
+									/>
+									<Input
+										onChange={(e) => handleChange(e, 'ending')}
+										value={eventDetail.ending}
+										type="datetime-local"
+										label="Finisce il"
+										name="ending"
+										customClass="bg-white text-[#363540]"
+									/>
+								</div>
+
+								<InputArea
+									minLength={10}
+									onChange={(e) => handleChange(e, 'description')}
+									value={eventDetail.description}
+									name="descrizione"
+									label="Descrizione"
+									customClass="bg-white text-[#363540]"
+								/>
+
+								<Input
+									onChange={handleChangeImage}
+									ref={imgInput}
+									label="Immagine dell'evento"
+									name="immagine"
+									type="file"
+									accept="image/*"
+									customClass="bg-white text-[#363540]"
+									rigthComponent={
+										<Button
+											custom="!bg-transparent !hover:bg-black/50 !border-none mt-[0.15rem]"
+											onClick={handleRemoveImage}
+											text={<FontAwesomeIcon icon={faClose} />}
+										/>
+									}
+								/>
+							</div>
+						)}
+
+						{tab === 'board' && (
+							<div className="space-y-6">
+								<h2 className="text-2xl font-bold text-[#E4DCEF] mb-6">Configurazione Bacheca</h2>
+								
+								<Input
+									onChange={(e) => handleChange(e, 'boardTitle')}
+									value={eventDetail.boardTitle}
+									label="Titolo della bacheca"
+									name="titolo"
+									customClass="bg-white text-[#363540]"
+								/>
+
+								<InputArea
+									minLength={10}
+									onChange={(e) => handleChange(e, 'boardDescription')}
+									value={eventDetail.boardDescription}
+									name="descrizione bacheca"
+									label="Descrizione"
+									customClass="bg-white text-[#363540]"
+								/>
+							</div>
+						)}
+
+						{tab === 'services' && (
+							<div className="space-y-6">
+								<h2 className="text-2xl font-bold text-[#E4DCEF] mb-6">Servizi Aggiuntivi</h2>
+								
+								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+									<ServiceCard
+										onChange={() => setMapEnabled((prev) => !prev)}
+										icon={faMapMarker}
+										value={mapEnabled}
+										name="Mappa"
+									/>
+									<ServiceCard
+										onChange={() => handleChangeService('galleryEnabled')}
+										icon={faImages}
+										value={eventDetail.galleryEnabled}
+										name="Galleria"
+									/>
+									<ServiceCard
+										onChange={() => handleChangeService('gameEnabled')}
+										icon={faGamepad}
+										value={eventDetail.gameEnabled}
+										name="Mystery Guest Game"
+									/>
+								</div>
+
+								{mapEnabled && (
+									<Input
+										onChange={(e) => handleChange(e, 'location')}
+										value={eventDetail.location}
+										label="Indirizzo"
+										customClass="bg-white text-[#363540]"
+										name="indirizzo"
+									/>
+								)}
+
+								{eventDetail.galleryEnabled && (
+									<Input
+										onChange={(e) => handleChange(e, 'galleryTitle')}
+										value={eventDetail.galleryTitle}
+										label="Titolo galleria"
+										customClass="bg-white text-[#363540]"
+										name="titolo"
+									/>
+								)}
+							</div>
+						)}
+
+						{tab === 'participants' && (
+							<div className="space-y-6">
+								<h2 className="text-2xl font-bold text-[#E4DCEF] mb-6">Gestione Partecipanti</h2>
+								
+								<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+									{/* Participants */}
+									<div className="space-y-4">
+										<h3 className="text-lg font-semibold text-[#E4DCEF]">Partecipanti</h3>
+										<Input
+											onEnterPress={() => {
+												setEventDetail((prev) => ({ ...prev, participants: [...prev.participants, partecipantInput] }));
+												setPartecipantInput('');
+											}}
+											onChange={(e) => setPartecipantInput(e.target.value)}
+											value={partecipantInput}
+											customClass="bg-white text-[#363540]"
+											name="email utente da invitare"
+											placeholder="Inserisci email..."
+										/>
+										<div className="max-h-64 overflow-y-auto space-y-2">
+											{eventDetail.participants.length === 0 ? (
+												<p className="text-center text-[#E4DCEF] opacity-70 py-8">Nessun utente invitato</p>
+											) : (
+												eventDetail.participants.map((item, index) => (
+													<div key={index} className="bg-[#363540] rounded-lg p-3 flex items-center justify-between">
+														<span className="text-[#E4DCEF]">{item}</span>
+														<Button
+															onClick={() => {
+																setEventDetail((prev) => ({
+																	...prev,
+																	participants: prev.participants.filter((p) => p !== item),
+																}));
+															}}
+															custom="!bg-transparent text-red-400 hover:text-red-300 !border-none"
+															text={<FontAwesomeIcon icon={faClose} />}
+														/>
+													</div>
+												))
+											)}
+										</div>
+									</div>
+
+									{/* Admins */}
+									<div className="space-y-4">
+										<h3 className="text-lg font-semibold text-[#E4DCEF]">Amministratori</h3>
+										<Input
+											onEnterPress={() => {
+												setEventDetail((prev) => ({ ...prev, admins: [...prev.admins, adminInput] }));
+												setAdminInput('');
+											}}
+											onChange={(e) => setAdminInput(e.target.value)}
+											value={adminInput}
+											customClass="bg-white text-[#363540]"
+											name="email degli utenti admin"
+											placeholder="Inserisci email admin..."
+										/>
+										<div className="max-h-64 overflow-y-auto space-y-2">
+											{eventDetail.admins.length === 0 ? (
+												<p className="text-center text-[#E4DCEF] opacity-70 py-8">Nessun admin invitato</p>
+											) : (
+												eventDetail.admins.map((item, index) => (
+													<div key={index} className="bg-[#363540] rounded-lg p-3 flex items-center justify-between">
+														<span className="text-[#E4DCEF]">{item}</span>
+														<Button
+															onClick={() => {
+																setEventDetail((prev) => ({
+																	...prev,
+																	admins: prev.admins.filter((p) => p !== item),
+																}));
+															}}
+															custom="!bg-transparent text-red-400 hover:text-red-300 !border-none"
+															text={<FontAwesomeIcon icon={faClose} />}
+														/>
+													</div>
+												))
+											)}
+										</div>
+									</div>
+								</div>
+							</div>
+						)}
+					</div>
+				</div>
+			</div>
+
+			{/* Footer */}
+			<div className="bg-[#363540] p-4 shadow-lg">
+				<div className="max-w-4xl mx-auto flex flex-col sm:flex-row gap-4 items-center justify-between">
+					{error && (
+						<div className="bg-red-500 bg-opacity-20 border border-red-500 rounded-lg p-3 text-red-300 text-sm">
+							{error}
+						</div>
+					)}
+					<div className="flex gap-4 ml-auto">
+						<Button 
+							onClick={() => navigate('/')} 
+							text="Annulla" 
+							secondary
+							custom="px-6 py-2"
+						/>
+						<Button 
+							disabled={loading} 
+							onClick={handleCreate} 
+							text={loading ? "Creando..." : "Crea Evento"}
+							custom="px-6 py-2"
+						/>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

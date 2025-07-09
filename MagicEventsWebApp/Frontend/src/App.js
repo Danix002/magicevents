@@ -15,7 +15,7 @@ import LogoutButton from './components/buttons/LogoutButton';
 import CreationEventPage from './pages/Event/CreationEventPage';
 import MyEventsPage from './pages/Event/MyEventsPage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBoxArchive, faHome, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faBoxArchive, faHome, faPen, faSparkles } from '@fortawesome/free-solid-svg-icons';
 import { APIProvider } from '@vis.gl/react-google-maps';
 import EventsPage from './pages/Event/EventPage';
 import clsx from 'clsx';
@@ -29,10 +29,8 @@ function App() {
 
 	useEffect(() => {
 		const script = document.createElement('script');
-
 		script.src = 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4';
 		script.async = true;
-
 		document.body.appendChild(script);
 
 		return () => {
@@ -44,22 +42,30 @@ function App() {
 		<Router>
 			<NavBar
 				logo={
-					<NavLink to="/">
-						<FontAwesomeIcon className="text-2xl hover:scale-110" icon={faHome} color="#EE0E51" />
+					<NavLink to="/" className="flex items-center gap-2 hover:scale-105 transition-transform">
+						<FontAwesomeIcon className="text-2xl" icon={faSparkles} color="#EE0E51" />
+						<span className="hidden sm:block text-xl font-bold text-[#E4DCEF]">MagicEvents</span>
 					</NavLink>
 				}
 				actions={
 					!logged ? (
-						<div className={'flex gap-2 '}>
+						<div className="flex gap-2">
 							<NavLink to="/login">
-								<Button text="Login"></Button>
+								<Button 
+									text="Login"
+									custom="px-6 py-2 font-semibold"
+								/>
 							</NavLink>
 							<NavLink to="/register">
-								<Button secondary text="Register"></Button>
+								<Button 
+									secondary 
+									text="Register"
+									custom="px-6 py-2 font-semibold"
+								/>
 							</NavLink>
 						</div>
 					) : (
-						<div className={'flex gap-2 items-center'}>
+						<div className="flex gap-2 items-center">
 							<LogoutButton setLogged={setLogged}></LogoutButton>
 							<NavLink to="/userprofile">
 								<button className="inline-flex items-center px-4 py-1 bg-[#E4DCEF] text-[#363540] inner-shadow cursor-pointer hover:scale-105 rounded-full max-h-[40px] overflow-hidden text-ellipsis whitespace-nowrap">

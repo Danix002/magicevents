@@ -1,38 +1,92 @@
 import { useEffect, useState } from 'react';
 import Calendar from '../components/lists/Calendar/Calendar';
 import { getEventsp } from '../api/eventAPI';
-import { getUpcomingEvents, getNextNDaysFormatted, mergeDaysAndEvents } from '../utils/dataFormatter'
+import { getUpcomingEvents, getNextNDaysFormatted, mergeDaysAndEvents } from '../utils/dataFormatter';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarDays, faSparkles } from '@fortawesome/free-solid-svg-icons';
 
 const MagicEventHomePage = () => {
 	const [events, setEvents] = useState([]);
 	const [ready, setReady] = useState(false);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		setReady(false);
+		setLoading(true);
 		async function fetchAPI() {
-			const res = await getEventsp();
-			if (!res.ok) {
-				console.log(res);
-
+			try {
+				const res = await getEventsp();
+				if (!res.ok) {
+					console.log(res);
+					setEvents([]);
+					return;
+				}
+				const data = await res.json();
+				let eventsResult = mergeDaysAndEvents(getNextNDaysFormatted(10), getUpcomingEvents(data, 10));
+				setEvents(eventsResult);
+				setReady(true);
+			} catch (error) {
+				console.error('Error fetching events:', error);
 				setEvents([]);
-				return;
+			} finally {
+				setLoading(false);
 			}
-			const data = await res.json();
-
-			let eventsResult = mergeDaysAndEvents(getNextNDaysFormatted(10), getUpcomingEvents(data, 10));
-			setEvents(eventsResult);
 		}
 
 		fetchAPI();
 	}, []);
 
 	return (
-		<div className="h-full overflow-y-auto bg-[#505458] p-4">
-			<div className="flex gap-2 items-center">
-				<div className="h-4 w-4 bg-[#E4DCEF] rounded-full"></div>
-				<p className="text-[#E4DCEF] font-bold ">In programma</p>
+		<div className="h-full overflow-y-auto bg-gradient-to-br from-[#505458] to-[#363540]">
+			{/* Header Section */}
+			<div className="bg-gradient-to-r from-[#EE0E51] to-[#ff4574] p-6 shadow-lg">
+				<div className="max-w-6xl mx-auto">
+					<div className="flex items-center gap-4 mb-4">
+						<div className="p-3 bg-white bg-opacity-20 rounded-full">
+							<FontAwesomeIcon icon={faCalendarDays} className="text-2xl text-white" />
+						</div>
+						<div>
+							<h1 className="text-3xl font-bold text-white">Eventi in Programma</h1>
+							<p className="text-white text-opacity-90">Scopri tutti gli eventi che ti aspettano</p>
+						</div>
+					</div>
+					
+					<div className="flex items-center gap-2 bg-white bg-opacity-10 rounded-full px-4 py-2 w-fit">
+						<div className="h-3 w-3 bg-[#E4DCEF] rounded-full animate-pulse"></div>
+						<p className="text-[#E4DCEF] font-semibold text-sm">Live</p>
+					</div>
+				</div>
 			</div>
-			<Calendar days={events}></Calendar>
+
+			{/* Content */}
+			<div className="p-4 md:p-6">
+				<div className="max-w-6xl mx-auto">
+					{loading ? (
+						<div className="flex flex-col items-center justify-center py-16">
+							<div className="animate-spin rounded-full h-16 w-16 border-4 border-[#E4DCEF] border-t-[#EE0E51] mb-4"></div>
+							<p className="text-[#E4DCEF] text-lg font-medium">Caricamento eventi...</p>
+						</div>
+					) : ready ? (
+						events.length > 0 ? (
+							<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
+								<Calendar days={events} />
+							</div>
+						) : (
+							<div className="text-center py-16">
+								<div className="mb-6">
+									<FontAwesomeIcon icon={faSparkles} className="text-6xl text-[#E4DCEF] opacity-50" />
+								</div>
+								<h3 className="text-2xl font-bold text-[#E4DCEF] mb-2">Nessun evento in programma</h3>
+								<p className="text-[#E4DCEF] text-opacity-70">Crea il tuo primo evento per iniziare!</p>
+							</div>
+						)
+					) : (
+						<div className="text-center py-16">
+							<p className="text-[#E4DCEF] text-lg">Errore nel caricamento degli eventi</p>
+						</div>
+					)}
+				</div>
+			</div>
 		</div>
 	);
 };

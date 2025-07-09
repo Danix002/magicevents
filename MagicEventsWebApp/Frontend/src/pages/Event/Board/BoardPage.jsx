@@ -7,7 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { subscribe } from '../../../utils/webSocket';
 import Button from '../../../components/buttons/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faUsers, faComments } from '@fortawesome/free-solid-svg-icons';
 import { isAdmin, url } from '../../../utils/utils';
 import LoadingContainer from '../../../components/error/LoadingContainer';
 
@@ -176,20 +176,73 @@ const BoardPage = () => {
 	return loading ? (
 		<LoadingContainer />
 	) : (
-		<div className="h-full bg-[#363540] relative bg-gradient-to-r  to-[#363540]  from-[#E4DCEF] flex flex-row ">
-			<div className="w-64 mt-4 shadow-2xl h-fit rounded-r-2xl bg-[#363540] text-[#E4DCEF] p-4 max-sm:hidden ">
-				<Button onClick={() => navigate('/' + eventId)} text={<FontAwesomeIcon icon={faArrowLeft} />}></Button>
-				<h1 className="font-bold">{title}</h1>
-				<p className="text-xs break-words text-clip  w-full ">{description}</p>
+		<div className="h-screen bg-gradient-to-br from-[#E4DCEF] via-[#B8A9C9] to-[#363540] flex">
+			{/* Desktop Sidebar */}
+			<div className="hidden lg:flex lg:w-80 xl:w-96">
+				<div className="m-6 w-full">
+					<div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl h-full flex flex-col">
+						{/* Header */}
+						<div className="p-6 border-b border-gray-200">
+							<Button 
+								onClick={() => navigate('/' + eventId)} 
+								custom="!bg-[#363540] !text-white hover:!bg-[#EE0E51] transition-all duration-300 !rounded-full !p-3 mb-4"
+								text={<FontAwesomeIcon icon={faArrowLeft} />}
+							/>
+							<div className="flex items-center gap-3 mb-4">
+								<div className="w-10 h-10 bg-gradient-to-r from-[#EE0E51] to-[#FF6B9D] rounded-full flex items-center justify-center">
+									<FontAwesomeIcon icon={faComments} className="text-white" />
+								</div>
+								<h1 className="text-xl font-bold text-[#363540]">{title}</h1>
+							</div>
+							<p className="text-[#666] text-sm leading-relaxed">{description}</p>
+						</div>
+						
+						{/* Event Info */}
+						<div className="p-6 flex-1">
+							<div className="bg-gradient-to-r from-[#EE0E51]/10 to-[#FF6B9D]/10 rounded-xl p-4">
+								<div className="flex items-center gap-2 mb-2">
+									<FontAwesomeIcon icon={faUsers} className="text-[#EE0E51]" />
+									<span className="text-sm font-medium text-[#363540]">Bacheca dell'evento</span>
+								</div>
+								<p className="text-xs text-[#666]">
+									Condividi pensieri e aggiornamenti con tutti i partecipanti
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<MessageList
-				isAdmin={isAdminVar}
-				displayOnloadMore={!messageFinish}
-				onLoadMore={loadMore}
-				onSend={(value) => sendMessage(value)}
-				messages={messages}
-				onDelete={deleteMessage}
-			/>
+
+			{/* Mobile Header */}
+			<div className="lg:hidden absolute top-0 left-0 right-0 z-10 p-4">
+				<div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg p-4">
+					<div className="flex items-center gap-3">
+						<Button 
+							onClick={() => navigate('/' + eventId)} 
+							custom="!bg-[#363540] !text-white hover:!bg-[#EE0E51] transition-all duration-300 !rounded-full !p-2"
+							text={<FontAwesomeIcon icon={faArrowLeft} />}
+						/>
+						<div>
+							<h1 className="font-bold text-[#363540] text-lg">{title}</h1>
+							<p className="text-xs text-[#666] line-clamp-1">{description}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{/* Chat Area */}
+			<div className="flex-1 flex flex-col lg:m-6 lg:mr-6">
+				<div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl h-full flex flex-col lg:mt-0 mt-20">
+					<MessageList
+						isAdmin={isAdminVar}
+						displayOnloadMore={!messageFinish}
+						onLoadMore={loadMore}
+						onSend={(value) => sendMessage(value)}
+						messages={messages}
+						onDelete={deleteMessage}
+					/>
+				</div>
+			</div>
 		</div>
 	);
 };
