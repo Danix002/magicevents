@@ -33,5 +33,3 @@ The board service is responsible for managing the event board, where users can p
 ## Guest-Game Service
 The guest-game service is responsible for managing the guest game, where users can play an Akinator-like game. It uses Weka Library to create a decision tree based on the guest-information provided by the users.
 
-# Deployment
-The application is deployed using Kubernetes, with each microservice running in its own pod. The services are exposed via an Ingress controller, allowing external access to the application. RabbitMQ is used for message brokering between the microservices, ensuring reliable communication and coordination.
