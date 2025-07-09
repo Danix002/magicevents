@@ -6,6 +6,40 @@ import { useState } from 'react';
 
 const Menu = ({ open, onClose, onOpen, direction = 'right', tabs }) => {
 	const [content, setContent] = useState(null);
+	const [activeTab, setActiveTab] = useState(null);
+
+	const renderTabButton = (tab, index, isActive) => (
+		<button
+			key={index}
+			onClick={() => {
+				setActiveTab(index);
+				setContent(tab.content);
+				onOpen();
+			}}
+			className={`flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-200 min-w-[120px] ${
+				isActive 
+					? 'bg-[#EE0E51] text-white shadow-lg transform scale-105' 
+					: 'bg-[#363540] hover:bg-[#505458] text-[#E4DCEF] hover:text-white'
+			}`}
+		>
+			<FontAwesomeIcon 
+				icon={tab.action} 
+				className={`text-2xl ${isActive ? 'text-white' : 'text-[#EE0E51]'}`} 
+			/>
+			<span className="text-sm font-semibold text-center leading-tight">
+				{tab.label}
+			</span>
+			{tab.label === 'Partecipanti' && (
+				<span className="text-xs opacity-75">Vedi chi partecipa</span>
+			)}
+			{tab.label === 'Mappa' && (
+				<span className="text-xs opacity-75">Posizione evento</span>
+			)}
+			{tab.label === 'Servizi' && (
+				<span className="text-xs opacity-75">Funzioni disponibili</span>
+			)}
+		</button>
+	);
 
 	return open ? (
 		<div
@@ -32,17 +66,9 @@ const Menu = ({ open, onClose, onOpen, direction = 'right', tabs }) => {
 				'right-6': direction !== 'left',
 			})}
 		>
-			{tabs.map((item) => (
-				<Button
-					custom="hover:bg-[#505458] p-2 rounded-full "
-					link
-					text={<FontAwesomeIcon className="text-2xl" icon={item.action} />}
-					onClick={() => {
-						setContent(item.content);
-						onOpen();
-					}}
-				></Button>
-			))}
+			<div className="flex gap-3 mb-6 overflow-x-auto pb-2">
+				{tabs.map((tab, index) => renderTabButton(tab, index, activeTab === index))}
+			</div>
 		</div>
 	);
 };

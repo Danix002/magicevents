@@ -63,7 +63,7 @@ const MyEventsPage = () => {
 										<span>Crea Evento</span>
 									</div>
 								}
-								custom="bg-white text-[#EE0E51] hover:bg-gray-100 font-semibold px-6 py-3"
+								custom="bg-white text-[#EE0E51] hover:bg-gray-100 border-white hover:border-gray-100 font-semibold px-6 py-3"
 							/>
 						</NavLink>
 					</div>
@@ -111,7 +111,7 @@ const MyEventsPage = () => {
 							<Button 
 								text="Riprova"
 								onClick={() => window.location.reload()}
-								custom="mt-4"
+								custom="mt-4 px-6 py-2"
 							/>
 						</div>
 					)}

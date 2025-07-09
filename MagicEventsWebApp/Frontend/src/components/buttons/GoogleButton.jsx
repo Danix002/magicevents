@@ -12,7 +12,7 @@ function GoogleButton() {
 
 	return (
 		<button
-			className=" flex justify-center  w-full items-center bg-white text-[#3c4043] border-[1px] border-gray-400 rounded-md py-2 px-4 "
+			className="flex justify-center w-full items-center bg-white text-[#3c4043] border-2 border-gray-300 rounded-lg py-3 px-4 hover:bg-gray-50 hover:border-[#EE0E51] transition-all duration-200 font-medium shadow-sm"
 			onClick={() => (window.location.href = googleAuthUrl)}
 		>
 			<svg style={{ marginRight: '12px' }} width="20" height="20" viewBox="0 0 48 48">

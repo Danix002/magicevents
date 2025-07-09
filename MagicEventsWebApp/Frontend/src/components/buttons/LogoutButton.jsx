@@ -22,7 +22,7 @@ function LogoutButton({ setLogged }) {
 		}
 	};
 
-	return <Button onClick={handleLogout} secondary text="Logout"></Button>;
+	return <Button onClick={handleLogout} secondary text="Logout" custom="text-sm"></Button>;
 }
 
 export default LogoutButton;

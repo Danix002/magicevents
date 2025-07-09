@@ -1,20 +1,15 @@
 import { useNavigate } from 'react-router-dom';
+import Button from './Button';
 
-function LogoutButton() {
+function ModifierUserButton() {
 	const navigate = useNavigate();
 	return (
-		<button onClick={ () => navigate('/modifyuser') } style={{
-						padding: '10px 20px',
-						backgroundColor: '#28a745',
-						color: 'white',
-						border: 'none',
-						borderRadius: '4px',
-						cursor: 'pointer',
-					}}
-		>
-			Modifica Account
-		</button>
+		<Button 
+			onClick={() => navigate('/modifyuser')} 
+			text="Modifica Account"
+			custom="text-sm"
+		/>
 	);
 }
 
-export default LogoutButton;
+export default ModifierUserButton;

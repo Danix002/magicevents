@@ -89,6 +89,10 @@ const EventsPage = () => {
 				tabs={[
 					{
 						action: faUsers,
+						label: "Partecipanti",
+						description: "Vedi chi partecipa all'evento",
+						iconSize: "text-3xl",
+						count: event.partecipants.length + event.admins.length,
 						content: (
 							<div className="flex flex-col gap-4 h-full">
 								<div>
@@ -129,6 +133,10 @@ const EventsPage = () => {
 					},
 					{
 						action: faMap,
+						label: "Mappa",
+						description: "Posizione dell'evento",
+						iconSize: "text-3xl",
+						available: !!event.location,
 						content: event.location ? (
 							<div>
 								<h2 className="text-xl font-bold mb-3 flex items-center gap-2">
@@ -159,6 +167,10 @@ const EventsPage = () => {
 					},
 					{
 						action: faClipboard,
+						label: "Servizi",
+						description: "Funzioni disponibili",
+						iconSize: "text-3xl",
+						count: eventServices ? Object.values(eventServices).filter(Boolean).length : 0,
 						content: (
 							<div>
 								<h2 className="text-xl font-bold mb-4 flex items-center gap-2">
@@ -271,7 +283,7 @@ const EventsPage = () => {
 					/>
 					<Button
 						onClick={() => setOpenPopup(false)}
-						custom="absolute top-4 right-4 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-3 rounded-full"
+						custom="absolute top-4 right-4 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-3 rounded-full !border-none"
 						text={<FontAwesomeIcon icon={faClose} className="text-xl" />}
 					/>
 				</div>

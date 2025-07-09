@@ -26,7 +26,7 @@ function ForgotPassword() {
 
 	return (
 		<div className="w-full">
-			<h2>Password dimenticata?</h2>
+			<h2 className="text-[#E4DCEF] text-lg font-semibold mb-4">Password dimenticata?</h2>
 			<form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
 				<input
 					type="email"
@@ -34,12 +34,24 @@ function ForgotPassword() {
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
 					required
-					style={{ padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
+					className="p-3 rounded-lg border-2 border-gray-300 focus:border-[#EE0E51] focus:outline-none bg-white text-[#363540]"
 					disabled={loading}
 				/>
-				<Button text={loading ? 'Caricamento...' : 'Invia'}></Button>
+				<Button 
+					text={loading ? 'Caricamento...' : 'Invia'}
+					disabled={loading}
+					custom="w-full py-3 font-semibold"
+				/>
 			</form>
-			{message && <p style={{ marginTop: 15, color: message.startsWith('Error') ? 'red' : 'green' }}>{message}</p>}
+			{message && (
+				<p className={`mt-4 p-3 rounded-lg text-sm font-medium ${
+					message.startsWith('Error') 
+						? 'bg-red-500 bg-opacity-20 text-red-300 border border-red-500' 
+						: 'bg-green-500 bg-opacity-20 text-green-300 border border-green-500'
+				}`}>
+					{message}
+				</p>
+			)}
 		</div>
 	);
 }
