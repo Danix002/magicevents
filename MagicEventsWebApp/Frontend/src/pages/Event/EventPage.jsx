@@ -4,7 +4,7 @@ import { getEvent, getEventService } from '../../api/eventAPI';
 import Image from '../../components/images-component/Image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-	faArrowAltCircleRight,
+	faArrowRight,
 	faClipboard,
 	faClose,
 	faGamepad,
@@ -12,9 +12,11 @@ import {
 	faMap,
 	faMessage,
 	faUsers,
+	faCalendarDays,
+	faMapMarkerAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import Menu from '../../components/navigation/Menu';
-import { APIProvider, Map, Marker, useMapsLibrary } from '@vis.gl/react-google-maps';
+import { APIProvider, Map, Marker } from '@vis.gl/react-google-maps';
 import ErrorContainer from '../../components/error/ErrorContainer';
 import { convertDataTime } from '../../utils/dataFormatter';
 import { setAdmin } from '../../utils/utils';
@@ -30,7 +32,7 @@ const EventsPage = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [lat, setLat] = useState(0);
 	const [lng, setLng] = useState(0);
-	const [openPopup, setOpenPopup] = useState(0);
+	const [openPopup, setOpenPopup] = useState(false);
 
 	useEffect(() => {
 		async function fetchAPI() {
@@ -61,16 +63,14 @@ const EventsPage = () => {
 		async function fetchAPIServices() {
 			const res = await getEventService(eventId);
 			if (!res.ok) {
-				setEvent(null);
+				setEventServices(null);
 				return;
 			}
 			const data = await res.json();
-			console.log(data);
 			setEventServices(data);
 		}
 
 		fetchAPI();
-
 		fetchAPIServices();
 	}, [eventId]);
 
@@ -81,7 +81,7 @@ const EventsPage = () => {
 			<ErrorContainer errorMessage={'Nessun evento trovato'} to="/home" />
 		)
 	) : (
-		<div className="h-full text-[#E4DCEF]  p-4 flex flex-col gap-2 relative  bg-[#505458] overflow-y-auto ">
+		<div className="h-full bg-gradient-to-br from-[#505458] to-[#363540] overflow-y-auto relative">
 			<Menu
 				onClose={() => setMenuOpen(false)}
 				onOpen={() => setMenuOpen(true)}
@@ -90,18 +90,39 @@ const EventsPage = () => {
 					{
 						action: faUsers,
 						content: (
-							<div className="flex flex-col gap-1 h-full">
-								<h1>Partecipanti</h1>
-								<div className="flex flex-auto flex-col gap-1 overflow-y-auto bg-[#505458] p-1  rounded-md">
-									{event.partecipants.map((p) => (
-										<p className="p-2">{p}</p>
-									))}
+							<div className="flex flex-col gap-4 h-full">
+								<div>
+									<h2 className="text-xl font-bold mb-3 flex items-center gap-2">
+										<FontAwesomeIcon icon={faUsers} className="text-[#EE0E51]" />
+										Partecipanti ({event.partecipants.length})
+									</h2>
+									<div className="max-h-48 overflow-y-auto bg-[#505458] rounded-lg p-3 space-y-2">
+										{event.partecipants.map((p, index) => (
+											<div key={index} className="bg-[#363540] rounded-lg p-3 flex items-center gap-3">
+												<div className="w-8 h-8 bg-[#EE0E51] rounded-full flex items-center justify-center text-white font-bold text-sm">
+													{p.charAt(0).toUpperCase()}
+												</div>
+												<span className="text-[#E4DCEF]">{p}</span>
+											</div>
+										))}
+									</div>
 								</div>
-								<h1>Admin</h1>
-								<div className="flex flex-auto flex-col gap-1 overflow-y-auto bg-[#505458] p-1  rounded-md">
-									{event.admins.map((p) => (
-										<p className="p-2">{p}</p>
-									))}
+								
+								<div>
+									<h2 className="text-xl font-bold mb-3 flex items-center gap-2">
+										<FontAwesomeIcon icon={faUsers} className="text-[#EE0E51]" />
+										Amministratori ({event.admins.length})
+									</h2>
+									<div className="max-h-48 overflow-y-auto bg-[#505458] rounded-lg p-3 space-y-2">
+										{event.admins.map((p, index) => (
+											<div key={index} className="bg-[#363540] rounded-lg p-3 flex items-center gap-3">
+												<div className="w-8 h-8 bg-gradient-to-r from-[#EE0E51] to-[#ff4574] rounded-full flex items-center justify-center text-white font-bold text-sm">
+													{p.charAt(0).toUpperCase()}
+												</div>
+												<span className="text-[#E4DCEF]">{p}</span>
+											</div>
+										))}
+									</div>
 								</div>
 							</div>
 						),
@@ -110,109 +131,151 @@ const EventsPage = () => {
 						action: faMap,
 						content: event.location ? (
 							<div>
-								<h1>Mappa</h1>
-								<div className="border-[#E4DCEF] border rounded-md m-2">
+								<h2 className="text-xl font-bold mb-3 flex items-center gap-2">
+									<FontAwesomeIcon icon={faMapMarkerAlt} className="text-[#EE0E51]" />
+									Posizione
+								</h2>
+								<div className="border-2 border-[#E4DCEF] rounded-lg overflow-hidden shadow-lg">
 									<APIProvider apiKey={'AIzaSyCsKyFbFFxOb4S8luivSquBE4Y3t36rznI'}>
 										<Map
 											key={lat + '--' + lng}
-											style={{ width: '400px', height: '400px' }}
+											style={{ width: '100%', height: '300px' }}
 											defaultCenter={{ lat: lat, lng: lng }}
-											onCenterChanged={(value) => console.log('Center changed:' + value.detail.center)}
 											defaultZoom={15}
 											gestureHandling={'greedy'}
 											disableDefaultUI={true}
 										>
-											<Marker position={{ lat: lat ? lat : 0, lng: lng ? lng : 0 }}></Marker>
+											<Marker position={{ lat: lat ? lat : 0, lng: lng ? lng : 0 }} />
 										</Map>
 									</APIProvider>
 								</div>
 							</div>
 						) : (
-							<p>Nessuna location fornita</p>
+							<div className="text-center py-8">
+								<FontAwesomeIcon icon={faMapMarkerAlt} className="text-4xl text-[#E4DCEF] opacity-50 mb-4" />
+								<p className="text-[#E4DCEF]">Nessuna posizione fornita</p>
+							</div>
 						),
 					},
 					{
 						action: faClipboard,
 						content: (
 							<div>
-								<h1>Servizi</h1>
+								<h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+									<FontAwesomeIcon icon={faClipboard} className="text-[#EE0E51]" />
+									Servizi Disponibili
+								</h2>
 								{eventServices ? (
-									<div>
-										{eventServices.board ? (
-											<NavLink to={`/${eventId}/board`}>
-												<h1 className="flex justify-between gap-4 hover:underline p-2 items-center">
-													<FontAwesomeIcon icon={faMessage} />
-													<p>Bacheca</p>
-												</h1>
+									<div className="space-y-3">
+										{eventServices.board && (
+											<NavLink to={`/${eventId}/board`} className="block">
+												<div className="bg-[#505458] hover:bg-[#363540] transition-colors rounded-lg p-4 flex items-center justify-between group">
+													<div className="flex items-center gap-3">
+														<FontAwesomeIcon icon={faMessage} className="text-[#EE0E51] text-lg" />
+														<span className="font-medium">Bacheca</span>
+													</div>
+													<FontAwesomeIcon icon={faArrowRight} className="text-[#E4DCEF] opacity-50 group-hover:opacity-100 transition-opacity" />
+												</div>
 											</NavLink>
-										) : (
-											''
 										)}
-										{eventServices.gallery ? (
-											<NavLink to={`/${eventId}/gallery`}>
-												<h1 className="flex justify-between gap-4 hover:underline p-2 items-center">
-													<FontAwesomeIcon icon={faImage} />
-													<p>Galleria</p>
-												</h1>
+										{eventServices.gallery && (
+											<NavLink to={`/${eventId}/gallery`} className="block">
+												<div className="bg-[#505458] hover:bg-[#363540] transition-colors rounded-lg p-4 flex items-center justify-between group">
+													<div className="flex items-center gap-3">
+														<FontAwesomeIcon icon={faImage} className="text-[#EE0E51] text-lg" />
+														<span className="font-medium">Galleria</span>
+													</div>
+													<FontAwesomeIcon icon={faArrowRight} className="text-[#E4DCEF] opacity-50 group-hover:opacity-100 transition-opacity" />
+												</div>
 											</NavLink>
-										) : (
-											''
 										)}
-										{eventServices.guestGame ? (
-											<NavLink to={`/${eventId}/game`}>
-												<h1 className="flex justify-between gap-4 hover:underline p-2 items-center">
-													<FontAwesomeIcon icon={faGamepad} />
-													<p>Mystery Guest Game</p>
-												</h1>
+										{eventServices.guestGame && (
+											<NavLink to={`/${eventId}/game`} className="block">
+												<div className="bg-[#505458] hover:bg-[#363540] transition-colors rounded-lg p-4 flex items-center justify-between group">
+													<div className="flex items-center gap-3">
+														<FontAwesomeIcon icon={faGamepad} className="text-[#EE0E51] text-lg" />
+														<span className="font-medium">Mystery Guest Game</span>
+													</div>
+													<FontAwesomeIcon icon={faArrowRight} className="text-[#E4DCEF] opacity-50 group-hover:opacity-100 transition-opacity" />
+												</div>
 											</NavLink>
-										) : (
-											''
 										)}
 									</div>
 								) : (
-									<p>Errore nel caricamenti dei servizi</p>
+									<div className="text-center py-8">
+										<FontAwesomeIcon icon={faClipboard} className="text-4xl text-[#E4DCEF] opacity-50 mb-4" />
+										<p className="text-[#E4DCEF]">Errore nel caricamento dei servizi</p>
+									</div>
 								)}
 							</div>
 						),
 					},
 				]}
-			></Menu>
-			<Image onClick={() => setOpenPopup(true)} src={event.image} />
-			<h1 className=" text-xl rounded-full p-2  font-extrabold w-fit ">{event.title}</h1>
-			<p className="p-4 border bg-[#363540] border-[#E4DCEF] text-[#E4DCEF] text-sm  h-fit  rounded-md">
-				{event.description}
-			</p>
-			<div className="flex flex-row justify-between items-center">
-				<p className=" font-bold">Data: </p>
-				<h1 className="bg-[#E4DCEF] text-[#363540]  rounded-full p-2 m-2 font-bold w-fit ">
-					{convertDataTime(event.starting)}
-				</h1>
-				<FontAwesomeIcon className="text-4xl" icon={faArrowAltCircleRight} color="#E4DCEF" />
-				<h1 className="bg-[#E4DCEF]  text-[#363540] rounded-full p-2 m-2 font-bold w-fit ">
-					{convertDataTime(event.ending)}
-				</h1>
+			/>
+
+			{/* Main Content */}
+			<div className="p-4 md:p-6">
+				<div className="max-w-4xl mx-auto">
+					{/* Event Image */}
+					<div className="mb-6">
+						<div className="relative rounded-2xl overflow-hidden shadow-2xl">
+							<Image onClick={() => setOpenPopup(true)} src={event.image} />
+							<div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+						</div>
+					</div>
+
+					{/* Event Info Card */}
+					<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 shadow-xl mb-6">
+						<h1 className="text-3xl md:text-4xl font-bold text-[#E4DCEF] mb-4">{event.title}</h1>
+						
+						<div className="bg-[#363540] border border-[#E4DCEF] border-opacity-20 rounded-xl p-4 mb-6">
+							<p className="text-[#E4DCEF] leading-relaxed">{event.description}</p>
+						</div>
+
+						{/* Date Section */}
+						<div className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 bg-[#363540] bg-opacity-50 rounded-xl">
+							<div className="flex items-center gap-2 text-[#E4DCEF] font-semibold">
+								<FontAwesomeIcon icon={faCalendarDays} className="text-[#EE0E51]" />
+								<span>Durata evento:</span>
+							</div>
+							
+							<div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+								<div className="bg-[#E4DCEF] text-[#363540] rounded-full px-4 py-2 font-bold text-center">
+									{convertDataTime(event.starting)}
+								</div>
+								<FontAwesomeIcon 
+									icon={faArrowRight} 
+									className="text-[#EE0E51] text-xl hidden sm:block" 
+								/>
+								<div className="bg-[#E4DCEF] text-[#363540] rounded-full px-4 py-2 font-bold text-center">
+									{convertDataTime(event.ending)}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
+
+			{/* Image Popup */}
 			<div
 				className={clsx({
-					'absolute p-4 top-0 left-0 bg-[#363540]/20 backdrop-blur-[4px] h-full w-full flex max-sm:flex-col items-center justify-center':
-						openPopup,
+					'fixed inset-0 bg-black bg-opacity-75 backdrop-blur-sm flex items-center justify-center z-50 p-4': openPopup,
 					hidden: !openPopup,
 				})}
 			>
-			<div className="h-full w-full flex items-center justify-center">
-				<img
-					className="max-h-full max-w-full object-contain rounded-sm"
-					src={'data:image/*;base64,' + event.image}
-					alt="popup image"
-				/>
+				<div className="relative max-w-full max-h-full">
+					<img
+						className="max-h-full max-w-full object-contain rounded-lg shadow-2xl"
+						src={'data:image/*;base64,' + event.image}
+						alt="Event image"
+					/>
+					<Button
+						onClick={() => setOpenPopup(false)}
+						custom="absolute top-4 right-4 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-3 rounded-full"
+						text={<FontAwesomeIcon icon={faClose} className="text-xl" />}
+					/>
+				</div>
 			</div>
-			<Button
-				onClick={() => setOpenPopup(false)}
-				custom="absolute top-4 right-4"
-				text={<FontAwesomeIcon icon={faClose} />}
-			></Button>
-		</div>
-
 		</div>
 	);
 };

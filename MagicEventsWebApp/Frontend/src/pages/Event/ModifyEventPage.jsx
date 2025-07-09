@@ -1,4 +1,4 @@
-import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { faClose, faEdit, faCalendarDays, faUsers, faUserShield, faImage } from '@fortawesome/free-solid-svg-icons';
 import Button from '../../components/buttons/Button';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -28,9 +28,13 @@ const ModifyEventPage = () => {
 	const [event, setEvent] = useState(null);
 	const [partecipantInput, setPartecipantInput] = useState('');
 	const [adminInput, setAdminInput] = useState('');
-	const [lat, setLat] = useState(0);
-	const [lng, setLng] = useState(0);
 	const [loading, setLoading] = useState(true);
+	const [message, setMessage] = useState(null);
+	const [error, setError] = useState(null);
+	const [editingImage, setEditingImage] = useState(false);
+	const [activeTab, setActiveTab] = useState('details');
+	const imgInput = useRef(null);
+
 	const [eventDetail, setEventDetail] = useState({
 		title: '',
 		description: '',
@@ -59,11 +63,7 @@ const ModifyEventPage = () => {
 		setEventDetail((prev) => ({ ...prev, [name]: value }));
 	};
 
-	const imgInput = useRef(null);
-	const [editingImage, setEditingImage] = useState(false);
-
 	const handleChangeImage = (e) => {
-		alert('Handled');
 		imageUploaded(e.target.files[0]);
 	};
 
@@ -73,19 +73,13 @@ const ModifyEventPage = () => {
 	};
 
 	function imageUploaded(file) {
-		let base64String = '';
 		let reader = new FileReader();
-
 		reader.onload = function () {
-			base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
+			const base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
 			setEventDetail((prev) => ({ ...prev, image: base64String }));
-			console.log(base64String);
 		};
 		reader.readAsDataURL(file);
 	}
-
-	const [message, setMessage] = useState(null);
-	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		setEventModified({
@@ -99,7 +93,7 @@ const ModifyEventPage = () => {
 			partecipants: event?.partecipants || [],
 			admins: event?.admins || [],
 		});
-	}, [event, eventDetail]);
+	}, [event, eventDetail, magicEventsTag]);
 
 	useEffect(() => {
 		async function fetchAPI() {
@@ -109,18 +103,17 @@ const ModifyEventPage = () => {
 				return;
 			}
 			const data = await res.json();
-			console.log(data);
 			setEvent(data);
-			if (data.location) {
-				const coordinates = data.location.split('-');
-				setLat(Number(coordinates[0]));
-				setLng(Number(coordinates[1]));
-			}
 			setLoading(false);
 		}
-
 		fetchAPI();
 	}, [eventId]);
+
+	const tabs = [
+		{ id: 'details', label: 'Dettagli', icon: faEdit },
+		{ id: 'participants', label: 'Partecipanti', icon: faUsers },
+		{ id: 'admins', label: 'Admin', icon: faUserShield },
+	];
 
 	return !event ? (
 		loading ? (
@@ -129,291 +122,416 @@ const ModifyEventPage = () => {
 			<ErrorContainer errorMessage={'Nessun evento trovato'} to="/home" />
 		)
 	) : (
-		<div className="h-full overflow-y-auto bg-[#505458] p-4 text-[#E4DCEF]">
-			<ImageEdit src={event.image} alt={event.title} onEditClick={() => setEditingImage(true)} />
-			{editingImage && (
-				<div className="py-4">
-					<Input
-						onChange={handleChangeImage}
-						ref={imgInput}
-						label={'Modifica immagine'}
-						name="immagine"
-						type="file"
-						accept="image/*"
-						rigthComponent={
+		<div className="h-full bg-gradient-to-br from-[#505458] to-[#363540] flex flex-col">
+			{/* Header */}
+			<div className="bg-gradient-to-r from-[#EE0E51] to-[#ff4574] p-6 shadow-lg">
+				<div className="max-w-6xl mx-auto">
+					<h1 className="text-3xl font-bold text-white mb-4">Modifica Evento</h1>
+					
+					{/* Tab Navigation */}
+					<div className="flex flex-wrap gap-2">
+						{tabs.map((tab) => (
 							<Button
-								custom="!bg-transparent !hover:bg-black/50 !border-none mt-[0.15rem]"
-								onClick={() => {
-									handleRemoveImage();
-									setEditingImage(false);
-								}}
-								text={<FontAwesomeIcon icon={faClose} className="text-black" />}
+								key={tab.id}
+								text={
+									<div className="flex items-center gap-2">
+										<FontAwesomeIcon icon={tab.icon} />
+										<span className="hidden sm:inline">{tab.label}</span>
+									</div>
+								}
+								onClick={() => setActiveTab(tab.id)}
+								custom={clsx({
+									'px-4 py-2 rounded-lg font-semibold transition-all': true,
+									'bg-white text-[#EE0E51] shadow-lg': activeTab === tab.id,
+									'bg-white bg-opacity-20 text-white hover:bg-opacity-30': activeTab !== tab.id,
+								})}
 							/>
-						}
-					/>
-				</div>
-			)}
-
-			<div className="py-4">
-				<label htmlFor="title" className="text-2xl font-bold mb-1 block">
-					Titolo
-				</label>
-				<input
-					type="text"
-					name="title"
-					value={eventDetail.title}
-					placeholder={event.title}
-					onChange={handleChange}
-					className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"
-					required
-				/>
-			</div>
-
-			<div className="py-4">
-				<label htmlFor="title" className="text-1xl font-bold mb-1 block">
-					Descrizione
-				</label>
-				<input
-					type="text"
-					name="description"
-					value={eventDetail.description}
-					placeholder={event.description}
-					onChange={handleChange}
-					className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"
-					required
-				/>
-			</div>
-
-			<div className="py-4">
-				<label htmlFor="title" className="text-1xl font-bold mb-1 block">
-					Data
-				</label>
-				<p>Inizio: {convertDataTime(event.starting)}</p>
-				<p>Fine: {convertDataTime(event.ending)}</p>
-				<div className="flex flex-row justify-between items-center py-4">
-					<div className="flex flex-row gap-2 ">
-						<Input
-							onChange={handleChange}
-							value={eventDetail.starting}
-							type="datetime-local"
-							customClassContainer="flex-auto"
-							label="Inizia il"
-							name="starting"
-						/>
-						<Input
-							onChange={handleChange}
-							value={eventDetail.ending}
-							type="datetime-local"
-							customClassContainer="flex-auto"
-							label="Finisce il"
-							name="ending"
-						/>
-					</div>
-				</div>
-			</div>
-
-			<div className="flex flex-row  justify-center">
-				<Button
-					text="Conferma modifiche"
-					onClick={async () => {
-						setError(null);
-						setMessage(null);
-						try {
-							if (eventModified.description.length < 10 || eventModified.description.length > 255) {
-								setError('La descrizione di evento deve essere almeno di 10 caretteri con un massimo di 255');
-								return;
-							}
-							const res = await modifyEvent(eventId, eventModified);
-							if (res === 'Error' || res.status != 200) {
-								setError('Errore durante la modifica dei dati :(');
-							} else {
-								setMessage('Modifica riuscita');
-							}
-							navigate(`/${eventId}`);
-						} catch (err) {
-							setError(err.message);
-						}
-					}}
-				></Button>
-			</div>
-			{message && <p className="text-green-600 text-sm">{message}</p>}
-			{error && <p className="text-red-600 text-sm">{error}</p>}
-			<div className="h-[50rem] flex-col gap-4 max-h-[80vh] p-2">
-				<h1>Partecipanti</h1>
-
-				<div className="h-[10rem] overflow-y-auto bg-[#505458] p-1 rounded-md space-y-2">
-					{event.partecipants.map((p) => (
-						<div
-							key={`participant-${p}`}
-							className="p-2 flex flex-row items-center justify-between px-8 bg-[#363540]/75 text-[#E8F2FC] rounded-full text-center"
-						>
-							<p className="p-2">{p}</p>
-							<Button
-								custom={clsx({ hidden: p === JSON.parse(sessionStorage.getItem('user')).email })}
-								onClick={async () => {
-									setError(null);
-									setMessage(null);
-									try {
-										const res = await removePartecipant(eventId, p);
-										if (res === 'Error' || res.status !== 200) {
-											setError('Errore durante la cancellazione :(');
-										} else {
-											setMessage('Modifica riuscita');
-											setEvent((prev) => ({ ...prev, partecipants: prev.partecipants.filter((item) => item !== p) }));
-										}
-									} catch (err) {
-										setError(err.message);
-									}
-								}}
-								link
-								text={<FontAwesomeIcon icon={faClose} />}
-							></Button>
-						</div>
-					))}
-				</div>
-
-				<div className="text-[#363540] border-2 border-[#363540] p-2 bg-[#e4dcefb7] rounded-md gap-1 flex flex-col">
-					<Input
-						onEnterPress={() => {
-							setEventDetail((prev) => ({ ...prev, participants: [...prev.participants, partecipantInput] }));
-							setPartecipantInput('');
-						}}
-						onChange={(e) => setPartecipantInput(e.target.value)}
-						value={partecipantInput}
-						customClass="bg-[#363540] text-[#E8F2FC]"
-						name="email utente da invitare"
-					/>
-					<div className="h-[10rem] flex flex-col gap-1 overflow-y-auto">
-						{eventDetail.participants.length === 0 ? <p className="text-center">Nessun utente aggiunto</p> : ''}
-						{eventDetail.participants.map((item) => (
-							<div
-								key={item}
-								className="p-2 flex flex-row items-center justify-between px-8 bg-[#363540]/75 text-[#E8F2FC] rounded-full text-center"
-							>
-								<p>{item}</p>
-								<Button
-									onClick={() => {
-										setEventDetail((prev) => ({
-											...prev,
-											participants: prev.participants.filter((p) => p !== item),
-										}));
-									}}
-									link
-									custom="cursor-pointer"
-									text={<FontAwesomeIcon icon={faClose} />}
-								></Button>
-							</div>
 						))}
 					</div>
-
-					<Button
-						text="Aggiungi partecipanti"
-						onClick={async () => {
-							setError(null);
-							setMessage(null);
-							try {
-								const res = await updatePartecipants(eventId, eventDetail.participants);
-								if (res === 'Error' || res.status != 200) {
-									setError('Errore durante la modifica dei partecipanti :(');
-								} else {
-									setMessage('Modifica riuscita');
-								}
-								navigate(`/${eventId}`);
-							} catch (err) {
-								setError(err.message);
-							}
-						}}
-					></Button>
-
-					{message && <p className="text-green-600 text-sm">{message}</p>}
-					{error && <p className="text-red-600 text-sm">{error}</p>}
 				</div>
+			</div>
 
-				<h1>Amministratori</h1>
+			{/* Content */}
+			<div className="flex-1 overflow-y-auto p-4 md:p-6">
+				<div className="max-w-4xl mx-auto">
+					<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
+						{activeTab === 'details' && (
+							<div className="space-y-6">
+								<h2 className="text-2xl font-bold text-[#E4DCEF] mb-6">Dettagli Evento</h2>
+								
+								{/* Event Image */}
+								<div className="mb-6">
+									<label className="block text-sm font-semibold text-[#E4DCEF] mb-2">
+										<FontAwesomeIcon icon={faImage} className="mr-2" />
+										Immagine Evento
+									</label>
+									<div className="relative">
+										<ImageEdit 
+											src={event.image} 
+											alt={event.title} 
+											onEditClick={() => setEditingImage(true)} 
+										/>
+										{editingImage && (
+											<div className="mt-4">
+												<Input
+													onChange={handleChangeImage}
+													ref={imgInput}
+													label="Modifica immagine"
+													name="immagine"
+													type="file"
+													accept="image/*"
+													customClass="bg-white text-[#363540]"
+													rigthComponent={
+														<Button
+															custom="!bg-transparent !hover:bg-black/50 !border-none mt-[0.15rem]"
+															onClick={() => {
+																handleRemoveImage();
+																setEditingImage(false);
+															}}
+															text={<FontAwesomeIcon icon={faClose} className="text-black" />}
+														/>
+													}
+												/>
+											</div>
+										)}
+									</div>
+								</div>
 
-				<div className="h-[10rem] overflow-y-auto bg-[#505458] p-1 rounded-md space-y-2">
-					{event.admins.map((p) => (
-						<div
-							key={`admin-${p}`}
-							className="p-2 flex flex-row items-center justify-between px-8 bg-[#363540]/75 text-[#E8F2FC] rounded-full text-center"
-						>
-							<p className="p-2">{p}</p>
-							<Button
-								onClick={async () => {
-									setError(null);
-									setMessage(null);
-									try {
-										const res = await removeAdmin(eventId, p);
-										if (res === 'Error' || res.status != 200) {
-											setError('Errore durante la cancellazione :(');
-										} else {
-											setMessage('Modifica riuscita');
-										}
-									} catch (err) {
-										setError(err.message);
-									}
-								}}
-								link
-								custom="cursor-pointer"
-								text={<FontAwesomeIcon icon={faClose} />}
-							></Button>
-						</div>
-					))}
-				</div>
+								{/* Title */}
+								<div>
+									<label className="block text-sm font-semibold text-[#E4DCEF] mb-2">
+										Titolo
+									</label>
+									<input
+										type="text"
+										name="title"
+										value={eventDetail.title}
+										placeholder={event.title}
+										onChange={handleChange}
+										className="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-[#EE0E51] transition-colors bg-white text-[#363540]"
+									/>
+								</div>
 
-				<div className="text-[#363540] border-2 border-[#363540] p-2 bg-[#e4dcefb7] rounded-md gap-1 flex flex-col">
-					<Input
-						onEnterPress={() => {
-							setEventDetail((prev) => ({ ...prev, admins: [...prev.admins, adminInput] }));
-							setAdminInput('');
-						}}
-						onChange={(e) => setAdminInput(e.target.value)}
-						value={adminInput}
-						customClass="bg-[#363540] text-[#E8F2FC]"
-						name="email utente da invitare come amministratori"
-					/>
-					<div className="h-[10rem] flex flex-col gap-1 overflow-y-auto">
-						{eventDetail.admins.length === 0 ? <p className="text-center">Nessun utente aggiunto</p> : ''}
-						{eventDetail.admins.map((item) => (
-							<div
-								className="p-2 flex flex-row items-center justify-between px-8 bg-[#363540]/75 text-[#E8F2FC] rounded-full text-center"
-								key={item}
-							>
-								<p>{item}</p>
-								<Button
-									onClick={() => {
-										setEventDetail((prev) => ({
-											...prev,
-											admins: prev.admins.filter((a) => a !== item),
-										}));
-									}}
-									link
-									custom="cursor-pointer"
-									text={<FontAwesomeIcon icon={faClose} />}
-								></Button>
+								{/* Description */}
+								<div>
+									<label className="block text-sm font-semibold text-[#E4DCEF] mb-2">
+										Descrizione
+									</label>
+									<textarea
+										name="description"
+										value={eventDetail.description}
+										placeholder={event.description}
+										onChange={handleChange}
+										rows={4}
+										className="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-[#EE0E51] transition-colors bg-white text-[#363540] resize-none"
+									/>
+								</div>
+
+								{/* Current Dates */}
+								<div className="bg-[#363540] bg-opacity-50 rounded-xl p-4">
+									<h3 className="text-lg font-semibold text-[#E4DCEF] mb-3">Date Attuali</h3>
+									<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+										<div>
+											<span className="text-sm text-[#E4DCEF] opacity-70">Inizio:</span>
+											<p className="text-[#E4DCEF] font-medium">{convertDataTime(event.starting)}</p>
+										</div>
+										<div>
+											<span className="text-sm text-[#E4DCEF] opacity-70">Fine:</span>
+											<p className="text-[#E4DCEF] font-medium">{convertDataTime(event.ending)}</p>
+										</div>
+									</div>
+								</div>
+
+								{/* New Dates */}
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+									<Input
+										onChange={handleChange}
+										value={eventDetail.starting}
+										type="datetime-local"
+										label="Nuova data inizio"
+										name="starting"
+										customClass="bg-white text-[#363540]"
+									/>
+									<Input
+										onChange={handleChange}
+										value={eventDetail.ending}
+										type="datetime-local"
+										label="Nuova data fine"
+										name="ending"
+										customClass="bg-white text-[#363540]"
+									/>
+								</div>
+
+								{/* Save Button */}
+								<div className="pt-4">
+									<Button
+										text="Salva Modifiche"
+										onClick={async () => {
+											setError(null);
+											setMessage(null);
+											try {
+												if (eventModified.description.length < 10 || eventModified.description.length > 255) {
+													setError('La descrizione deve essere tra 10 e 255 caratteri');
+													return;
+												}
+												const res = await modifyEvent(eventId, eventModified);
+												if (res === 'Error' || res.status !== 200) {
+													setError('Errore durante la modifica');
+												} else {
+													setMessage('Modifica riuscita');
+													setTimeout(() => navigate(`/${eventId}`), 2000);
+												}
+											} catch (err) {
+												setError(err.message);
+											}
+										}}
+										custom="w-full py-3 text-lg font-semibold"
+									/>
+								</div>
 							</div>
-						))}
+						)}
+
+						{activeTab === 'participants' && (
+							<div className="space-y-6">
+								<h2 className="text-2xl font-bold text-[#E4DCEF] mb-6">Gestione Partecipanti</h2>
+								
+								{/* Current Participants */}
+								<div>
+									<h3 className="text-lg font-semibold text-[#E4DCEF] mb-3">
+										Partecipanti Attuali ({event.partecipants.length})
+									</h3>
+									<div className="max-h-64 overflow-y-auto bg-[#363540] bg-opacity-50 rounded-xl p-4 space-y-2">
+										{event.partecipants.map((p, index) => (
+											<div key={index} className="flex items-center justify-between p-3 bg-[#505458] rounded-lg">
+												<div className="flex items-center gap-3">
+													<div className="w-8 h-8 bg-[#EE0E51] rounded-full flex items-center justify-center text-white font-bold text-sm">
+														{p.charAt(0).toUpperCase()}
+													</div>
+													<span className="text-[#E4DCEF]">{p}</span>
+												</div>
+												<Button
+													custom={clsx({ 
+														'!bg-transparent text-red-400 hover:text-red-300 !border-none': true,
+														'hidden': p === user.email 
+													})}
+													onClick={async () => {
+														setError(null);
+														setMessage(null);
+														try {
+															const res = await removePartecipant(eventId, p);
+															if (res === 'Error' || res.status !== 200) {
+																setError('Errore durante la rimozione');
+															} else {
+																setMessage('Partecipante rimosso');
+																setEvent((prev) => ({ 
+																	...prev, 
+																	partecipants: prev.partecipants.filter((item) => item !== p) 
+																}));
+															}
+														} catch (err) {
+															setError(err.message);
+														}
+													}}
+													text={<FontAwesomeIcon icon={faClose} />}
+												/>
+											</div>
+										))}
+									</div>
+								</div>
+
+								{/* Add New Participants */}
+								<div>
+									<h3 className="text-lg font-semibold text-[#E4DCEF] mb-3">Aggiungi Partecipanti</h3>
+									<Input
+										onEnterPress={() => {
+											if (partecipantInput.trim()) {
+												setEventDetail((prev) => ({ 
+													...prev, 
+													participants: [...prev.participants, partecipantInput.trim()] 
+												}));
+												setPartecipantInput('');
+											}
+										}}
+										onChange={(e) => setPartecipantInput(e.target.value)}
+										value={partecipantInput}
+										customClass="bg-white text-[#363540]"
+										name="email utente da invitare"
+										placeholder="Inserisci email..."
+									/>
+									
+									{eventDetail.participants.length > 0 && (
+										<div className="mt-4 max-h-48 overflow-y-auto space-y-2">
+											{eventDetail.participants.map((item, index) => (
+												<div key={index} className="flex items-center justify-between p-3 bg-[#363540] rounded-lg">
+													<span className="text-[#E4DCEF]">{item}</span>
+													<Button
+														onClick={() => {
+															setEventDetail((prev) => ({
+																...prev,
+																participants: prev.participants.filter((p) => p !== item),
+															}));
+														}}
+														custom="!bg-transparent text-red-400 hover:text-red-300 !border-none"
+														text={<FontAwesomeIcon icon={faClose} />}
+													/>
+												</div>
+											))}
+										</div>
+									)}
+
+									{eventDetail.participants.length > 0 && (
+										<div className="mt-4">
+											<Button
+												text="Aggiungi Partecipanti"
+												onClick={async () => {
+													setError(null);
+													setMessage(null);
+													try {
+														const res = await updatePartecipants(eventId, eventDetail.participants);
+														if (res === 'Error' || res.status !== 200) {
+															setError('Errore durante l\'aggiunta');
+														} else {
+															setMessage('Partecipanti aggiunti');
+															setEventDetail((prev) => ({ ...prev, participants: [] }));
+															setTimeout(() => navigate(`/${eventId}`), 2000);
+														}
+													} catch (err) {
+														setError(err.message);
+													}
+												}}
+												custom="w-full py-3 font-semibold"
+											/>
+										</div>
+									)}
+								</div>
+							</div>
+						)}
+
+						{activeTab === 'admins' && (
+							<div className="space-y-6">
+								<h2 className="text-2xl font-bold text-[#E4DCEF] mb-6">Gestione Amministratori</h2>
+								
+								{/* Current Admins */}
+								<div>
+									<h3 className="text-lg font-semibold text-[#E4DCEF] mb-3">
+										Amministratori Attuali ({event.admins.length})
+									</h3>
+									<div className="max-h-64 overflow-y-auto bg-[#363540] bg-opacity-50 rounded-xl p-4 space-y-2">
+										{event.admins.map((p, index) => (
+											<div key={index} className="flex items-center justify-between p-3 bg-[#505458] rounded-lg">
+												<div className="flex items-center gap-3">
+													<div className="w-8 h-8 bg-gradient-to-r from-[#EE0E51] to-[#ff4574] rounded-full flex items-center justify-center text-white font-bold text-sm">
+														{p.charAt(0).toUpperCase()}
+													</div>
+													<span className="text-[#E4DCEF]">{p}</span>
+												</div>
+												<Button
+													onClick={async () => {
+														setError(null);
+														setMessage(null);
+														try {
+															const res = await removeAdmin(eventId, p);
+															if (res === 'Error' || res.status !== 200) {
+																setError('Errore durante la rimozione');
+															} else {
+																setMessage('Admin rimosso');
+																setEvent((prev) => ({ 
+																	...prev, 
+																	admins: prev.admins.filter((item) => item !== p) 
+																}));
+															}
+														} catch (err) {
+															setError(err.message);
+														}
+													}}
+													custom="!bg-transparent text-red-400 hover:text-red-300 !border-none"
+													text={<FontAwesomeIcon icon={faClose} />}
+												/>
+											</div>
+										))}
+									</div>
+								</div>
+
+								{/* Add New Admins */}
+								<div>
+									<h3 className="text-lg font-semibold text-[#E4DCEF] mb-3">Aggiungi Amministratori</h3>
+									<Input
+										onEnterPress={() => {
+											if (adminInput.trim()) {
+												setEventDetail((prev) => ({ 
+													...prev, 
+													admins: [...prev.admins, adminInput.trim()] 
+												}));
+												setAdminInput('');
+											}
+										}}
+										onChange={(e) => setAdminInput(e.target.value)}
+										value={adminInput}
+										customClass="bg-white text-[#363540]"
+										name="email admin da invitare"
+										placeholder="Inserisci email admin..."
+									/>
+									
+									{eventDetail.admins.length > 0 && (
+										<div className="mt-4 max-h-48 overflow-y-auto space-y-2">
+											{eventDetail.admins.map((item, index) => (
+												<div key={index} className="flex items-center justify-between p-3 bg-[#363540] rounded-lg">
+													<span className="text-[#E4DCEF]">{item}</span>
+													<Button
+														onClick={() => {
+															setEventDetail((prev) => ({
+																...prev,
+																admins: prev.admins.filter((a) => a !== item),
+															}));
+														}}
+														custom="!bg-transparent text-red-400 hover:text-red-300 !border-none"
+														text={<FontAwesomeIcon icon={faClose} />}
+													/>
+												</div>
+											))}
+										</div>
+									)}
+
+									{eventDetail.admins.length > 0 && (
+										<div className="mt-4">
+											<Button
+												text="Aggiungi Amministratori"
+												onClick={async () => {
+													setError(null);
+													setMessage(null);
+													try {
+														const res = await updateAdmins(eventId, eventDetail.admins);
+														if (res === 'Error' || res.status !== 200) {
+															setError('Errore durante l\'aggiunta');
+														} else {
+															setMessage('Amministratori aggiunti');
+															setEventDetail((prev) => ({ ...prev, admins: [] }));
+															setTimeout(() => navigate(`/${eventId}`), 2000);
+														}
+													} catch (err) {
+														setError(err.message);
+													}
+												}}
+												custom="w-full py-3 font-semibold"
+											/>
+										</div>
+									)}
+								</div>
+							</div>
+						)}
+
+						{/* Messages */}
+						{message && (
+							<div className="mt-6 bg-green-500 bg-opacity-20 border border-green-500 rounded-lg p-4">
+								<p className="text-green-300 font-medium">{message}</p>
+							</div>
+						)}
+						{error && (
+							<div className="mt-6 bg-red-500 bg-opacity-20 border border-red-500 rounded-lg p-4">
+								<p className="text-red-300 font-medium">{error}</p>
+							</div>
+						)}
 					</div>
-					<Button
-						text="Aggiungi amministratori"
-						onClick={async () => {
-							setError(null);
-							setMessage(null);
-							try {
-								const res = await updateAdmins(eventId, eventDetail.admins);
-								if (res === 'Error' || res.status != 200) {
-									setError('Errore durante la modifica degli amministratori :(');
-								} else {
-									setMessage('Modifica riuscita');
-								}
-								navigate(`/${eventId}`);
-							} catch (err) {
-								setError(err.message);
-							}
-						}}
-					></Button>
-					{message && <p className="text-green-600 text-sm">{message}</p>}
-					{error && <p className="text-red-600 text-sm">{error}</p>}
 				</div>
 			</div>
 		</div>
