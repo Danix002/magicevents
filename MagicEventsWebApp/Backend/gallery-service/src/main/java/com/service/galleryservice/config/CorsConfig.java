@@ -18,8 +18,8 @@ public class CorsConfig {
                 "ws://localhost:*",
                 "wss://localhost:*",
                 "https://localhost:*",
-                "https://magicevents.com",
-                "http://magicevents.com"
+                "https://italiamagicevents.it",
+                "http://italiamagicevents.it"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
