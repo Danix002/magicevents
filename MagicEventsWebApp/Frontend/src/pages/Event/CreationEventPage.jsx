@@ -185,7 +185,7 @@ const CreationEventPage = () => {
 			{/* Content */}
 			<div className="flex-1 overflow-y-auto p-4 md:p-6">
 				<div className="max-w-4xl mx-auto">
-					<div className="bg-black bg-opacity-20 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
+					<div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
 						{tab === 'event' && (
 							<div className="space-y-6">
 								<h2 className="text-2xl font-bold text-[#1a1a1a] mb-6">Dettagli Evento</h2>
@@ -336,7 +336,7 @@ const CreationEventPage = () => {
 										/>
 										<div className="max-h-64 overflow-y-auto space-y-2">
 											{eventDetail.participants.length === 0 ? (
-												<p className="text-center text-[#E4DCEF] opacity-70 py-8">Nessun utente invitato</p>
+												<p className="text-center text-[#1a1a1a] opacity-70 py-8">Nessun utente invitato</p>
 											) : (
 												eventDetail.participants.map((item, index) => (
 													<div key={index} className="bg-[#363540] rounded-lg p-3 flex items-center justify-between">
@@ -373,7 +373,7 @@ const CreationEventPage = () => {
 										/>
 										<div className="max-h-64 overflow-y-auto space-y-2">
 											{eventDetail.admins.length === 0 ? (
-												<p className="text-center text-[#E4DCEF] opacity-70 py-8">Nessun admin invitato</p>
+												<p className="text-center text-[#1a1a1a] opacity-70 py-8">Nessun admin invitato</p>
 											) : (
 												eventDetail.admins.map((item, index) => (
 													<div key={index} className="bg-[#363540] rounded-lg p-3 flex items-center justify-between">

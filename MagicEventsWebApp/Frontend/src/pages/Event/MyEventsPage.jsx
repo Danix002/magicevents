@@ -47,7 +47,7 @@ const MyEventsPage = () => {
 					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 						<div className="flex items-center gap-4">
 							<div className="p-3 bg-white bg-opacity-20 rounded-full">
-								<FontAwesomeIcon icon={faBoxArchive} className="text-2xl text-white" />
+								<FontAwesomeIcon icon={faBoxArchive} className="text-2xl text-[#505458]" />
 							</div>
 							<div>
 								<h1 className="text-3xl font-bold text-white">I Miei Eventi</h1>
@@ -80,7 +80,7 @@ const MyEventsPage = () => {
 						</div>
 					) : ready ? (
 						events.length > 0 ? (
-							<div className="bg-black bg-opacity-20 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
+							<div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
 								<EventList events={events} />
 							</div>
 						) : (

@@ -24,8 +24,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOriginPatterns(
                         "http://localhost:3000",
                         "https://localhost:3000",
-                        "https://italiamagicevents.it",
-                        "http://italiamagicevents.it"
+                        "https://italiamagicevents.it:3000",
+                        "http://italiamagicevents.it:3000"
 
                 ) // Adjust as needed for your frontend
                 .withSockJS(); // Enable SockJS fallback

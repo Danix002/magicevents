@@ -154,7 +154,7 @@ const ModifyEventPage = () => {
 			{/* Content */}
 			<div className="flex-1 overflow-y-auto p-4 md:p-6">
 				<div className="max-w-4xl mx-auto">
-					<div className="bg-black bg-opacity-20 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
+					<div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
 						{activeTab === 'details' && (
 							<div className="space-y-6">
 								<h2 className="text-2xl font-bold text-[#1a1a1a] mb-6">Dettagli Evento</h2>
@@ -229,7 +229,7 @@ const ModifyEventPage = () => {
 
 								{/* Current Dates */}
 								<div className="bg-[#363540] bg-opacity-50 rounded-xl p-4">
-									<h3 className="text-lg font-semibold text-[#1a1a1a] mb-3">Date Attuali</h3>
+									<h3 className="text-lg font-semibold text-[#E4DCEF] mb-3">Date Attuali</h3>
 									<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 										<div>
 											<span className="text-sm text-[#E4DCEF] opacity-70">Inizio:</span>

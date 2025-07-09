@@ -41,7 +41,7 @@ const Menu = ({ tabs, open, onOpen, onClose }) => {
 			{/* Sidebar */}
 			<div
 				className={clsx({
-					'fixed top-0 right-0 h-full bg-black bg-opacity-95 backdrop-blur-md shadow-2xl z-50 transition-all duration-300 overflow-hidden': true,
+					'fixed top-0 right-0 h-full bg-white bg-opacity-95 backdrop-blur-md shadow-2xl z-50 transition-all duration-300 overflow-hidden': true,
 					'w-full sm:w-[500px] md:w-[600px] lg:w-[700px] translate-x-0': open,
 					'w-0 translate-x-full': !open,
 				})}
@@ -61,8 +61,8 @@ const Menu = ({ tabs, open, onOpen, onClose }) => {
 									'opacity-50 cursor-not-allowed text-gray-500': tab.available === false,
 								})}
 							>
-								<FontAwesomeIcon 
-									icon={tab.action} 
+								<FontAwesomeIcon
+									icon={tab.action}
 									className={clsx({
 										'text-lg sm:text-xl md:text-2xl': true,
 										[tab.iconSize]: !!tab.iconSize,
@@ -90,15 +90,15 @@ const Menu = ({ tabs, open, onOpen, onClose }) => {
 								<div className="text-[#E4DCEF]">
 									{/* Tab Header */}
 									<div className="flex items-center gap-3 mb-6 pb-4 border-b border-[#E4DCEF] border-opacity-20">
-										<FontAwesomeIcon 
-											icon={tabs[activeTab]?.action} 
-											className="text-[#EE0E51] text-xl" 
+										<FontAwesomeIcon
+											icon={tabs[activeTab]?.action}
+											className="text-[#EE0E51] text-xl"
 										/>
 										<div>
 											<h2 className="text-xl sm:text-2xl font-bold text-[#1a1a1a]">
 												{tabs[activeTab]?.label}
 											</h2>
-											<p className="text-sm text-[#E4DCEF] opacity-70">
+											<p className="text-sm text-black opacity-70">
 												{tabs[activeTab]?.description}
 											</p>
 										</div>
@@ -111,9 +111,9 @@ const Menu = ({ tabs, open, onOpen, onClose }) => {
 								</div>
 							) : (
 								<div className="flex flex-col items-center justify-center py-16 text-center">
-									<FontAwesomeIcon 
-										icon={tabs[activeTab]?.action} 
-										className="text-6xl text-gray-500 mb-4" 
+									<FontAwesomeIcon
+										icon={tabs[activeTab]?.action}
+										className="text-6xl text-gray-500 mb-4"
 									/>
 									<h3 className="text-xl font-bold text-gray-400 mb-2">
 										Servizio non disponibile
