@@ -1,3 +1,8 @@
+# Requirements
+- Docker
+- docker-compose
+- node js
+
 # Step for running docker-componse
 
 Go in folder Backend (run ``` cd Backend```) and run:
