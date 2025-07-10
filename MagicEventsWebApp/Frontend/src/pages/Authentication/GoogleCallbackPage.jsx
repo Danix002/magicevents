@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import { useAuth } from '../../auth/AuthContext';
 import { callback } from '../../api/authentication';
 
 function GoogleCallbackPage({ setLogged }) {
+	const location = useLocation();
+	const from = sessionStorage.getItem('fromAfterLogin') || location.state?.from || '/home';
 	const navigate = useNavigate();
 	const { setUser } = useAuth();
 
@@ -23,7 +25,8 @@ function GoogleCallbackPage({ setLogged }) {
 				setUser(data);
 				sessionStorage.setItem('user', JSON.stringify(data));
 				setLogged(true);
-				navigate('/home');
+				navigate(from, { replace: true });
+				sessionStorage.removeItem('fromAfterLogin');
 			} catch (err) {
 				console.error('Error:', err.message);
 			}
