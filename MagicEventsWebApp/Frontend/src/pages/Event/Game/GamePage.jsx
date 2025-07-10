@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import GameNode from '../../../components/game-component/GameNode';
+import GameNode from '../../../components/gameComponents/GameNode';
 import { useEffect } from 'react';
 import { getGame, isDataInGame } from '../../../api/gameAPI';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -35,17 +35,17 @@ const GamePage = () => {
 		}
 
 		fetchAPI();
-	}, [eventId, navigate]);
+	}, [eventId]);
 
 	return (
-		<div className="h-full overflow-y-auto bg-gradient-to-r from-[#EE0E51] to-[#E4DCEF] relative">
-			<div className="gameBackground w-full h-full">
+		<div className="h-full overflow-y-auto bg-gradient-to-r from-[#EE0E51]  to-[#E4DCEF] relative   ">
+			<div className=" gameBackground  w-full h-full">
 				{tree ? (
 					<GameNode startingNode={tree} />
 				) : error ? (
-					<p className="text-[#E8F2FC] p-4 w-fit m-4 text-center bg-[#505458] rounded-md backdrop-blur-3xl">{error}</p>
+					<p className="text-[#E8F2FC] p-4 w-fit m-4 text-center bg-[#505458] rounded-md backdrop-blur-3xl ">{error}</p>
 				) : (
-					<p className="text-[#E8F2FC] p-4 w-fit m-4 text-center bg-[#505458] rounded-md backdrop-blur-3xl">
+					<p className="text-[#E8F2FC] p-4 w-fit m-4 text-center bg-[#505458] rounded-md backdrop-blur-3xl ">
 						Aspetta sto pensando alle domande...
 					</p>
 				)}
