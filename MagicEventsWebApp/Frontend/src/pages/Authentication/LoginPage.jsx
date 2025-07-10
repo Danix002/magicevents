@@ -15,7 +15,7 @@ function LoginPage({ setLogged }) {
 	const [formData, setFormData] = useState({ email: '', password: '' });
 	const [forgotFlag, setForgotFlag] = useState(false);
 	const location = useLocation();
-	const from = location.state?.from || '/home';
+	const from = sessionStorage.getItem('fromAfterLogin') || location.state?.from || '/home';
 
 	useEffect(() => {
 		const user = JSON.parse(sessionStorage.getItem('user'));
@@ -35,7 +35,6 @@ function LoginPage({ setLogged }) {
 				console.error('Error contacting server:', err);
 			}
 		};
-
 		detectClientProtocol();
 	}, []);
 
@@ -54,6 +53,7 @@ function LoginPage({ setLogged }) {
 		sessionStorage.setItem('user', JSON.stringify(data));
 		setLogged(true);
 		navigate(from, { replace: true });
+		sessionStorage.removeItem('fromAfterLogin');
 	};
 
 	return (

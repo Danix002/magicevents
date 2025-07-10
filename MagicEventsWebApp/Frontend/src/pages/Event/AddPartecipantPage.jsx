@@ -19,10 +19,8 @@ const AddPartecipantPage = () => {
                     console.log(err.message);
                 }
             } else {
-                navigate("/login", {
-                    replace: true,
-                    state: { from: `/${eventId}/${idOfWhoGenerated}/addpartecipant` },
-                });
+                sessionStorage.setItem('fromAfterLogin', `/${eventId}/${idOfWhoGenerated}/addpartecipant`);
+                navigate("/login", { replace: true });
             }
         };
         dynamicAdd();
