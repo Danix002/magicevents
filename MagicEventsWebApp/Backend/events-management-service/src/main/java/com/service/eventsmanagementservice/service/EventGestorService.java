@@ -65,7 +65,9 @@ public class EventGestorService {
     public String updateEventPartecipants(ArrayList<String> partecipants, Long eventId, Long magicEventsTag) {
         Event event = eventsRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("Event not found: " + eventId));
-        if(isAdmin(eventId, magicEventsTag)) {
+        boolean creator = event.getCreator().equals(magicEventsTag);
+        boolean admin = isAdmin(eventId, magicEventsTag);
+        if(creator || admin) {
             addPartecipants(partecipants, eventId);
             return "Success";
         }else {
