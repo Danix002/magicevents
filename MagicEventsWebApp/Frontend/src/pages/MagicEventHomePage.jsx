@@ -77,7 +77,7 @@ const MagicEventHomePage = () => {
 						)
 					) : (
 						<div className="text-center py-16">
-							<p className="text-[#E4DCEF] text-lg">Errore nel caricamento degli eventi</p>
+							<p className="text-[#E4DCEF] text-lg">Non hai eventi in programma</p>
 						</div>
 					)}
 				</div>

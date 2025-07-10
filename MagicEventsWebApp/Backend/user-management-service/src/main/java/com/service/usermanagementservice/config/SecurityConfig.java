@@ -55,11 +55,6 @@ public class SecurityConfig {
                             List.of(
                                     "https://" + clientUrl,
                                     "http://" + clientUrl,
-                                    "https://localhost:3000",
-                                    "http://localhost:3000",
-                                    "https://localhost:8443",
-                                    "https://italiamagicevents.it",
-                                    "http://italiamagicevents.it",
                                     eventManagementServiceUrl
                             )
                     );

@@ -11,7 +11,7 @@ const QRCodeGenerator = ({
     const handleGenerate = async () => {
         setLoading(true);
         try {
-            const eventUrl = window.location.href.replace(':3000', '');;
+            const eventUrl = window.location.href;
             const response = await generateQRCodeForEvent(eventUrl);
             const data = await response.json();
             console.log(data);
