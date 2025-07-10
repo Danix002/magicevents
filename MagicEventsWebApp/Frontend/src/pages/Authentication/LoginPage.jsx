@@ -57,9 +57,10 @@ function LoginPage({ setLogged }) {
 	};
 
 	return (
-		<div className="backgroundLogin h-full sh-[calc(100vh-3.5rem)] p-4 flex items-center justify-center">
-			<div className="relative bg-[#363540] text-[#E8F2FC] p-8 h-fit max-h-full max-w-[42rem] w-full flex flex-col rounded-xl shadow-2xl space-y-6 overflow-y-auto text-lg">
-				<h2 className=" font-bold text-2xl">Login</h2>
+		<div className="backgroundLogin min-h-screen flex items-center justify-center p-4">
+			<div className="relative bg-[#363540] text-[#E8F2FC] p-6 sm:p-8 w-full max-w-md mx-auto rounded-xl shadow-2xl space-y-6">
+				<h2 className="font-bold text-2xl sm:text-3xl text-center">Login</h2>
+				
 				{/* Login with email e password */}
 				<form
 					className={clsx({ hidden: forgotFlag })}
@@ -73,7 +74,7 @@ function LoginPage({ setLogged }) {
 						value={formData.email}
 						onChange={handleChange}
 						required
-						style={{ padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
+						className="p-3 rounded-lg border border-[#E4DCEF]/20 bg-[#505458] text-[#E4DCEF] placeholder-[#E4DCEF]/60 focus:border-[#EE0E51] focus:outline-none transition-colors"
 					/>
 					<input
 						type="password"
@@ -82,52 +83,52 @@ function LoginPage({ setLogged }) {
 						value={formData.password}
 						onChange={handleChange}
 						required
-						style={{ padding: 10, borderRadius: 4, border: '1px solid #ccc' }}
+						className="p-3 rounded-lg border border-[#E4DCEF]/20 bg-[#505458] text-[#E4DCEF] placeholder-[#E4DCEF]/60 focus:border-[#EE0E51] focus:outline-none transition-colors"
 					/>
-					<Button text="Login" />
+					<Button text="Login" custom="mt-2" />
 				</form>
+				
 				<Button
 					text="Password dimenticata?"
 					link={true}
 					onClick={() => {
 						setForgotFlag(true);
 					}}
-					custom=" w-full text-end  "
+					custom="w-full text-center text-sm text-[#EE0E51] hover:underline"
 				/>
-				{/* Separator */}
-				{/* <div className=" my-1 text-center ">or</div> */}
 
 				{/*Login with Google*/}
-				<div style={{ display: 'flex', justifyContent: 'center' }}>
-					<GoogleButton></GoogleButton>
+				<div className="flex justify-center">
+					<GoogleButton />
 				</div>
 
-				<div className=" h-full "></div>
 				{/*Registration*/}
-				<div className=" flex justify-center gap-4 pb-4   ">
-					<p>Già registrato?</p>
+				<div className="flex flex-col sm:flex-row justify-center items-center gap-2 pt-4 border-t border-[#E4DCEF]/20">
+					<p className="text-sm sm:text-base">Non hai un account?</p>
 					<Link to="/register">
-						<p className=" text-[#EE0E51] hover:underline ">Registrati ora</p>
+						<p className="text-[#EE0E51] hover:underline text-sm sm:text-base">Registrati ora</p>
 					</Link>
 				</div>
 
 				<div
 					className={clsx({
 						hidden: !forgotFlag,
-						' bg-[#363540] p-8 absolute top-0 left-0 w-full h-full rounded-md flex flex-col items-end ': true,
+						'bg-[#363540] p-6 sm:p-8 absolute inset-0 w-full h-full rounded-xl flex flex-col': true,
 					})}
 				>
-					<button
-						onClick={() => {
-							setForgotFlag(false);
-						}}
-						className="hover:shadow-2xl"
-					>
-						X
-					</button>
-					<div className="flex-auto"></div>
-					<ForgotPassword></ForgotPassword>
-					<div className="flex-auto"></div>
+					<div className="flex justify-end mb-4">
+						<button
+							onClick={() => {
+								setForgotFlag(false);
+							}}
+							className="text-[#E4DCEF] hover:text-[#EE0E51] text-xl font-bold transition-colors"
+						>
+							✕
+						</button>
+					</div>
+					<div className="flex-1 flex items-center justify-center">
+						<ForgotPassword />
+					</div>
 				</div>
 			</div>
 		</div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Input from '../../components/inputs/Input';
 import Button from '../../components/buttons/Button';
 import { login, register } from '../../api/authentication';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function RegisterPage({ setLogged }) {
 	const navigate = useNavigate();
@@ -56,26 +56,30 @@ function RegisterPage({ setLogged }) {
 	};
 
 	return (
-		<div className="backgroundLogin h-full sh-[calc(100vh-3.5rem)] p-4 flex items-center justify-center">
-			<div className="relative bg-[#363540] text-[#E8F2FC] p-4 h-fit max-h-full max-w-[30rem] flex flex-col rounded-md shadow-2xl space-y-4 ">
-				<h2 className=" font-bold text-2xl">Create your account</h2>
-				<form onSubmit={handleSubmit} className="flex flex-row flex-wrap space-y-2 gap-2 p-2  rounded-md">
-					<Input 
-						customClassContainer="flex-auto"
-						label="Name" 
-						name="name" 
-						value={formData.name} 
-						onChange={handleChange} 
-						required 
-					/>
-					<Input
-						customClassContainer="flex-auto"
-						label="Surname"
-						name="surname"
-						value={formData.surname}
-						onChange={handleChange}
-						required
-					/>
+		<div className="backgroundLogin min-h-screen flex items-center justify-center p-4">
+			<div className="relative bg-[#363540] text-[#E8F2FC] p-6 sm:p-8 w-full max-w-lg mx-auto rounded-xl shadow-2xl">
+				<h2 className="font-bold text-2xl sm:text-3xl text-center mb-6">Crea il tuo account</h2>
+				
+				<form onSubmit={handleSubmit} className="space-y-4">
+					<div className="flex flex-col sm:flex-row gap-4">
+						<Input 
+							customClassContainer="flex-1"
+							label="Nome" 
+							name="name" 
+							value={formData.name} 
+							onChange={handleChange} 
+							required 
+						/>
+						<Input
+							customClassContainer="flex-1"
+							label="Cognome"
+							name="surname"
+							value={formData.surname}
+							onChange={handleChange}
+							required
+						/>
+					</div>
+					
 					<Input
 						customClassContainer="w-full"
 						label="Username"
@@ -83,7 +87,8 @@ function RegisterPage({ setLogged }) {
 						value={formData.username}
 						onChange={handleChange}
 						required
-					/>
+					 />
+					
 					<Input
 						customClassContainer="w-full"
 						label="Email"
@@ -92,7 +97,8 @@ function RegisterPage({ setLogged }) {
 						value={formData.email}
 						onChange={handleChange}
 						required
-					/>
+					 />
+					
 					<Input
 						customClassContainer="w-full"
 						label="Password"
@@ -101,13 +107,20 @@ function RegisterPage({ setLogged }) {
 						value={formData.password}
 						onChange={handleChange}
 						required
-					/>
+					 />
 
-					{error && <p style={{ color: 'red' }}>{error}</p>}
-					{successMsg && <p style={{ color: 'green' }}>{successMsg}</p>}
+					{error && <p className="text-red-400 text-sm text-center">{error}</p>}
+					{successMsg && <p className="text-green-400 text-sm text-center">{successMsg}</p>}
 
-					<Button custom="w-full mt-2" text="Register" />
+					<Button custom="w-full mt-6" text="Registrati" />
 				</form>
+				
+				<div className="flex flex-col sm:flex-row justify-center items-center gap-2 pt-6 mt-6 border-t border-[#E4DCEF]/20">
+					<p className="text-sm sm:text-base">Hai già un account?</p>
+					<Link to="/login">
+						<p className="text-[#EE0E51] hover:underline text-sm sm:text-base">Accedi ora</p>
+					</Link>
+				</div>
 			</div>
 		</div>
 	);
