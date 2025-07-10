@@ -10,7 +10,7 @@ export function getMessages(eventID, pageNumber) {
 		{
 			method: 'GET',
 			headers: {
-				Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+				Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 		}

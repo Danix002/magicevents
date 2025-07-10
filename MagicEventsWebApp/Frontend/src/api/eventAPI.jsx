@@ -11,7 +11,7 @@ export function getEventsp() {
 		{
 			method: 'GET',
 			headers: {
-				Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+				Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 		}
@@ -26,7 +26,7 @@ export function getEventsc() {
 		{
 			method: 'GET',
 			headers: {
-				Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+				Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 		}
@@ -40,7 +40,7 @@ export function getEventId(title, day) {
 	return fetch(`${eventsManagementUrl}/gestion/geteventid?title=${title}&day=${day}&magicEventTag=${magicEventsTag}`, {
 		method: 'GET',
 		headers: {
-			Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+			Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 			'Content-Type': 'application/x-www-form-urlencoded',
 		},
 	});
@@ -54,7 +54,7 @@ export function annullEvent(eventId) {
 		{
 			method: 'PUT',
 			headers: {
-				Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+				Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 		}
@@ -70,7 +70,7 @@ export function activateServices(eventId, services) {
 	return fetch(url, {
 		method: 'PUT',
 		headers: {
-			Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+			Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify(services),
@@ -85,7 +85,7 @@ export function getAdmins(eventId) {
 		{
 			method: 'GET',
 			headers: {
-				Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+				Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 		}
@@ -96,7 +96,7 @@ export function getPartecipants(eventId) {
 	return fetch(`${eventsManagementUrl}/gestion/getpartecipantsforevent?eventId=${eventId}`, {
 		method: 'GET',
 		headers: {
-			Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+			Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 			'Content-Type': 'application/x-www-form-urlencoded',
 		},
 	});
@@ -111,7 +111,7 @@ export function modifyEvent(eventId, event) {
 	return fetch(url, {
 		method: 'PUT',
 		headers: {
-			Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+			Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify(event),
@@ -126,7 +126,7 @@ export function deannullEvent(eventId) {
 		{
 			method: 'PUT',
 			headers: {
-				Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+				Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 		}
@@ -141,22 +141,24 @@ export function updateAdmins(eventId, newAdmins) {
 		{
 			method: 'PUT',
 			headers: {
-				Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+				Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 		}
 	);
 }
 
-export function updatePartecipants(eventId, newPartecipants) {
+export function updatePartecipants(
+	eventId,
+	newPartecipants,
+	magicEventTag = JSON.parse(sessionStorage.getItem('user')).magicEventTag
+) {
 	return fetch(
-		`${eventsManagementUrl}/gestion/addpartecipants?partecipants=${newPartecipants}&eventId=${eventId}&magicEventsTag=${
-			JSON.parse(sessionStorage.getItem('user')).magicEventTag
-		}`,
+		`${eventsManagementUrl}/gestion/addpartecipants?partecipants=${newPartecipants}&eventId=${eventId}&magicEventsTag=${magicEventTag}`,
 		{
 			method: 'PUT',
 			headers: {
-				Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+				Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 		}
@@ -171,7 +173,7 @@ export function removePartecipant(eventId, partecipantEmail) {
 		{
 			method: 'PUT',
 			headers: {
-				Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+				Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 		}
@@ -186,7 +188,7 @@ export function removeAdmin(eventId, adminEmail) {
 		{
 			method: 'PUT',
 			headers: {
-				Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+				Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 		}
@@ -197,7 +199,7 @@ export function getEvent(eventId) {
 	return fetch(`${eventsManagementUrl}/gestion/geteventinfo?eventId=${eventId}`, {
 		method: 'GET',
 		headers: {
-			Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+			Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 			'Content-Type': 'application/x-www-form-urlencoded',
 		},
 	});
@@ -210,7 +212,7 @@ export function getEventService(eventId) {
 	return fetch(`${eventsManagementUrl}/gestion/geteventenabledservices?${params}`, {
 		method: 'GET',
 		headers: {
-			Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+			Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 			'Content-Type': 'application/x-www-form-urlencoded',
 		},
 	});
@@ -222,7 +224,10 @@ export function createEvent(event) {
 	console.log(temp);
 	return fetch(`${eventsetupUrl}/eventSetup`, {
 		method: 'POST',
-		headers: { Authorization: JSON.parse(sessionStorage.getItem('user')).token, 'Content-Type': 'application/json' },
+		headers: {
+			Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
+			'Content-Type': 'application/json'
+		},
 		body: JSON.stringify(temp),
 	});
 }
@@ -236,7 +241,7 @@ export function deleteEvent(eventId) {
 	return fetch(urldelete, {
 		method: 'DELETE',
 		headers: {
-			Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+			Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 		},
 	});
 }
@@ -249,7 +254,7 @@ export function isActive(eventId) {
 		{
 			method: 'GET',
 			headers: {
-				Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+				Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 		}

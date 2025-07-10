@@ -10,7 +10,7 @@ export function getImages(eventID, pageNumber) {
 		{
 			method: 'GET',
 			headers: {
-				Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+				Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 		}
@@ -25,7 +25,7 @@ export function getImagesPopular(eventID, pageNumber) {
 		{
 			method: 'GET',
 			headers: {
-				Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+				Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
 		}

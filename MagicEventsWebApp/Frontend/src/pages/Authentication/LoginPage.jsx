@@ -7,13 +7,15 @@ import ForgotPassword from '../../components/buttons/ForgotPassword';
 import Button from '../../components/buttons/Button';
 import clsx from 'clsx';
 import { login, helloServer } from '../../api/authentication';
+import { useLocation } from 'react-router-dom';
 
 function LoginPage({ setLogged }) {
 	const navigate = useNavigate();
 	const { setUser } = useAuth();
-
 	const [formData, setFormData] = useState({ email: '', password: '' });
 	const [forgotFlag, setForgotFlag] = useState(false);
+	const location = useLocation();
+	const from = location.state?.from || '/home';
 
 	useEffect(() => {
 		const user = JSON.parse(sessionStorage.getItem('user'));
@@ -51,7 +53,7 @@ function LoginPage({ setLogged }) {
 		setUser(data);
 		sessionStorage.setItem('user', JSON.stringify(data));
 		setLogged(true);
-		navigate('/home');
+		navigate(from, { replace: true });
 	};
 
 	return (

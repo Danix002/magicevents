@@ -23,6 +23,7 @@ import GalleryPage from './pages/Event/Gallery/GalleryPage';
 import GamePage from './pages/Event/Game/GamePage';
 import ModifyEventPage from './pages/Event/ModifyEventPage';
 import GameForm from './pages/Event/Game/GameForm';
+import AddPartecipantPage from "./pages/Event/AddPartecipantPage";
 
 function App() {
 	const [logged, setLogged] = useState(sessionStorage.getItem('user') ? true : false);
@@ -133,6 +134,7 @@ function App() {
 					<Route path="/:eventId" element={<EventsPage />} />
 					<Route path="/:eventId/game" element={<GamePage />} />
 					<Route path="/:eventId/game/form" element={<GameForm />} />
+					<Route path="/:eventId/:idOfWhoGenerated/addpartecipant" element={<AddPartecipantPage />} />
 				</Routes>
 			</div>
 		</Router>

@@ -192,9 +192,9 @@ const BoardPage = () => {
 								<div className="w-10 h-10 bg-gradient-to-r from-[#EE0E51] to-[#FF6B9D] rounded-full flex items-center justify-center">
 									<FontAwesomeIcon icon={faComments} className="text-white" />
 								</div>
-								<h1 className="text-xl font-bold text-[#E4DCEF]">{title}</h1>
+								<h1 className="text-xl font-bold text-[#1a1a1a]">{title}</h1>
 							</div>
-							<p className="text-[#E4DCEF] text-opacity-70 text-sm leading-relaxed">{description}</p>
+							<p className="text-[#1a1a1a] text-opacity-70 text-sm leading-relaxed">{description}</p>
 						</div>
 						
 						{/* Event Info */}
