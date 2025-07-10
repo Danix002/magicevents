@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import GameNode from '../../../components/gameComponents/GameNode';
+import GameNode from '../../../components/game-component/GameNode';
 import { useEffect } from 'react';
 import { getGame, isDataInGame } from '../../../api/gameAPI';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -47,46 +47,9 @@ const GamePage = () => {
                 {/* Large crystal balls */}
                 <CrystalBall 
                     size="large" 
-                    className="absolute top-10 left-10 opacity-20 animate-pulse"
+                    className="absolute items-center top-20 opacity-20 animate-pulse"
                 >
-                    <div className="text-6xl">🔮</div>
-                </CrystalBall>
-                
-                <CrystalBall 
-                    size="large" 
-                    className="absolute top-20 right-16 opacity-15 animate-bounce"
-                >
-                    <div className="text-6xl">✨</div>
-                </CrystalBall>
-
-                {/* Medium crystal balls */}
-                <CrystalBall 
-                    size="medium" 
-                    className="absolute bottom-32 left-20 opacity-25 animate-pulse delay-300"
-                >
-                    <div className="text-4xl">🌟</div>
-                </CrystalBall>
-
-                <CrystalBall 
-                    size="medium" 
-                    className="absolute bottom-20 right-32 opacity-20 animate-bounce delay-500"
-                >
-                    <div className="text-4xl">🔮</div>
-                </CrystalBall>
-
-                {/* Small crystal balls for mobile */}
-                <CrystalBall 
-                    size="small" 
-                    className="absolute top-1/3 left-5 opacity-30 animate-pulse delay-700 md:hidden"
-                >
-                    <div className="text-2xl">✨</div>
-                </CrystalBall>
-
-                <CrystalBall 
-                    size="small" 
-                    className="absolute top-2/3 right-8 opacity-25 animate-bounce delay-1000 md:hidden"
-                >
-                    <div className="text-2xl">🌟</div>
+                    <div className="text-6xl">🐰</div>
                 </CrystalBall>
             </div>
 

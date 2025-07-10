@@ -61,24 +61,22 @@ function RegisterPage({ setLogged }) {
 				<h2 className="font-bold text-xl sm:text-2xl md:text-3xl text-center mb-4 sm:mb-6">Crea il tuo account</h2>
 				
 				<form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
-					<div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-						<Input 
-							customClassContainer="flex-1"
-							label="Nome" 
-							name="name" 
-							value={formData.name} 
-							onChange={handleChange} 
-							required 
-						/>
-						<Input
-							customClassContainer="flex-1"
-							label="Cognome"
-							name="surname"
-							value={formData.surname}
-							onChange={handleChange}
-							required
-						/>
-					</div>
+					<Input
+						customClassContainer="flex-1"
+						label="Nome"
+						name="name"
+						value={formData.name}
+						onChange={handleChange}
+						required
+					/>
+					<Input
+						customClassContainer="flex-1"
+						label="Cognome"
+						name="surname"
+						value={formData.surname}
+						onChange={handleChange}
+						required
+					/>
 					
 					<Input
 						customClassContainer="w-full"
