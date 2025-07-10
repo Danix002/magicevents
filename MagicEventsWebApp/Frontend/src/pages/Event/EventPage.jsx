@@ -27,6 +27,7 @@ import { setAdmin, isAdmin } from '../../utils/utils';
 import Button from '../../components/buttons/Button';
 import clsx from 'clsx';
 import LoadingContainer from '../../components/error/LoadingContainer';
+import QRCodeGenerator from "../../components/buttons/qrGeneratorButton";
 
 const EventsPage = () => {
 	const { eventId } = useParams();
@@ -118,6 +119,7 @@ const EventsPage = () => {
 		)
 	) : (
 		<div className="h-full bg-gradient-to-br from-[#505458] to-[#363540] overflow-y-auto relative">
+			<QRCodeGenerator></QRCodeGenerator>
 			<Menu
 				onClose={() => setMenuOpen(false)}
 				onOpen={() => setMenuOpen(true)}
