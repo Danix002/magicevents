@@ -148,11 +148,13 @@ export function updateAdmins(eventId, newAdmins) {
 	);
 }
 
-export function updatePartecipants(eventId, newPartecipants) {
+export function updatePartecipants(
+	eventId,
+	newPartecipants,
+	magicEventTag = JSON.parse(sessionStorage.getItem('user')).magicEventTag
+) {
 	return fetch(
-		`${eventsManagementUrl}/gestion/addpartecipants?partecipants=${newPartecipants}&eventId=${eventId}&magicEventsTag=${
-			JSON.parse(sessionStorage.getItem('user')).magicEventTag
-		}`,
+		`${eventsManagementUrl}/gestion/addpartecipants?partecipants=${newPartecipants}&eventId=${eventId}&magicEventsTag=${magicEventTag}`,
 		{
 			method: 'PUT',
 			headers: {

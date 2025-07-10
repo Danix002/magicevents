@@ -119,7 +119,7 @@ const EventsPage = () => {
 		)
 	) : (
 		<div className="h-full bg-gradient-to-br from-[#505458] to-[#363540] overflow-y-auto relative">
-			<QRCodeGenerator></QRCodeGenerator>
+			<QRCodeGenerator isAdmin={isAdminVar}></QRCodeGenerator>
 			<Menu
 				onClose={() => setMenuOpen(false)}
 				onOpen={() => setMenuOpen(true)}
