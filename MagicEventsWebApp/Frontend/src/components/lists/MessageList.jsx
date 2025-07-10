@@ -49,8 +49,8 @@ const MessageList = ({
 	}
 
 	return (
-		<div id="board" className="flex p-6  flex-col     overflow-y-auto flex-auto pb-24  ">
-			<div className="absolute border-1 border-[#363540]  bottom-4 right-4 flex bg-[#505458]/50 backdrop-blur-2xl sm:w-[calc(100%-18rem)] w-[calc(100%-2rem)] rounded-full shadow-2xl  h-fit p-2">
+		<div id="board" className="flex p-6 flex-col overflow-y-auto flex-auto pb-24">
+			<div className="absolute border-1 border-[#363540] bottom-4 right-4 flex bg-[#505458]/50 backdrop-blur-2xl sm:w-[calc(100%-18rem)] w-[calc(100%-2rem)] rounded-full shadow-2xl  h-fit p-2">
 				<Input
 					name="message"
 					value={value}
@@ -60,7 +60,6 @@ const MessageList = ({
 				/>
 				<Button
 					onClick={() => {
-						//board.scrollTo({ left: 0, top: board.scrollHeight, behavior: 'smooth' });
 						onSend(value);
 					}}
 					custom="!rounded-full"

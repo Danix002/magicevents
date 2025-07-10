@@ -259,7 +259,7 @@ const BoardPage = () => {
 			{/* Chat Area */}
 			<div className={`flex-1 flex flex-col m-3 sm:m-4 lg:m-6 lg:mr-6 lg:ml-0 min-h-0 ${isKeyboardOpen ? 'mt-2' : ''}`}>
 				<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl shadow-xl h-full flex flex-col min-h-0 overflow-hidden">
-					<div className="flex-1 min-h-0 overflow-hidden">
+					<div className="flex-1 min-h-0 overflow-hidden flex flex-col">
 						<MessageList
 							isAdmin={isAdminVar}
 							displayOnloadMore={!messageFinish}
