@@ -136,130 +136,10 @@ const EventsPage = () => {
 		)
 	) : (
 		<div className="h-full bg-gradient-to-br from-[#505458] to-[#363540] overflow-hidden flex">
-			<QRCodeGenerator isAdmin={isAdminVar}></QRCodeGenerator>
+			<QRCodeGenerator isAdmin={isAdminVar} size="small"></QRCodeGenerator>
 			
-			{/* Fixed Sidebar */}
-			<div className="hidden lg:block w-80 bg-[#363540] border-r border-[#E4DCEF]/20 overflow-y-auto">
-				<div className="p-6">
-					<h2 className="text-xl font-bold text-[#E4DCEF] mb-6">Informazioni Evento</h2>
-					
-					{/* Participants Section */}
-					<div className="mb-8">
-						<h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-[#E4DCEF]">
-							<FontAwesomeIcon icon={faUsers} className="text-[#EE0E51]" />
-							Partecipanti ({event.partecipants.length + event.admins.length})
-						</h3>
-						
-						<div className="space-y-4">
-							<div>
-								<h4 className="text-sm font-medium text-[#E4DCEF] mb-2">Partecipanti ({event.partecipants.length})</h4>
-								<div className="max-h-32 overflow-y-auto space-y-2">
-									{event.partecipants.map((p, index) => (
-										<div key={index} className="bg-[#505458] rounded-lg p-2 flex items-center gap-2">
-											<div className="w-6 h-6 bg-[#EE0E51] rounded-full flex items-center justify-center text-white font-bold text-xs">
-												{p.charAt(0).toUpperCase()}
-											</div>
-											<span className="text-[#E4DCEF] text-sm">{p}</span>
-										</div>
-									))}
-								</div>
-							</div>
-							
-							<div>
-								<h4 className="text-sm font-medium text-[#E4DCEF] mb-2">Amministratori ({event.admins.length})</h4>
-								<div className="max-h-32 overflow-y-auto space-y-2">
-									{event.admins.map((p, index) => (
-										<div key={index} className="bg-[#505458] rounded-lg p-2 flex items-center gap-2">
-											<div className="w-6 h-6 bg-gradient-to-r from-[#EE0E51] to-[#ff4574] rounded-full flex items-center justify-center text-white font-bold text-xs">
-												{p.charAt(0).toUpperCase()}
-											</div>
-											<span className="text-[#E4DCEF] text-sm">{p}</span>
-										</div>
-									))}
-								</div>
-							</div>
-						</div>
-					</div>
-
-					{/* Map Section */}
-					{event.location && (
-						<div className="mb-8">
-							<h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-[#E4DCEF]">
-								<FontAwesomeIcon icon={faMapMarkerAlt} className="text-[#EE0E51]" />
-								Posizione
-							</h3>
-							<div className="border-2 border-[#E4DCEF]/20 rounded-lg overflow-hidden">
-								<APIProvider apiKey={'AIzaSyCsKyFbFFxOb4S8luivSquBE4Y3t36rznI'}>
-									<Map
-										key={lat + '--' + lng}
-										style={{ width: '100%', height: '200px' }}
-										defaultCenter={{ lat: lat, lng: lng }}
-										defaultZoom={15}
-										gestureHandling={'greedy'}
-										disableDefaultUI={true}
-									>
-										<Marker position={{ lat: lat ? lat : 0, lng: lng ? lng : 0 }} />
-									</Map>
-								</APIProvider>
-							</div>
-						</div>
-					)}
-
-					{/* Services Section */}
-					<div className="mb-8">
-						<h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-[#E4DCEF]">
-							<FontAwesomeIcon icon={faClipboard} className="text-[#EE0E51]" />
-							Servizi ({eventServices ? Object.values(eventServices).filter(Boolean).length : 0})
-						</h3>
-						
-						{eventServices ? (
-							<div className="space-y-2">
-								{eventServices.board && (
-									<NavLink to={`/${eventId}/board`} className="block">
-										<div className="bg-[#505458] hover:bg-[#EE0E51] transition-colors rounded-lg p-3 flex items-center justify-between group">
-											<div className="flex items-center gap-3">
-												<FontAwesomeIcon icon={faMessage} className="text-[#EE0E51] group-hover:text-white text-sm" />
-												<span className="text-[#E4DCEF] group-hover:text-white text-sm">Bacheca</span>
-											</div>
-											<FontAwesomeIcon icon={faArrowRight} className="text-[#E4DCEF] group-hover:text-white text-sm" />
-										</div>
-									</NavLink>
-								)}
-								{eventServices.gallery && (
-									<NavLink to={`/${eventId}/gallery`} className="block">
-										<div className="bg-[#505458] hover:bg-[#EE0E51] transition-colors rounded-lg p-3 flex items-center justify-between group">
-											<div className="flex items-center gap-3">
-												<FontAwesomeIcon icon={faImage} className="text-[#EE0E51] group-hover:text-white text-sm" />
-												<span className="text-[#E4DCEF] group-hover:text-white text-sm">Galleria</span>
-											</div>
-											<FontAwesomeIcon icon={faArrowRight} className="text-[#E4DCEF] group-hover:text-white text-sm" />
-										</div>
-									</NavLink>
-								)}
-								{eventServices.guestGame && (
-									<NavLink to={`/${eventId}/game`} className="block">
-										<div className="bg-[#505458] hover:bg-[#EE0E51] transition-colors rounded-lg p-3 flex items-center justify-between group">
-											<div className="flex items-center gap-3">
-												<FontAwesomeIcon icon={faGamepad} className="text-[#EE0E51] group-hover:text-white text-sm" />
-												<span className="text-[#E4DCEF] group-hover:text-white text-sm">Mystery Guest Game</span>
-											</div>
-											<FontAwesomeIcon icon={faArrowRight} className="text-[#E4DCEF] group-hover:text-white text-sm" />
-										</div>
-									</NavLink>
-								)}
-							</div>
-						) : (
-							<div className="text-center py-4">
-								<FontAwesomeIcon icon={faClipboard} className="text-2xl text-[#E4DCEF] opacity-50 mb-2" />
-								<p className="text-[#E4DCEF] text-sm">Errore nel caricamento</p>
-							</div>
-						)}
-					</div>
-				</div>
-			</div>
-
 			{/* Main Content */}
-			<div className="flex-1 overflow-y-auto">
+			<div className="flex-1 overflow-y-auto order-1">
 				<div className="p-4 md:p-6">
 					<div className="max-w-4xl mx-auto">
 						{/* Event Image */}
@@ -411,6 +291,126 @@ const EventsPage = () => {
 									onClickImage={(img) => openImagePopup(img.base64Image, img.title)}
 									images={popularImages}
 								/>
+							</div>
+						)}
+					</div>
+				</div>
+			</div>
+
+			 {/* Fixed Sidebar - Now on the right */}
+			<div className="hidden lg:block w-80 bg-[#363540] border-l border-[#E4DCEF]/20 overflow-y-auto order-2">
+				<div className="p-6">
+					<h2 className="text-xl font-bold text-[#E4DCEF] mb-6">Informazioni Evento</h2>
+					
+					{/* Participants Section */}
+					<div className="mb-8">
+						<h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-[#E4DCEF]">
+							<FontAwesomeIcon icon={faUsers} className="text-[#EE0E51]" />
+							Partecipanti ({event.partecipants.length + event.admins.length})
+						</h3>
+						
+						<div className="space-y-4">
+							<div>
+								<h4 className="text-sm font-medium text-[#E4DCEF] mb-2">Partecipanti ({event.partecipants.length})</h4>
+								<div className="max-h-32 overflow-y-auto space-y-2">
+									{event.partecipants.map((p, index) => (
+										<div key={index} className="bg-[#505458] rounded-lg p-2 flex items-center gap-2">
+											<div className="w-6 h-6 bg-[#EE0E51] rounded-full flex items-center justify-center text-white font-bold text-xs">
+												{p.charAt(0).toUpperCase()}
+											</div>
+											<span className="text-[#E4DCEF] text-sm">{p}</span>
+										</div>
+									))}
+								</div>
+							</div>
+							
+							<div>
+								<h4 className="text-sm font-medium text-[#E4DCEF] mb-2">Amministratori ({event.admins.length})</h4>
+								<div className="max-h-32 overflow-y-auto space-y-2">
+									{event.admins.map((p, index) => (
+										<div key={index} className="bg-[#505458] rounded-lg p-2 flex items-center gap-2">
+											<div className="w-6 h-6 bg-gradient-to-r from-[#EE0E51] to-[#ff4574] rounded-full flex items-center justify-center text-white font-bold text-xs">
+												{p.charAt(0).toUpperCase()}
+											</div>
+											<span className="text-[#E4DCEF] text-sm">{p}</span>
+										</div>
+									))}
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{/* Map Section */}
+					{event.location && (
+						<div className="mb-8">
+							<h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-[#E4DCEF]">
+								<FontAwesomeIcon icon={faMapMarkerAlt} className="text-[#EE0E51]" />
+								Posizione
+							</h3>
+							<div className="border-2 border-[#E4DCEF]/20 rounded-lg overflow-hidden">
+								<APIProvider apiKey={'AIzaSyCsKyFbFFxOb4S8luivSquBE4Y3t36rznI'}>
+									<Map
+										key={lat + '--' + lng}
+										style={{ width: '100%', height: '200px' }}
+										defaultCenter={{ lat: lat, lng: lng }}
+										defaultZoom={15}
+										gestureHandling={'greedy'}
+										disableDefaultUI={true}
+									>
+										<Marker position={{ lat: lat ? lat : 0, lng: lng ? lng : 0 }} />
+									</Map>
+								</APIProvider>
+							</div>
+						</div>
+					)}
+
+					{/* Services Section */}
+					<div className="mb-8">
+						<h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-[#E4DCEF]">
+							<FontAwesomeIcon icon={faClipboard} className="text-[#EE0E51]" />
+							Servizi ({eventServices ? Object.values(eventServices).filter(Boolean).length : 0})
+						</h3>
+						
+						{eventServices ? (
+							<div className="space-y-2">
+								{eventServices.board && (
+									<NavLink to={`/${eventId}/board`} className="block">
+										<div className="bg-[#505458] hover:bg-[#EE0E51] transition-colors rounded-lg p-3 flex items-center justify-between group">
+											<div className="flex items-center gap-3">
+												<FontAwesomeIcon icon={faMessage} className="text-[#EE0E51] group-hover:text-white text-sm" />
+												<span className="text-[#E4DCEF] group-hover:text-white text-sm">Bacheca</span>
+											</div>
+											<FontAwesomeIcon icon={faArrowRight} className="text-[#E4DCEF] group-hover:text-white text-sm" />
+										</div>
+									</NavLink>
+								)}
+								{eventServices.gallery && (
+									<NavLink to={`/${eventId}/gallery`} className="block">
+										<div className="bg-[#505458] hover:bg-[#EE0E51] transition-colors rounded-lg p-3 flex items-center justify-between group">
+											<div className="flex items-center gap-3">
+												<FontAwesomeIcon icon={faImage} className="text-[#EE0E51] group-hover:text-white text-sm" />
+												<span className="text-[#E4DCEF] group-hover:text-white text-sm">Galleria</span>
+											</div>
+											<FontAwesomeIcon icon={faArrowRight} className="text-[#E4DCEF] group-hover:text-white text-sm" />
+										</div>
+									</NavLink>
+								)}
+								{eventServices.guestGame && (
+									<NavLink to={`/${eventId}/game`} className="block">
+										<div className="bg-[#505458] hover:bg-[#EE0E51] transition-colors rounded-lg p-3 flex items-center justify-between group">
+											<div className="flex items-center gap-3">
+												<FontAwesomeIcon icon={faGamepad} className="text-[#EE0E51] group-hover:text-white text-sm" />
+												<span className="text-[#E4DCEF] group-hover:text-white text-sm">Mystery Guest Game</span>
+											</div>
+											<FontAwesomeIcon icon={faArrowRight} className="text-[#E4DCEF] group-hover:text-white text-sm" />
+										</div>
+									</NavLink>
+								)}
+							</div>
+						) : (
+							<div className="text-center py-4">
+								<FontAwesomeIcon icon={faClipboard} className="text-2xl text-[#E4DCEF] opacity-50 mb-2" />
+								<p className="text-[#E4DCEF] text-sm">Errore nel caricamento</p>
 							</div>
 						)}
 					</div>
