@@ -176,35 +176,35 @@ const BoardPage = () => {
 	return loading ? (
 		<LoadingContainer />
 	) : (
-		<div className="h-full bg-gradient-to-br from-[#505458] to-[#363540] sm:flex sm:flex-row">
+		<div className="h-full bg-gradient-to-br from-[#505458] to-[#363540] flex flex-col lg:flex-row">
 			{/* Desktop Sidebar */}
-			<div className="hidden lg:flex lg:w-80 xl:w-96">
-				<div className="m-6 w-full">
+			<div className="hidden lg:flex lg:w-80 xl:w-96 flex-shrink-0">
+				<div className="m-4 lg:m-6 w-full">
 					<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl shadow-xl h-full flex flex-col">
 						{/* Header */}
-						<div className="p-6 border-b border-[#E4DCEF] border-opacity-20">
+						<div className="p-4 lg:p-6 border-b border-[#E4DCEF] border-opacity-20">
 							<Button
 								onClick={() => navigate('/' + eventId)}
-								custom="!bg-[#363540] !text-white hover:!bg-[#EE0E51] transition-all duration-300 !rounded-full !p-3 mb-4"
-								text={<FontAwesomeIcon icon={faArrowLeft} />}
+								custom="!bg-[#363540] !text-white hover:!bg-[#EE0E51] transition-all duration-300 !rounded-full !p-2 lg:!p-3 mb-3 lg:mb-4"
+								text={<FontAwesomeIcon icon={faArrowLeft} className="text-sm lg:text-base" />}
 							/>
-							<div className="flex items-center gap-3 mb-4">
-								<div className="w-10 h-10 bg-gradient-to-r from-[#EE0E51] to-[#FF6B9D] rounded-full flex items-center justify-center">
-									<FontAwesomeIcon icon={faComments} className="text-white" />
+							<div className="flex items-center gap-2 lg:gap-3 mb-3 lg:mb-4">
+								<div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-[#EE0E51] to-[#FF6B9D] rounded-full flex items-center justify-center">
+									<FontAwesomeIcon icon={faComments} className="text-white text-sm lg:text-base" />
 								</div>
-								<h1 className="text-xl font-bold text-[#1a1a1a]">{title}</h1>
+								<h1 className="text-lg lg:text-xl font-bold text-[#1a1a1a] leading-tight">{title}</h1>
 							</div>
-							<p className="text-[#1a1a1a] text-opacity-70 text-sm leading-relaxed">{description}</p>
+							<p className="text-[#1a1a1a] text-opacity-70 text-xs lg:text-sm leading-relaxed">{description}</p>
 						</div>
 
 						{/* Event Info */}
-						<div className="p-6 flex-1">
-							<div className="bg-[#EE0E51] bg-opacity-10 rounded-xl p-4">
-								<div className="flex justify-center mb-2">
-									<FontAwesomeIcon icon={faUsers} className="text-black" />
-									<span className="text-sm font-medium text-[#E4DCEF]">Bacheca</span>
+						<div className="p-4 lg:p-6 flex-1">
+							<div className="bg-[#EE0E51] bg-opacity-10 rounded-xl p-3 lg:p-4">
+								<div className="flex items-center justify-center gap-2 mb-2">
+									<FontAwesomeIcon icon={faUsers} className="text-black text-sm" />
+									<span className="text-xs lg:text-sm font-medium text-[#E4DCEF]">Bacheca</span>
 								</div>
-								<p className="text-xs text-[#E4DCEF] text-opacity-70">
+								<p className="text-xs text-[#E4DCEF] text-opacity-70 text-center">
 									Condividi pensieri e aggiornamenti con tutti i partecipanti
 								</p>
 							</div>
@@ -214,33 +214,33 @@ const BoardPage = () => {
 			</div>
 
 			{/* Mobile Header */}
-			<div className="lg:hidden absolute top-0 left-0 right-0 z-10">
-				<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl shadow-lg p-4">
-					<div className="flex items-center gap-3">
-						<Button 
-							onClick={() => navigate('/' + eventId)} 
-							custom="!bg-[#363540] !text-white hover:!bg-[#EE0E51] transition-all duration-300 !rounded-full !p-2"
-							text={<FontAwesomeIcon icon={faArrowLeft} />}
-						/>
-						<div>
-							<h1 className="font-bold text-[#1a1a1a] text-lg">{title}</h1>
-							<p className="text-xs text-[#1a1a1a] text-opacity-70 line-clamp-1">{description}</p>
-						</div>
+			<div className="lg:hidden bg-white bg-opacity-10 backdrop-blur-sm shadow-lg p-3 sm:p-4 m-3 sm:m-4 rounded-xl">
+				<div className="flex items-center gap-2 sm:gap-3">
+					<Button 
+						onClick={() => navigate('/' + eventId)} 
+						custom="!bg-[#363540] !text-white hover:!bg-[#EE0E51] transition-all duration-300 !rounded-full !p-2 sm:!p-3"
+						text={<FontAwesomeIcon icon={faArrowLeft} className="text-sm sm:text-base" />}
+					/>
+					<div className="min-w-0 flex-1">
+						<h1 className="font-bold text-[#1a1a1a] text-base sm:text-lg truncate">{title}</h1>
+						<p className="text-xs sm:text-sm text-[#1a1a1a] text-opacity-70 line-clamp-1">{description}</p>
 					</div>
 				</div>
 			</div>
 
 			{/* Chat Area */}
-			<div className="flex-1 flex flex-col lg:m-6 lg:mr-6">
-				<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl shadow-xl h-full flex flex-col lg:mt-0 mt-20">
-					<MessageList
-						isAdmin={isAdminVar}
-						displayOnloadMore={!messageFinish}
-						onLoadMore={loadMore}
-						onSend={(value) => sendMessage(value)}
-						messages={messages}
-						onDelete={deleteMessage}
-					/>
+			<div className="flex-1 flex flex-col m-3 sm:m-4 lg:m-6 lg:mr-6 lg:ml-0 min-h-0">
+				<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl shadow-xl h-full flex flex-col min-h-0">
+					<div className="flex-1 min-h-0">
+						<MessageList
+							isAdmin={isAdminVar}
+							displayOnloadMore={!messageFinish}
+							onLoadMore={loadMore}
+							onSend={(value) => sendMessage(value)}
+							messages={messages}
+							onDelete={deleteMessage}
+						/>
+					</div>
 				</div>
 			</div>
 		</div>

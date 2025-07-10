@@ -16,15 +16,15 @@ const GamePage = () => {
 
 	useEffect(() => {
 		async function fetchAPI() {
-			const isInGameAPI = await isDataInGame(eventId);
-			const res1 = await isInGameAPI.json();
-
-			if (!res1) {
-				navigate(`/${eventId}/game/form`);
-				return;
-			}
-
 			try {
+				const isInGameAPI = await isDataInGame(eventId);
+				const res1 = await isInGameAPI.json();
+
+				if (!res1) {
+					navigate(`/${eventId}/game/form`);
+					return;
+				}
+
 				const res = await getGame(eventId);
 				const res2 = await res.json();
 				setTree(res2.root);
@@ -38,7 +38,7 @@ const GamePage = () => {
 		}
 
 		fetchAPI();
-	}, [eventId]);
+	}, [eventId, navigate]);
 
 	const LoadingState = () => (
 		<div className="min-h-screen flex flex-col items-center justify-center p-4">

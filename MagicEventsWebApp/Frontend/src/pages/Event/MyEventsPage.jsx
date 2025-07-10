@@ -42,28 +42,28 @@ const MyEventsPage = () => {
 	return (
 		<div className="h-full overflow-y-auto bg-gradient-to-br from-[#505458] to-[#363540]">
 			{/* Header Section */}
-			<div className="bg-gradient-to-r from-[#EE0E51] to-[#ff4574] p-6 shadow-lg">
+			<div className="bg-gradient-to-r from-[#EE0E51] to-[#ff4574] p-3 sm:p-6 shadow-lg">
 				<div className="max-w-6xl mx-auto">
-					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-						<div className="flex items-center gap-4">
-							<div className="p-3 bg-white bg-opacity-20 rounded-full">
-								<FontAwesomeIcon icon={faBoxArchive} className="text-2xl text-[#505458]" />
+					<div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
+						<div className="flex items-center gap-3 sm:gap-4">
+							<div className="p-2 sm:p-3 bg-white bg-opacity-20 rounded-full">
+								<FontAwesomeIcon icon={faBoxArchive} className="text-lg sm:text-2xl text-[#505458]" />
 							</div>
 							<div>
-								<h1 className="text-3xl font-bold text-white">I Miei Eventi</h1>
-								<p className="text-white text-opacity-90">Gestisci tutti i tuoi eventi</p>
+								<h1 className="text-xl sm:text-3xl font-bold text-white">I Miei Eventi</h1>
+								<p className="text-sm sm:text-base text-white text-opacity-90">Gestisci tutti i tuoi eventi</p>
 							</div>
 						</div>
 						
-						<NavLink to="/newevent">
+						<NavLink to="/newevent" className="w-full sm:w-auto">
 							<Button 
 								text={
-									<div className="flex items-center gap-2">
+									<div className="flex items-center justify-center gap-2">
 										<FontAwesomeIcon icon={faCalendarPlus} />
 										<span>Crea Evento</span>
 									</div>
 								}
-								custom="bg-white text-[#EE0E51] hover:bg-gray-100 border-white hover:border-gray-100 font-semibold px-6 py-3"
+								custom="w-full sm:w-auto bg-white text-[#EE0E51] hover:bg-gray-100 border-white hover:border-gray-100 font-semibold px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base"
 							/>
 						</NavLink>
 					</div>
@@ -71,7 +71,7 @@ const MyEventsPage = () => {
 			</div>
 
 			{/* Content */}
-			<div className="p-4 md:p-6">
+			<div className="p-3 sm:p-4 md:p-6">
 				<div className="max-w-6xl mx-auto">
 					{loading ? (
 						<div className="flex flex-col items-center justify-center py-16">
@@ -85,18 +85,18 @@ const MyEventsPage = () => {
 							</div>
 						) : (
 							<div className="text-center py-16">
-								<div className="mb-8">
-									<div className="mx-auto w-24 h-24 bg-[#E4DCEF] bg-opacity-20 rounded-full flex items-center justify-center mb-4">
-										<FontAwesomeIcon icon={faCalendarPlus} className="text-4xl text-[#505458]" />
+								<div className="mb-6 sm:mb-8">
+									<div className="mx-auto w-16 h-16 sm:w-24 sm:h-24 bg-[#E4DCEF] bg-opacity-20 rounded-full flex items-center justify-center mb-4">
+										<FontAwesomeIcon icon={faCalendarPlus} className="text-2xl sm:text-4xl text-[#505458]" />
 									</div>
-									<h3 className="text-2xl font-bold text-[#E4DCEF] mb-2">Non hai creato ancora nessun evento</h3>
-									<p className="text-[#E4DCEF] text-opacity-70 mb-6 max-w-md mx-auto">
+									<h3 className="text-xl sm:text-2xl font-bold text-[#E4DCEF] mb-2">Non hai creato ancora nessun evento</h3>
+									<p className="text-sm sm:text-base text-[#E4DCEF] text-opacity-70 mb-4 sm:mb-6 max-w-md mx-auto px-4 sm:px-0">
 										Inizia a creare il tuo primo evento per condividere momenti speciali con amici e famiglia
 									</p>
 									<NavLink to="/newevent">
 										<Button 
 											text="Crea il tuo primo evento"
-											custom="px-8 py-3 text-lg font-semibold"
+											custom="px-6 py-2 sm:px-8 sm:py-3 text-base sm:text-lg font-semibold"
 										/>
 									</NavLink>
 								</div>
@@ -111,7 +111,7 @@ const MyEventsPage = () => {
 							<Button 
 								text="Riprova"
 								onClick={() => window.location.reload()}
-								custom="mt-4 px-6 py-2"
+								custom="mt-4 px-4 py-2 sm:px-6 sm:py-2 text-sm sm:text-base"
 							/>
 						</div>
 					)}

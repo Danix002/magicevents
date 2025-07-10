@@ -294,6 +294,12 @@ const GalleryPage = () => {
 			<div className="mb-8">
 				<div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl shadow-xl p-6">
 					<h2 className="text-xl sm:text-2xl font-semibold text-[#1a1a1a] mb-6">Tutte le Immagini</h2>
+					
+					{/* Drag and Drop Component */}
+					<div className="mb-6">
+						<ImageDrop onSend={(title, image) => sendImage(title, image)}/>
+					</div>
+					
 					<ImageGrid
 						isAdmin={isAdminVar}
 						displayOnloadMore={!messageFinish}
@@ -302,7 +308,6 @@ const GalleryPage = () => {
 						onLike={(img) => likeImage(img)}
 						onDelete={(img) => deleteImage(img)}
 						images={images}
-						prepend={<ImageDrop onSend={(title, image) => sendImage(title, image)}/>}
 					/>
 				</div>
 			</div>
