@@ -92,27 +92,28 @@ function UserEditPage({ setLogged }) {
 									img.startsWith('http')
 										? img.replace(/'+$/, '')
 										: img.startsWith('/default-avatar.png')
-										? img
-										: 'data:image/*;base64,' + img
+											? img
+											: 'data:image/*;base64,' + img
 								}
 								alt="Profile"
 								className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
 							/>
-							<div className="absolute inset-0 bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+							<div
+								className="absolute inset-0 bg-opacity-50 rounded-full opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10">
 								<div className="flex gap-2">
 									<button
 										onClick={() => setEditingImage(true)}
-										className="p-2 bg-white bg-opacity-75 rounded-full text-[#505458] hover:text-[#363540] shadow-md transition-colors"
+										className="p-3 sm:p-2 bg-white bg-opacity-75 rounded-full text-[#505458] hover:text-[#363540] shadow-md transition-colors"
 										aria-label="Modifica immagine"
 									>
-										<FontAwesomeIcon icon={faEdit} />
+										<FontAwesomeIcon icon={faEdit}/>
 									</button>
 									<button
 										onClick={handleRemoveImage}
-										className="p-2 bg-white bg-opacity-75 rounded-full text-[#505458] hover:text-[#363540] shadow-md transition-colors"
+										className="p-3 sm:p-2 bg-white bg-opacity-75 rounded-full text-[#505458] hover:text-[#363540] shadow-md transition-colors"
 										aria-label="Rimuovi immagine"
 									>
-										<FontAwesomeIcon icon={faClose} />
+										<FontAwesomeIcon icon={faClose}/>
 									</button>
 								</div>
 							</div>
@@ -123,7 +124,8 @@ function UserEditPage({ setLogged }) {
 								<Input
 									onChange={handleChangeImage}
 									ref={imgInput}
-									label={<label className="block text-sm font-medium mb-1 text-[#363540]">Modifica immagine</label>}
+									label={<label className="block text-sm font-medium mb-1 text-[#363540]">Modifica
+										immagine</label>}
 									name="immagine"
 									type="file"
 									accept="image/*"
@@ -134,7 +136,7 @@ function UserEditPage({ setLogged }) {
 												imgInput.current.value = '';
 												setEditingImage(false);
 											}}
-											text={<FontAwesomeIcon icon={faClose} className="text-black" />}
+											text={<FontAwesomeIcon icon={faClose} className="text-black"/>}
 										/>
 									}
 								/>

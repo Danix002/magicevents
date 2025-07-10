@@ -44,7 +44,8 @@ function App() {
 			<NavBar
 				logo={
 					<NavLink to="/" className="flex items-center gap-2 hover:scale-105 transition-transform">
-						<FontAwesomeIcon icon="fa-solid fa-sparkles" className="text-2xl"  color="#EE0E51" />
+						<FontAwesomeIcon icon="fa-solid fa-sparkles" className="text-2xl" color="#EE0E51"/>
+						<span className="block sm:hidden text-xl font-bold text-[#E4DCEF]">✨</span>
 						<span className="hidden sm:block text-xl font-bold text-[#E4DCEF]">magicevents</span>
 					</NavLink>
 				}
@@ -52,7 +53,7 @@ function App() {
 					!logged ? (
 						<div className="flex gap-2">
 							<NavLink to="/login">
-								<Button 
+								<Button
 									text="Login"
 									custom="px-6 py-2 font-semibold"
 								/>
@@ -69,8 +70,12 @@ function App() {
 						<div className="flex gap-2 items-center">
 							<LogoutButton setLogged={setLogged}></LogoutButton>
 							<NavLink to="/userprofile">
-								<button className="inline-flex items-center px-4 py-1 bg-[#E4DCEF] text-[#363540] inner-shadow cursor-pointer hover:scale-105 rounded-full max-h-[40px] overflow-hidden text-ellipsis whitespace-nowrap">
-									{JSON.parse(sessionStorage.getItem('user')).username}
+								<button
+									className="w-25 sm:w-fit items-center px-4 py-1 bg-[#E4DCEF] text-[#363540] inner-shadow cursor-pointer hover:scale-105 rounded-full max-h-[40px] overflow-hidden whitespace-nowrap text-ellipsis"
+								>
+									<p className="text-[12px] max-w-[15rem] truncate">
+										{JSON.parse(sessionStorage.getItem('user')).username}
+									</p>
 								</button>
 							</NavLink>
 						</div>
@@ -81,7 +86,7 @@ function App() {
 					<Button
 						text={
 							<div className="flex max-sm:flex-col gap-2 justify-center items-center">
-								<FontAwesomeIcon className="text-lg" icon={faBoxArchive} />{' '}
+								<FontAwesomeIcon className="text-lg" icon={faBoxArchive}/>{' '}
 								<p className="max-sm:text-[0.6rem]">I miei eventi</p>
 							</div>
 						}

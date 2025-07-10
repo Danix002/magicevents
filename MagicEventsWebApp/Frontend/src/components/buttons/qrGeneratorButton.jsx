@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Button from './Button';
 import { generateQRCodeForEvent } from '../../api/qrGenerator';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faQrcode} from '@fortawesome/free-solid-svg-icons'
 
 const QRCodeGenerator = ({
                              isAdmin = false
@@ -23,14 +25,15 @@ const QRCodeGenerator = ({
     };
 
     return (
-        <div className="flex flex-col items-center p-4 gap-4">
+        <div className="flex flex-col w-fit items-center p-4 gap-4">
             {isAdmin && (
                 <>
                     {!qrUrl && (
                         <Button
-                            text={loading ? 'Generazione...' : 'Genera QR Evento'}
+                            text={loading ? 'Generazione...' : <FontAwesomeIcon icon={faQrcode} className="text-[#1a1a1a] text-3xl"/>}
                             onClick={handleGenerate}
                             disabled={loading}
+                            custom="!px-6 !py-3 !rounded-full !text-xl !bg-[#E4DCEF] !text-[#1a1a1a] hover:!scale-105 transition-all"
                         />
                     )}
                     {qrUrl && (

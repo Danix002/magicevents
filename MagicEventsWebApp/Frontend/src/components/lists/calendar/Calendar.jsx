@@ -8,7 +8,7 @@ const Calendar = ({ days }) => {
 	const items = days;
 	const listItems = items.map((mex) => <CalendarDay key={mex.day} day={mex}/>);
 
-	return <div className="grid grid-cols-2  md:grid-cols-5 md:grid-rows-2  p-1">{listItems}</div>;
+	return <div className="grid grid-cols-2 md:grid-cols-5 md:grid-rows-2 p-1">{listItems}</div>;
 };
 
 export default Calendar;

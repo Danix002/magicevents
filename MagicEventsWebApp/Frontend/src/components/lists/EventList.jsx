@@ -10,11 +10,13 @@ const EventList = ({ events = [] }) => {
 				</p>
 			) : (
 				events.map((event, idx) => (
-					<EventCard key={idx} {...event} />
+					<div key={idx} className="mb-6">
+						<EventCard key={idx} {...event} />
+					</div>
 				))
 			)}
-		</div>
-	);
+			</div>
+		);
 };
 
 export default EventList;

@@ -24,15 +24,15 @@ const ImageList = ({
 	));
 
 	return (
-		<div className="p-2 flex flex-col  !h-fit ">
+		<div className="p-2 flex flex-col !h-fit ">
 			<h1 className="font-bold text-xl">Popolari</h1>
 			{listItems.length > 0 ? (
-				<div className=" snap-x w-full  flex flex-row gap-2 p-4 overflow-x-auto   ">
+				<div className="w-full grid grid-cols-2 md:grid-cols-4 gap-2 p-4">
 					{listItems}
 					{displayOnloadMore ? <Button onClick={onLoadMore} custom=" " text="Carica più immagini" /> : ''}
 				</div>
 			) : (
-				<div className=" bg-[#505458]/50 backdrop-blur-4xl snap-x w-full   text-[#E8F2FC] rounded-md  flex flex-row gap-2 p-2 overflow-x-auto ">
+				<div className=" bg-[#505458]/50 backdrop-blur-4xl snap-x w-full text-[#E8F2FC] rounded-md  flex flex-row gap-2 p-2 overflow-x-auto ">
 					Nessuna immagine popolare
 				</div>
 			)}

@@ -14,6 +14,8 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(Arrays.asList(
+                "ws://italiamagicevents.it",
+                "wss://italiamagicevents.it",
                 "https://italiamagicevents.it",
                 "http://italiamagicevents.it"
         ));

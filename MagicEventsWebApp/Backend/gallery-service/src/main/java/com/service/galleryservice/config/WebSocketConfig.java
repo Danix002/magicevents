@@ -34,10 +34,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         // Endpoint for clients to connect
         registry.addEndpoint("/gallery")
                 .setAllowedOriginPatterns(
-                        "http://localhost:3000",
-                        "https://localhost:3000",
-                        "https://italiamagicevents.it:3000",
-                        "http://italiamagicevents.it:3000"
+                        "https://italiamagicevents.it",
+                        "http://italiamagicevents.it"
                 )
                 .withSockJS(); // Enable SockJS fallback
     }
