@@ -27,7 +27,7 @@
 		"web-vitals": "^2.1.4"
 	},
 	"scripts": {
-		"start": "cross-env HOST=0.0.0.0 HTTPS=true SSL_CRT_FILE=certs/fullchain.pem SSL_KEY_FILE=certs/private.key react-scripts start",
+		"start": "cross-env HOST=0.0.0.0 PORT=443 HTTPS=true SSL_CRT_FILE=certs/fullchain.pem SSL_KEY_FILE=certs/private.key react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"

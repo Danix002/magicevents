@@ -8,7 +8,7 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 import Input from '../inputs/Input';
 import { useDropzone } from 'react-dropzone';
 
-const ImageDropImage = ({ onSend }) => {
+const ImageDrop = ({ onSend }) => {
 	const addImageRef = useRef(null);
 	const [image, setImage] = useState('');
 	const [title, setTitle] = useState('');
@@ -30,7 +30,7 @@ const ImageDropImage = ({ onSend }) => {
 
 		let reader = new FileReader();
 		const options = {
-			maxSizeMB: 0.02, // Massimo 50KB
+			maxSizeMB: 0.04, // Massimo 50KB
 			maxWidthOrHeight: 800, // Massimo 800px
 			useWebWorker: true, // Usa Web Worker per non bloccare l'UI
 			fileType: 'image/jpeg', // Forza JPEG per migliore compressione
@@ -73,18 +73,18 @@ const ImageDropImage = ({ onSend }) => {
 		<Popup
 			title="Invia un'immagine"
 			children={
-				<div className="flex flex-col  items-center justify-center p-2 ">
+				<div className="flex flex-col items-center justify-center p-2">
 					{!image ? (
 						<button
 							{...getRootProps({ className: 'dropzone' })}
 							onClick={onClick}
-							className="border-3 border-[#E4DCEF] border-dashed  rounded-md w-full aspect-4/5 "
+							className="border-3 border-[#E4DCEF] border-dashed rounded-md w-full aspect-4/5"
 						>
 							Drag&Drop
 						</button>
 					) : (
 						<div className="space-y-4">
-							<div className="h-fit ring-2 ring-offset-1 rounded-md  ring-[#E4DCEF] relative">
+							<div className="h-fit ring-2 ring-offset-1 rounded-md ring-[#E4DCEF] relative">
 								<img
 									className="aspect-4/5 object-cover h-64 w-full"
 									src={'data:image/*;base64,' + image}
@@ -93,12 +93,12 @@ const ImageDropImage = ({ onSend }) => {
 								<Button
 									secondary
 									onClick={deselectImage}
-									custom="absolute right-2 bottom-2 !px-2 h-8 flex items-center justify-center  shadow-[20rem] !rounded-full "
+									custom="absolute right-2 bottom-2 !px-2 h-8 flex items-center justify-center shadow-[20rem] !rounded-full "
 									text={<FontAwesomeIcon className="text-xl" icon={faClose} />}
 								></Button>
 								<Button
 									onClick={() => send()}
-									custom="absolute right-12 bottom-2 !px-6  h-8 flex items-center justify-center  shadow-[20rem] !rounded-full "
+									custom="absolute right-12 bottom-2 !px-6  h-8 flex items-center justify-center shadow-[20rem] !rounded-full "
 									text={'Invia'}
 								></Button>
 							</div>
@@ -111,7 +111,6 @@ const ImageDropImage = ({ onSend }) => {
 							<p className="text-xs text-[#EE0E51] ">{error}</p>
 						</div>
 					)}
-
 					<input
 						{...getInputProps()}
 						onChange={selectImage}
@@ -126,4 +125,4 @@ const ImageDropImage = ({ onSend }) => {
 	);
 };
 
-export default ImageDropImage;
+export default ImageDrop;

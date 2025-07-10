@@ -66,21 +66,6 @@ const ImageCard = ({ mex, onLike, onDelete, onClick, isAdmin = false }) => {
 					)}
 				</div>
 			</div>
-
-			{/* Admin delete button (always visible for admins) */}
-			{isAdmin && (
-				<div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-					<Button
-						onClick={(e) => {
-							e.preventDefault();
-							e.stopPropagation();
-							onDelete(mex);
-						}}
-						custom="!bg-red-500/80 !backdrop-blur-sm !border-none !rounded-full !p-2 hover:!bg-red-600 transition-all duration-200"
-						text={<FontAwesomeIcon icon={faTrash} className="text-white text-xs" />}
-					/>
-				</div>
-			)}
 		</div>
 	);
 };

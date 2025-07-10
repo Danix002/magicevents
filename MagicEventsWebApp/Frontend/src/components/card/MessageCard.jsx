@@ -60,7 +60,7 @@ const MessageCard = ({
 						<Button
 							onClick={() => onDelete(message)}
 							custom={clsx(
-								'opacity-0 group-hover:opacity-100 transition-all duration-300 !p-2 !rounded-full hover:scale-110',
+								'opacity-100 lg:opacity-0 group-hover:lg:opacity-100 transition-all duration-300 !p-2 !rounded-full hover:scale-110',
 								{
 									'!bg-white/20 hover:!bg-white/30 !text-white': isSendbyMe,
 									'!bg-red-50 hover:!bg-red-100 !text-red-500': !isSendbyMe,

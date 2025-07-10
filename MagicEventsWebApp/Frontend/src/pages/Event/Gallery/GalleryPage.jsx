@@ -9,7 +9,7 @@ import ImageGrid from '../../../components/images-component/ImageGrid';
 import Button from '../../../components/buttons/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faClose, faHeart, faDownload } from '@fortawesome/free-solid-svg-icons';
-import ImageDropImage from '../../../components/popup/ImageDropImage';
+import ImageDrop from '../../../components/popup/ImageDrop';
 import clsx from 'clsx';
 import { isAdmin, url } from '../../../utils/utils';
 import LoadingContainer from '../../../components/error/LoadingContainer';
@@ -302,11 +302,10 @@ const GalleryPage = () => {
 						onLike={(img) => likeImage(img)}
 						onDelete={(img) => deleteImage(img)}
 						images={images}
+						prepend={<ImageDrop onSend={(title, image) => sendImage(title, image)}/>}
 					/>
 				</div>
 			</div>
-
-			<ImageDropImage onSend={(title, image) => sendImage(title, image)} />
 
 			{/* Enhanced Image Popup */}
 			<div
@@ -316,7 +315,7 @@ const GalleryPage = () => {
 				})}
 				onClick={() => setOpenPopup(false)}
 			>
-				<div 
+				<div
 					className="relative max-w-4xl max-h-[90vh] w-full bg-[#363540] rounded-2xl overflow-hidden shadow-2xl"
 					onClick={(e) => e.stopPropagation()}
 				>

@@ -17,7 +17,7 @@ public class LoginController {
 
     private String clientProtocol;
 
-    @Value("${client.url:localhost:3000}")
+    @Value("${client.url}")
     private String clientUrl;
 
     public LoginController(AuthService authService) {

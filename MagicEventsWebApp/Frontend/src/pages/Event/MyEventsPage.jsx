@@ -80,7 +80,7 @@ const MyEventsPage = () => {
 						</div>
 					) : ready ? (
 						events.length > 0 ? (
-							<div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
+							<div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl p-2 shadow-xl">
 								<EventList events={events} />
 							</div>
 						) : (

@@ -176,15 +176,15 @@ const BoardPage = () => {
 	return loading ? (
 		<LoadingContainer />
 	) : (
-		<div className="h-screen bg-gradient-to-br from-[#505458] to-[#363540] flex">
+		<div className="h-full bg-gradient-to-br from-[#505458] to-[#363540] sm:flex sm:flex-row">
 			{/* Desktop Sidebar */}
 			<div className="hidden lg:flex lg:w-80 xl:w-96">
 				<div className="m-6 w-full">
 					<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl shadow-xl h-full flex flex-col">
 						{/* Header */}
 						<div className="p-6 border-b border-[#E4DCEF] border-opacity-20">
-							<Button 
-								onClick={() => navigate('/' + eventId)} 
+							<Button
+								onClick={() => navigate('/' + eventId)}
 								custom="!bg-[#363540] !text-white hover:!bg-[#EE0E51] transition-all duration-300 !rounded-full !p-3 mb-4"
 								text={<FontAwesomeIcon icon={faArrowLeft} />}
 							/>
@@ -196,7 +196,7 @@ const BoardPage = () => {
 							</div>
 							<p className="text-[#1a1a1a] text-opacity-70 text-sm leading-relaxed">{description}</p>
 						</div>
-						
+
 						{/* Event Info */}
 						<div className="p-6 flex-1">
 							<div className="bg-[#EE0E51] bg-opacity-10 rounded-xl p-4">
@@ -214,7 +214,7 @@ const BoardPage = () => {
 			</div>
 
 			{/* Mobile Header */}
-			<div className="lg:hidden absolute top-0 left-0 right-0 z-10 p-4">
+			<div className="lg:hidden absolute top-0 left-0 right-0 z-10">
 				<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl shadow-lg p-4">
 					<div className="flex items-center gap-3">
 						<Button 
@@ -223,8 +223,8 @@ const BoardPage = () => {
 							text={<FontAwesomeIcon icon={faArrowLeft} />}
 						/>
 						<div>
-							<h1 className="font-bold text-[#E4DCEF] text-lg">{title}</h1>
-							<p className="text-xs text-[#E4DCEF] text-opacity-70 line-clamp-1">{description}</p>
+							<h1 className="font-bold text-[#1a1a1a] text-lg">{title}</h1>
+							<p className="text-xs text-[#1a1a1a] text-opacity-70 line-clamp-1">{description}</p>
 						</div>
 					</div>
 				</div>

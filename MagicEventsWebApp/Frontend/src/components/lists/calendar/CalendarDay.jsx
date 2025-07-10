@@ -26,7 +26,7 @@ const CalendarDay = ({ day }) => {
 						<div className="flex gap-2 items-center ">
 							<div className="h-4 w-4 bg-[#E4DCEF] group-first:bg-[#EE0E51] rounded-full"></div>
 							<p
-								className="text-[#E4DCEF] group-first:text-[#363540] font-bold text-[12px] max-w-[15rem]  text-ellipsis break-words line-clamp-1  underline"
+								className="text-[#E4DCEF] group-first:text-[#363540] font-bold text-[12px] max-w-[5rem] sm:max-w-[7rem] text-ellipsis break-words line-clamp-1 underline"
 								onClick={async () => {
 									try {
 										const dayConverted = convertDayToISO(day);
