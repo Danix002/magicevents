@@ -22,14 +22,42 @@ const BoardPage = () => {
 	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
 	const [page, setPage] = useState(0);
-
 	const [messageFinish, setMessageFinish] = useState(false);
-
 	const { eventId } = useParams();
-
 	const [isAdminVar, setIsAdminVar] = useState(isAdmin(eventId));
-
 	const boardUrl = `https://${url}:8081`;
+	const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+
+	// Handle mobile keyboard detection
+	useEffect(() => {
+		const handleResize = () => {
+			const windowHeight = window.innerHeight;
+			const documentHeight = document.documentElement.clientHeight;
+			const threshold = 150; // Threshold to detect keyboard
+			
+			setIsKeyboardOpen(documentHeight - windowHeight > threshold);
+		};
+
+		const handleVisualViewport = () => {
+			if (window.visualViewport) {
+				const { height } = window.visualViewport;
+				const windowHeight = window.innerHeight;
+				setIsKeyboardOpen(windowHeight - height > 150);
+			}
+		};
+
+		window.addEventListener('resize', handleResize);
+		if (window.visualViewport) {
+			window.visualViewport.addEventListener('resize', handleVisualViewport);
+		}
+
+		return () => {
+			window.removeEventListener('resize', handleResize);
+			if (window.visualViewport) {
+				window.visualViewport.removeEventListener('resize', handleVisualViewport);
+			}
+		};
+	}, []);
 
 	async function loadMore() {
 		if (messageFinish) {
@@ -176,7 +204,7 @@ const BoardPage = () => {
 	return loading ? (
 		<LoadingContainer />
 	) : (
-		<div className="h-full bg-gradient-to-br from-[#505458] to-[#363540] flex flex-col lg:flex-row">
+		<div className={`${isKeyboardOpen ? 'h-screen' : 'h-full'} bg-gradient-to-br from-[#505458] to-[#363540] flex flex-col lg:flex-row`}>
 			{/* Desktop Sidebar */}
 			<div className="hidden lg:flex lg:w-80 xl:w-96 flex-shrink-0">
 				<div className="m-4 lg:m-6 w-full">
@@ -214,7 +242,7 @@ const BoardPage = () => {
 			</div>
 
 			{/* Mobile Header */}
-			<div className="lg:hidden bg-white bg-opacity-10 backdrop-blur-sm shadow-lg p-3 sm:p-4 m-3 sm:m-4 rounded-xl">
+			<div className={`lg:hidden bg-white bg-opacity-10 backdrop-blur-sm shadow-lg p-3 sm:p-4 m-3 sm:m-4 rounded-xl ${isKeyboardOpen ? 'mb-2' : ''}`}>
 				<div className="flex items-center gap-2 sm:gap-3">
 					<Button 
 						onClick={() => navigate('/' + eventId)} 
@@ -229,9 +257,9 @@ const BoardPage = () => {
 			</div>
 
 			{/* Chat Area */}
-			<div className="flex-1 flex flex-col m-3 sm:m-4 lg:m-6 lg:mr-6 lg:ml-0 min-h-0">
-				<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl shadow-xl h-full flex flex-col min-h-0">
-					<div className="flex-1 min-h-0">
+			<div className={`flex-1 flex flex-col m-3 sm:m-4 lg:m-6 lg:mr-6 lg:ml-0 min-h-0 ${isKeyboardOpen ? 'mt-2' : ''}`}>
+				<div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl shadow-xl h-full flex flex-col min-h-0 overflow-hidden">
+					<div className="flex-1 min-h-0 overflow-hidden">
 						<MessageList
 							isAdmin={isAdminVar}
 							displayOnloadMore={!messageFinish}
@@ -239,6 +267,7 @@ const BoardPage = () => {
 							onSend={(value) => sendMessage(value)}
 							messages={messages}
 							onDelete={deleteMessage}
+							isKeyboardOpen={isKeyboardOpen}
 						/>
 					</div>
 				</div>

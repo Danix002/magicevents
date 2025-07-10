@@ -241,8 +241,8 @@ const GalleryPage = () => {
 
 	const downloadImage = () => {
 		const link = document.createElement('a');
-		link.href = 'data:image/*;base64,' + imagePopup;
-		link.download = titlePopup || 'image';
+		link.href = 'data:image/png;base64,' + imagePopup;
+		link.download = (titlePopup || 'image') + '.png';
 		link.click();
 	};
 

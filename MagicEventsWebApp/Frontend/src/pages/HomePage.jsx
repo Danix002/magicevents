@@ -32,10 +32,10 @@ const Homepage = () => {
 			</div>
 
 			<div
-				className="snap-start pt-12 sm:pt-20 relative w-full px-4 sm:px-8 md:px-16 bg-black/30 backdrop-blur-lg p-6 sm:p-8 rounded-t-4xl shadow-2xl">
+				className="snap-start pt-12 sm:pt-20 pb-8 sm:pb-12 relative w-full px-4 sm:px-8 md:px-16 bg-black/30 backdrop-blur-lg p-6 sm:p-8 rounded-t-4xl shadow-2xl mb-8 sm:mb-0">
 				<p className="absolute top-2 sm:top-0 text-[#E4DCEF] left-1/2 transform -translate-x-1/2 font-extrabold text-lg sm:text-xl p-2">Scopri di più</p>
 				
-				<div className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center sm:items-stretch mt-8 sm:mt-0">
+				<div className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center sm:items-stretch mt-12 sm:mt-8">
 					<div
 						className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 sm:hover:scale-110 transition-transform w-full sm:min-w-[12rem] sm:max-w-[15rem] text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
 						<h1 className="text-xl font-extrabold mb-2">Crea</h1>
