@@ -56,29 +56,27 @@ function RegisterPage({ setLogged }) {
 	};
 
 	return (
-		<div className="backgroundLogin min-h-screen flex items-center justify-center p-4">
-			<div className="relative bg-[#363540] text-[#E8F2FC] p-6 sm:p-8 w-full max-w-lg mx-auto rounded-xl shadow-2xl">
-				<h2 className="font-bold text-2xl sm:text-3xl text-center mb-6">Crea il tuo account</h2>
+		<div className="backgroundLogin min-h-screen flex items-center justify-center p-2 sm:p-4">
+			<div className="relative bg-[#363540] text-[#E8F2FC] p-4 sm:p-6 md:p-8 w-full max-w-sm sm:max-w-lg mx-auto rounded-xl shadow-2xl">
+				<h2 className="font-bold text-xl sm:text-2xl md:text-3xl text-center mb-4 sm:mb-6">Crea il tuo account</h2>
 				
-				<form onSubmit={handleSubmit} className="space-y-4">
-					<div className="flex flex-col sm:flex-row gap-4">
-						<Input 
-							customClassContainer="flex-1"
-							label="Nome" 
-							name="name" 
-							value={formData.name} 
-							onChange={handleChange} 
-							required 
-						/>
-						<Input
-							customClassContainer="flex-1"
-							label="Cognome"
-							name="surname"
-							value={formData.surname}
-							onChange={handleChange}
-							required
-						/>
-					</div>
+				<form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+					<Input
+						customClassContainer="flex-1"
+						label="Nome"
+						name="name"
+						value={formData.name}
+						onChange={handleChange}
+						required
+					/>
+					<Input
+						customClassContainer="flex-1"
+						label="Cognome"
+						name="surname"
+						value={formData.surname}
+						onChange={handleChange}
+						required
+					/>
 					
 					<Input
 						customClassContainer="w-full"
@@ -109,16 +107,16 @@ function RegisterPage({ setLogged }) {
 						required
 					 />
 
-					{error && <p className="text-red-400 text-sm text-center">{error}</p>}
-					{successMsg && <p className="text-green-400 text-sm text-center">{successMsg}</p>}
+					{error && <p className="text-red-400 text-xs sm:text-sm text-center">{error}</p>}
+					{successMsg && <p className="text-green-400 text-xs sm:text-sm text-center">{successMsg}</p>}
 
-					<Button custom="w-full mt-6" text="Registrati" />
+					<Button custom="w-full mt-4 sm:mt-6" text="Registrati" />
 				</form>
 				
-				<div className="flex flex-col sm:flex-row justify-center items-center gap-2 pt-6 mt-6 border-t border-[#E4DCEF]/20">
-					<p className="text-sm sm:text-base">Hai già un account?</p>
+				<div className="flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-2 pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-[#E4DCEF]/20">
+					<p className="text-xs sm:text-sm md:text-base">Hai già un account?</p>
 					<Link to="/login">
-						<p className="text-[#EE0E51] hover:underline text-sm sm:text-base">Accedi ora</p>
+						<p className="text-[#EE0E51] hover:underline text-xs sm:text-sm md:text-base">Accedi ora</p>
 					</Link>
 				</div>
 			</div>

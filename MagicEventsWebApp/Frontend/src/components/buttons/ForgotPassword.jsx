@@ -26,7 +26,7 @@ function ForgotPassword() {
 
 	return (
 		<div className="w-full">
-			<h2 className="text-[#E4DCEF] text-lg font-semibold mb-4">Password dimenticata?</h2>
+			<h2 className="text-[#E4DCEF] text-base sm:text-lg font-semibold mb-3 sm:mb-4">Password dimenticata?</h2>
 			<form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
 				<input
 					type="email"
@@ -34,17 +34,17 @@ function ForgotPassword() {
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
 					required
-					className="p-3 rounded-lg border-2 border-gray-300 focus:border-[#EE0E51] focus:outline-none bg-white text-[#363540]"
+					className="p-2 sm:p-3 rounded-lg border-2 border-gray-300 focus:border-[#EE0E51] focus:outline-none bg-white text-[#363540] text-sm sm:text-base"
 					disabled={loading}
 				/>
 				<Button 
 					text={loading ? 'Caricamento...' : 'Invia'}
 					disabled={loading}
-					custom="w-full py-3 font-semibold"
+					custom="w-full py-2 sm:py-3 font-semibold text-sm sm:text-base"
 				/>
 			</form>
 			{message && (
-				<p className={`mt-4 p-3 rounded-lg text-sm font-medium ${
+				<p className={`mt-3 sm:mt-4 p-2 sm:p-3 rounded-lg text-xs sm:text-sm font-medium ${
 					message.startsWith('Error') 
 						? 'bg-red-500 bg-opacity-20 text-red-300 border border-red-500' 
 						: 'bg-green-500 bg-opacity-20 text-green-300 border border-green-500'

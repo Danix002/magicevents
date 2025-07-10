@@ -12,10 +12,10 @@ function GoogleButton() {
 
 	return (
 		<button
-			className="flex justify-center w-full items-center bg-white text-[#3c4043] border-2 border-gray-300 rounded-lg py-3 px-4 hover:bg-gray-50 hover:border-[#EE0E51] transition-all duration-200 font-medium shadow-sm"
+			className="flex justify-center w-full items-center bg-white text-[#3c4043] border-2 border-gray-300 rounded-lg py-2 px-3 sm:py-3 sm:px-4 hover:bg-gray-50 hover:border-[#EE0E51] transition-all duration-200 font-medium shadow-sm text-sm sm:text-base"
 			onClick={() => (window.location.href = googleAuthUrl)}
 		>
-			<svg style={{ marginRight: '12px' }} width="20" height="20" viewBox="0 0 48 48">
+			<svg style={{ marginRight: '8px' }} width="16" height="16" viewBox="0 0 48 48" className="sm:w-5 sm:h-5 sm:mr-3">
 				<path
 					fill="#EA4335"
 					d="M24 9.5c3.54 0 6.7 1.22 9.2 3.22l6.86-6.86C35.68 1.7 30.13 0 24 0 14.78 0 6.73 5.82 2.74 14.29l8.2 6.38C13.03 13.32 18.06 9.5 24 9.5z"
@@ -34,7 +34,7 @@ function GoogleButton() {
 				/>
 				<path fill="none" d="M0 0h48v48H0z" />
 			</svg>
-			Accedi con Google
+			<span className="text-sm sm:text-base">Accedi con Google</span>
 		</button>
 	);
 }

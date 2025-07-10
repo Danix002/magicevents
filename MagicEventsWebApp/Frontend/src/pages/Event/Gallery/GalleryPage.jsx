@@ -241,8 +241,8 @@ const GalleryPage = () => {
 
 	const downloadImage = () => {
 		const link = document.createElement('a');
-		link.href = 'data:image/*;base64,' + imagePopup;
-		link.download = titlePopup || 'image';
+		link.href = 'data:image/png;base64,' + imagePopup;
+		link.download = (titlePopup || 'image') + '.png';
 		link.click();
 	};
 
@@ -294,6 +294,7 @@ const GalleryPage = () => {
 			<div className="mb-8">
 				<div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl shadow-xl p-6">
 					<h2 className="text-xl sm:text-2xl font-semibold text-[#1a1a1a] mb-6">Tutte le Immagini</h2>
+					
 					<ImageGrid
 						isAdmin={isAdminVar}
 						displayOnloadMore={!messageFinish}
@@ -302,9 +303,13 @@ const GalleryPage = () => {
 						onLike={(img) => likeImage(img)}
 						onDelete={(img) => deleteImage(img)}
 						images={images}
-						prepend={<ImageDrop onSend={(title, image) => sendImage(title, image)}/>}
 					/>
 				</div>
+			</div>
+
+			 {/* Floating Drag and Drop Component */}
+			<div className="fixed bottom-6 right-6 z-40">
+				<ImageDrop onSend={(title, image) => sendImage(title, image)}/>
 			</div>
 
 			{/* Enhanced Image Popup */}
