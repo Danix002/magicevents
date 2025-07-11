@@ -171,7 +171,7 @@ function UserEditPage({ setLogged }) {
 									type="email"
 									name="email"
 									value={user.email}
-									onChange={handleChange}
+									readOnly
 									className="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-[#EE0E51] transition-colors bg-white"
 									required
 								/>
