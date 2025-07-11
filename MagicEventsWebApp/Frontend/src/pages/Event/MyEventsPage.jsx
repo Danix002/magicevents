@@ -81,9 +81,7 @@ const MyEventsPage = () => {
 					) : ready ? (
 						events.length > 0 ? (
 							<div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl p-2 shadow-xl">
-								<EventList 
-									events={events.filter(event => event.eventId && event.eventId !== -1)} 
-								/>
+								<EventList events={events} />
 							</div>
 						) : (
 							<div className="text-center py-16">
