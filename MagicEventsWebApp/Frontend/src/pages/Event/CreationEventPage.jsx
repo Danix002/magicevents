@@ -133,13 +133,12 @@ const CreationEventPage = () => {
 				...eventDetail,
 				location: mapEnabled ? locationCoords : '',
 			});
-			const jsno = await response.json();
-			
-			if (jsno.setupSuccessful && jsno.eventId) {
-				// Wait a moment to ensure the event is properly created
-				setTimeout(() => {
-					navigate('/myevents');
-				}, 500);
+			const data = await response.json();
+
+			if (response.ok && data.eventId) {
+				console.log('Event created with ID:', data.eventId);
+				// Redirect to "My Events" page or handle the event ID as needed
+				navigate('/myevents');
 			} else {
 				setError('Errore nella creazione dell\'evento');
 			}
