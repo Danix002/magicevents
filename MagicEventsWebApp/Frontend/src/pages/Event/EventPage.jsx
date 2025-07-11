@@ -42,57 +42,41 @@ const EventsPage = () => {
 	const [isAdminVar, setIsAdminVar] = useState(false);
 
 	useEffect(() => {
-		// Validate eventId before making API calls
-		if (!eventId || eventId === 'undefined' || isNaN(eventId)) {
-			setEvent(null);
-			setLoading(false);
-			return;
-		}
-
 		async function fetchAPI() {
-			try {
-				const res = await getEvent(eventId);
-				if (!res.ok) {
-					setEvent(null);
-					setLoading(false);
-					return;
-				}
-				const data = await res.json();
-
-				if (data.admins.includes(JSON.parse(sessionStorage.getItem('user')).email)) {
-					setAdmin(eventId);
-					setIsAdminVar(true);
-				}
-
-				if (data.creator === JSON.parse(sessionStorage.getItem('user')).magicEventTag) {
-					setAdmin(eventId);
-					setIsAdminVar(true);
-				}
-
-				setEvent(data);
-				if (data.location) {
-					const coordinates = data.location.split('-');
-					setLat(Number(coordinates[0]));
-					setLng(Number(coordinates[1]));
-				}
-			} catch (error) {
-				console.error('Error fetching event:', error);
+			const res = await getEvent(eventId);
+			if (!res.ok) {
 				setEvent(null);
-			} finally {
-				setLoading(false);
+				return;
 			}
+			const data = await res.json();
+
+			if (data.admins.includes(JSON.parse(sessionStorage.getItem('user')).email)) {
+				setAdmin(eventId);
+				setIsAdminVar(true);
+			}
+
+			if (data.creator === JSON.parse(sessionStorage.getItem('user')).magicEventTag) {
+				setAdmin(eventId);
+				setIsAdminVar(true);
+			}
+
+			setEvent(data);
+			if (data.location) {
+				const coordinates = data.location.split('-');
+				setLat(Number(coordinates[0]));
+				setLng(Number(coordinates[1]));
+			}
+			setLoading(false);
 		}
 
 		async function fetchAPIServices() {
-			try {
-				const res = await getEventService(eventId);
-				if (res.ok) {
-					const data = await res.json();
-					setEventServices(data);
-				}
-			} catch (error) {
-				console.error('Error fetching event services:', error);
+			const res = await getEventService(eventId);
+			if (!res.ok) {
+				setEventServices(null);
+				return;
 			}
+			const data = await res.json();
+			setEventServices(data);
 		}
 
 		async function fetchPopularImages() {
@@ -148,14 +132,7 @@ const EventsPage = () => {
 		loading ? (
 			<LoadingContainer />
 		) : (
-			<ErrorContainer 
-				errorMessage={
-					!eventId || eventId === 'undefined' || isNaN(eventId) 
-						? 'ID evento non valido' 
-						: 'Nessun evento trovato'
-				} 
-				to="/home" 
-			/>
+			<ErrorContainer errorMessage={'Nessun evento trovato'} to="/home" />
 		)
 	) : (
 		<div className="h-full bg-gradient-to-br from-[#505458] to-[#363540] overflow-hidden flex flex-col sm:flex-row justify-center">

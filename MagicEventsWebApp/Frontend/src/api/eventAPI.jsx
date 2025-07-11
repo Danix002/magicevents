@@ -37,13 +37,16 @@ export function getEventId(title, day) {
 	const user = JSON.parse(sessionStorage.getItem('user'));
 	const magicEventsTag = user?.magicEventTag;
 
-	return fetch(`${eventsManagementUrl}/gestion/geteventid?title=${title}&day=${day}&magicEventTag=${magicEventsTag}`, {
-		method: 'GET',
-		headers: {
-			Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
-			'Content-Type': 'application/x-www-form-urlencoded',
-		},
-	});
+	return fetch(
+		`${eventsManagementUrl}/gestion/geteventid?title=${encodeURIComponent(title)}&day=${day}&magicEventTag=${magicEventsTag}`,
+		{
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+		}
+	);
 }
 
 export function annullEvent(eventId) {
@@ -236,7 +239,9 @@ export function deleteEvent(eventId) {
 	const user = JSON.parse(sessionStorage.getItem('user'));
 	const magicEventsTag = user?.magicEventTag;
 
-	const urldelete = `${eventsManagementUrl}/gestion/delete?eventId=${eventId}&magicEventsTag=${magicEventsTag}`;
+	const urldelete = `${eventsManagementUrl}/gestion/delete?eventId=${eventId}&magicEventsTag=${encodeURIComponent(
+		magicEventsTag
+	)}`;
 
 	return fetch(urldelete, {
 		method: 'DELETE',
