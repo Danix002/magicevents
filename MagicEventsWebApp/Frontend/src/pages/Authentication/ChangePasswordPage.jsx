@@ -3,6 +3,7 @@ import Input from '../../components/inputs/Input';
 import Button from '../../components/buttons/Button';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
+import { url } from '../../utils/utils';
 
 function ChangePasswordForm() {
 	const [newPassword, setNewPassword] = useState('');
@@ -31,7 +32,7 @@ function ChangePasswordForm() {
 		setLoading(true);
 		try {
 			const res = await fetch(
-				`https://localhost:8443/login/changepassword?token=${encodeURIComponent(
+				`https://${url}:8443/login/changepassword?token=${encodeURIComponent(
 					token
 				)}&new_password=${encodeURIComponent(newPassword)}`,
 				{ method: 'PUT' }
