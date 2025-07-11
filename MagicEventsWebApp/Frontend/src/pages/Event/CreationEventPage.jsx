@@ -128,21 +128,27 @@ const CreationEventPage = () => {
 		setError('');
 		setLoading(true);
 
-		createEvent({
-			...eventDetail,
-			location: mapEnabled ? locationCoords : '',
-		})
-			.then(async (value) => {
-				setLoading(false);
-				const jsno = await value.json();
-				if (jsno.setupSuccessful) {
-					navigate('/myevents');
-				}
-			})
-			.catch((error) => {
-				setLoading(false);
-				setError(error);
+		try {
+			const response = await createEvent({
+				...eventDetail,
+				location: mapEnabled ? locationCoords : '',
 			});
+			const jsno = await response.json();
+			
+			if (jsno.setupSuccessful && jsno.eventId) {
+				// Wait a moment to ensure the event is properly created
+				setTimeout(() => {
+					navigate('/myevents');
+				}, 500);
+			} else {
+				setError('Errore nella creazione dell\'evento');
+			}
+		} catch (error) {
+			console.error('Error creating event:', error);
+			setError('Errore nella creazione dell\'evento');
+		} finally {
+			setLoading(false);
+		}
 	}
 
 	const tabs = [

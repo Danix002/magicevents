@@ -13,14 +13,14 @@ const ImageList = ({
 	images,
 	isAdmin = false,
 }) => {
-	const items = images;
+	const items = images || [];
 	const listItems = items.map((image, index) => (
 		<div className="relative group cursor-pointer" key={index}>
 			<img
 				className="w-full h-48 object-cover rounded-lg transition-transform duration-200 group-hover:scale-105"
 				src={`data:image/*;base64,${image.base64Image}`}
 				alt={image.title}
-				onClick={() => onClickImage(image)}
+				onClick={() => image && image.id ? onClickImage(image) : null}
 			/>
 
 			{/* Action buttons - always visible on mobile, hover on desktop */}
@@ -28,10 +28,13 @@ const ImageList = ({
 				<button
 					onClick={(e) => {
 						e.stopPropagation();
-						onLike(image);
+						if (image && image.id) {
+							onLike(image);
+						}
 					}}
-					className={`p-2 rounded-full backdrop-blur-sm border border-white/20 transition-all duration-200 ${
-						image.userLike
+					disabled={!image || !image.id}
+					className={`p-2 rounded-full backdrop-blur-sm border border-white/20 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
+						image?.userLike
 							? 'bg-[#EE0E51] text-white'
 							: 'bg-black/20 text-white hover:bg-[#EE0E51]'
 					}`}
@@ -43,9 +46,12 @@ const ImageList = ({
 					<button
 						onClick={(e) => {
 							e.stopPropagation();
-							onDelete(image);
+							if (image && image.id) {
+								onDelete(image);
+							}
 						}}
-						className="p-2 rounded-full bg-black/20 text-white backdrop-blur-sm border border-white/20 hover:bg-red-500 transition-all duration-200"
+						disabled={!image || !image.id}
+						className="p-2 rounded-full bg-black/20 text-white backdrop-blur-sm border border-white/20 hover:bg-red-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
 					>
 						<FontAwesomeIcon icon={faTrash} className="text-sm" />
 					</button>
@@ -55,7 +61,7 @@ const ImageList = ({
 			{/* Like count badge - always visible */}
 			<div className="absolute bottom-2 left-2 bg-black/50 backdrop-blur-sm rounded-full px-2 py-1 flex items-center gap-1">
 				<FontAwesomeIcon icon={faHeart} className="text-[#EE0E51] text-xs" />
-				<span className="text-white text-xs font-medium">{image.likes}</span>
+				<span className="text-white text-xs font-medium">{image?.likes || 0}</span>
 			</div>
 		</div>
 	));
