@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { annullEvent, deannullEvent, deleteEvent, getEventId, isActive } from '../../api/eventAPI';
 import { useCoordinatesConverter } from '../../utils/coordinatesConverter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faMapMarkerAlt, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faMapMarkerAlt, faCalendarAlt, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const EventCard = ({ localDataTime, day, month, eventName, time, location, description }) => {
 	const navigate = useNavigate();
@@ -14,6 +14,7 @@ const EventCard = ({ localDataTime, day, month, eventName, time, location, descr
 	const [loadingAPI, setLoadingAPI] = useState(true);
 	const [eventEnabled, setEventEnabled] = useState(false);
 	const [eventId, setEventId] = useState(-1);
+	const [operationLoading, setOperationLoading] = useState(false);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -27,6 +28,7 @@ const EventCard = ({ localDataTime, day, month, eventName, time, location, descr
 				setLoadingAPI(false);
 			} catch (err) {
 				console.error('Error contacting server:', err);
+				setLoadingAPI(false);
 			}
 		};
 
@@ -35,6 +37,9 @@ const EventCard = ({ localDataTime, day, month, eventName, time, location, descr
 
 	const handleClick = async (e) => {
 		e.stopPropagation();
+		if (loadingAPI || eventId === -1 || operationLoading) return;
+		
+		setOperationLoading(true);
 		try {
 			if (eventEnabled) {
 				await annullEvent(eventId);
@@ -44,35 +49,81 @@ const EventCard = ({ localDataTime, day, month, eventName, time, location, descr
 			setEventEnabled((prev) => !prev);
 		} catch (err) {
 			console.error('Error contacting server:', err);
+		} finally {
+			setOperationLoading(false);
+		}
+	};
+
+	const handleCardClick = async () => {
+		if (loadingAPI || eventId === -1) return;
+		try {
+			navigate(`/${eventId}`);
+		} catch (err) {
+			console.error('Error contacting server:', err);
+		}
+	};
+
+	const handleModify = async (e) => {
+		e.stopPropagation();
+		if (loadingAPI || eventId === -1) return;
+		try {
+			navigate(`/modifyevent/${eventId}`);
+		} catch (err) {
+			console.error('Error contacting server:', err);
+		}
+	};
+
+	const handleDelete = async (e) => {
+		e.stopPropagation();
+		if (loadingAPI || eventId === -1 || operationLoading) return;
+		
+		setOperationLoading(true);
+		try {
+			await deleteEvent(eventId);
+			navigate('/');
+		} catch (err) {
+			console.error('Error contacting server:', err);
+		} finally {
+			setOperationLoading(false);
 		}
 	};
 
 	return (
 		<div
-			onClick={async () => {
-				if (loadingAPI) return;
-				try {
-					navigate(`/${eventId}`);
-				} catch (err) {
-					console.error('Error contacting server:', err);
+			onClick={handleCardClick}
+			className={clsx(
+				"group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100",
+				{
+					"cursor-pointer transform hover:-translate-y-1": !loadingAPI && eventId !== -1,
+					"cursor-not-allowed opacity-70": loadingAPI || eventId === -1,
 				}
-			}}
-			className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer transform hover:-translate-y-1 border border-gray-100"
+			)}
 		>
 			{/* Header with date */}
 			<div className="bg-gradient-to-r from-[#EE0E51] to-[#FF6B9D] text-white p-4">
 				<div className="flex items-center gap-3">
 					<div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
-						<FontAwesomeIcon icon={faCalendarAlt} className="text-lg" />
+						{loadingAPI ? (
+							<FontAwesomeIcon icon={faSpinner} className="text-lg animate-spin" />
+						) : (
+							<FontAwesomeIcon icon={faCalendarAlt} className="text-lg" />
+						)}
 					</div>
 					<div>
 						<p className="text-sm font-medium opacity-90">{month}</p>
 						<p className="text-2xl font-bold">{day}</p>
 					</div>
-					{!eventEnabled && (
+					{!loadingAPI && !eventEnabled && (
 						<div className="ml-auto">
 							<span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium">
 								Annullato
+							</span>
+						</div>
+					)}
+					{loadingAPI && (
+						<div className="ml-auto">
+							<span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium">
+								Caricamento...
 							</span>
 						</div>
 					)}
@@ -106,40 +157,47 @@ const EventCard = ({ localDataTime, day, month, eventName, time, location, descr
 
 				{/* Action buttons */}
 				<div className="flex flex-wrap gap-2">
-					{eventEnabled && (
+					{eventEnabled && !loadingAPI && eventId !== -1 && (
 						<Button
 							text="Modifica"
 							custom="!bg-gray-100 !text-gray-700 hover:!bg-gray-200 !text-sm !px-4 !py-2 !rounded-lg transition-all duration-300"
-							onClick={async (e) => {
-								e.stopPropagation();
-								try {
-									navigate(`/modifyevent/${eventId}`);
-								} catch (err) {
-									console.error('Error contacting server:', err);
-								}
-							}}
+							onClick={handleModify}
 						/>
 					)}
 					
-					{!loadingAPI && (
+					{loadingAPI || eventId === -1 ? (
+						<Button
+							text={
+								<div className="flex items-center gap-2">
+									<FontAwesomeIcon icon={faSpinner} className="animate-spin" />
+									<span>Caricamento...</span>
+								</div>
+							}
+							disabled={true}
+							custom="!bg-gray-100 !text-gray-500 !text-sm !px-4 !py-2 !rounded-lg cursor-not-allowed"
+						/>
+					) : (
 						<>
 							<Button
-								text="Elimina"
-								custom="!bg-red-50 !text-red-600 hover:!bg-red-100 !text-sm !px-4 !py-2 !rounded-lg transition-all duration-300"
-								onClick={async (e) => {
-									e.stopPropagation();
-									try {
-										await deleteEvent(eventId);
-										navigate('/');
-									} catch (err) {
-										console.error('Error contacting server:', err);
-									}
-								}}
+								text={operationLoading ? "Eliminando..." : "Elimina"}
+								disabled={operationLoading}
+								custom="!bg-red-50 !text-red-600 hover:!bg-red-100 !text-sm !px-4 !py-2 !rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+								onClick={handleDelete}
 							/>
 							<Button 
-								text={!eventEnabled ? 'Attiva' : 'Annulla'} 
+								text={
+									operationLoading ? (
+										<div className="flex items-center gap-2">
+											<FontAwesomeIcon icon={faSpinner} className="animate-spin" />
+											<span>{eventEnabled ? 'Annullando...' : 'Attivando...'}</span>
+										</div>
+									) : (
+										!eventEnabled ? 'Attiva' : 'Annulla'
+									)
+								}
+								disabled={operationLoading}
 								custom={clsx(
-									'!text-sm !px-4 !py-2 !rounded-lg transition-all duration-300',
+									'!text-sm !px-4 !py-2 !rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed',
 									eventEnabled 
 										? '!bg-orange-50 !text-orange-600 hover:!bg-orange-100' 
 										: '!bg-green-50 !text-green-600 hover:!bg-green-100'
