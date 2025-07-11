@@ -151,7 +151,7 @@ const EventsPage = () => {
 			<ErrorContainer 
 				errorMessage={
 					!eventId || eventId === 'undefined' || isNaN(eventId) 
-						? 'ID evento non valido' 
+						? 'Id evento non valido' 
 						: 'Nessun evento trovato'
 				} 
 				to="/home" 
