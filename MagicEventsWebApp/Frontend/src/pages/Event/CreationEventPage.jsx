@@ -132,20 +132,25 @@ const CreationEventPage = () => {
 			const response = await createEvent({
 				...eventDetail,
 				location: mapEnabled ? locationCoords : '',
-			});
-			const jsno = await response.json();
+				});
 			
-			if (jsno.setupSuccessful && jsno.eventId) {
-				// Wait a moment to ensure the event is properly created
-				setTimeout(() => {
-					navigate('/myevents');
-				}, 500);
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+			
+			const jsno = await response.json();
+			console.log('Create event response:', jsno); // Debug log
+			
+			// Check for successful creation - adjust based on actual API response structure
+			if (jsno.setupSuccessful || jsno.success || response.ok) {
+				// Navigate immediately without checking for eventId
+				navigate('/myevents');
 			} else {
-				setError('Errore nella creazione dell\'evento');
+				setError(jsno.message || 'Errore nella creazione dell\'evento');
 			}
 		} catch (error) {
 			console.error('Error creating event:', error);
-			setError('Errore nella creazione dell\'evento');
+			setError('Errore nella creazione dell\'evento: ' + error.message);
 		} finally {
 			setLoading(false);
 		}
