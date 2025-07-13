@@ -199,7 +199,10 @@ export function removeAdmin(eventId, adminEmail) {
 }
 
 export function getEvent(eventId) {
-	return fetch(`${eventsManagementUrl}/gestion/geteventinfo?eventId=${eventId}`, {
+	const user = JSON.parse(sessionStorage.getItem('user'));
+	const magicEventsTag = user?.magicEventTag;
+
+	return fetch(`${eventsManagementUrl}/gestion/geteventinfo?eventId=${eventId}&magicEventsTag=${magicEventsTag}`, {
 		method: 'GET',
 		headers: {
 			Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
