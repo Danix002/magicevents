@@ -31,9 +31,11 @@ public class GalleryController {
     }
 
     @GetMapping("/getGallery/{eventID}/{pageNumber}")
-    public ResponseEntity<GalleryDTO> getGallery(@PathVariable Long eventID, 
-                                                 @PathVariable int pageNumber,
-                                                 @RequestParam Long userMagicEventsTag) {
+    public ResponseEntity<GalleryDTO> getGallery(
+            @PathVariable Long eventID,
+            @PathVariable int pageNumber,
+            @RequestParam Long userMagicEventsTag
+    ) {
         try {
             GalleryDTO galleryDTO = galleryService.getGallery(eventID, userMagicEventsTag, pageNumber, 20);
             if (galleryDTO == null) {
@@ -48,9 +50,11 @@ public class GalleryController {
     }
 
     @GetMapping("/getGalleryPopular/{eventID}/{pageNumber}")
-    public ResponseEntity<GalleryDTO> getGalleryPopular(@PathVariable Long eventID, 
-                                                        @PathVariable int pageNumber,
-                                                        @RequestParam Long userMagicEventsTag) {
+    public ResponseEntity<GalleryDTO> getGalleryPopular(
+            @PathVariable Long eventID,
+            @PathVariable int pageNumber,
+            @RequestParam Long userMagicEventsTag
+    ) {
         try {
             GalleryDTO galleryDTO = galleryService.getMostPopularImages(eventID, userMagicEventsTag, pageNumber, 20);
             if (galleryDTO == null) {
