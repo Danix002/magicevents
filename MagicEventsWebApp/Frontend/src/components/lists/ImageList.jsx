@@ -73,7 +73,7 @@ const ImageList = ({
 		<div className="p-2 flex flex-col !h-fit ">
 			<h1 className="font-bold text-xl">Popolari</h1>
 				{listItems.length > 0 ? (
-					<div className="w-full md:h-56 grid grid-cols-2 md:grid-cols-4 gap-2 p-4">
+					<div className="w-full grid grid-cols-2 md:grid-cols-4 gap-2 p-4">
 						{visibleItems}
 						{hasMoreItems && displayOnloadMore && (
 							<Button
