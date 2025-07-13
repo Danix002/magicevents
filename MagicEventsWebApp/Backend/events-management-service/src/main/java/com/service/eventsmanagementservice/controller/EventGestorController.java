@@ -71,7 +71,7 @@ public class EventGestorController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
 
-    @PutMapping("/de-annullevent")
+    @PutMapping("/activeevent")
     public ResponseEntity<String> activeEvent(
             @RequestParam("eventId") Long eventId,
             @RequestParam("magicEventsTag") Long creatorId
@@ -117,8 +117,8 @@ public class EventGestorController {
     }
 
     @GetMapping("/geteventinfo")
-    public EventDTO getEventInfo(@RequestParam("eventId") Long eventId) {
-        return eventGestorService.getEventInfo(eventId);
+    public EventDTO getEventInfo(@RequestParam("eventId") Long eventId, @RequestParam("magicEventsTag") Long magicEventsTag) {
+        return eventGestorService.getEventInfo(eventId, magicEventsTag);
     }
 
     @PutMapping("/modify")
@@ -206,6 +206,11 @@ public class EventGestorController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @DeleteMapping("/deletepartecipant")
+    public boolean deleteUser(@RequestParam("magicEventsTag") Long magicEventsTag){
+        return eventGestorService.deleteUser(magicEventsTag);
     }
 }
 

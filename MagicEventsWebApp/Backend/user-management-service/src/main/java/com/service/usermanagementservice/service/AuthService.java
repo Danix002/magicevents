@@ -23,6 +23,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.core.env.Environment;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,6 +47,8 @@ public class AuthService {
     @Autowired
     Environment environment;
 
+    private final WebClient eventManagementWebClient;
+
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     String clientId;
     @Value("${spring.security.oauth2.client.registration.google.client-secret}")
@@ -54,6 +57,10 @@ public class AuthService {
     private String clientUrl;
     @Value("${services.usermanagements.url}")
     private String myUrl;
+
+    public AuthService(WebClient eventManagementWebClient) {
+        this.eventManagementWebClient = eventManagementWebClient;
+    }
 
     public String registerUser(String name, String surname, String email, String password, String username) {
         User user = new User();
@@ -218,11 +225,27 @@ public class AuthService {
     }
 
     public String deleteUser(String email) {
-        User user = userRepository.findByEmail(email);
-        OauthToken oauthToken = tokenRepository.findByUser(user);
-        tokenRepository.delete(oauthToken);
-        userRepository.delete(user);
-        return "Delete user with email {" + email + "} successfully";
+        try {
+            User user = userRepository.findByEmail(email);
+            boolean result = eventManagementWebClient.delete()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/gestion/deletepartecipant")
+                            .queryParam("magicEventsTag", user.getMagicEventTag())
+                            .build())
+                    .retrieve()
+                    .bodyToMono(Boolean.class)
+                    .block();
+            if(result) {
+                OauthToken oauthToken = tokenRepository.findByUser(user);
+                tokenRepository.delete(oauthToken);
+                userRepository.delete(user);
+                return "Delete user with email {" + email + "} successfully";
+            }else {
+                return "Delete user with email {" + email + "} failed";
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete partecipant: " + e.getMessage(), e);
+        }
     }
 
     public String initiateResetPasswordLink(String email) {

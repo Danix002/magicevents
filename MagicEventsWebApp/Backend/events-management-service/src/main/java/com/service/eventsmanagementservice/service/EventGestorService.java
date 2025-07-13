@@ -75,28 +75,33 @@ public class EventGestorService {
         }
     }
 
-    public EventDTO getEventInfo(Long eventId) {
+    public EventDTO getEventInfo(Long eventId, Long magicEventsTag) {
         Event event = eventsRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("Event not found: " + eventId));
-        ArrayList<String> admins = new ArrayList<>();
-        for (Admin admin : event.getAdmins()) {
-            admins.add(admin.getUser().getEmail());
+        boolean authorised = isPartecipant(magicEventsTag, eventId);
+        if(authorised) {
+            ArrayList<String> admins = new ArrayList<>();
+            for (Admin admin : event.getAdmins()) {
+                admins.add(admin.getUser().getEmail());
+            }
+            ArrayList<String> partecipants = new ArrayList<>();
+            for (Partecipant partecipant : event.getPartecipants()) {
+                partecipants.add(partecipant.getEmail());
+            }
+            return new EventDTO(
+                    event.getTitle(),
+                    event.getDescription(),
+                    event.getStarting(),
+                    event.getEnding(),
+                    event.getLocation(),
+                    event.getCreator(),
+                    partecipants,
+                    admins,
+                    event.getImage()
+            );
+        }else{
+            return new EventDTO();
         }
-        ArrayList<String> partecipants = new ArrayList<>();
-        for (Partecipant partecipant : event.getPartecipants()) {
-            partecipants.add(partecipant.getEmail());
-        }
-        return new EventDTO(
-                event.getTitle(),
-                event.getDescription(),
-                event.getStarting(),
-                event.getEnding(),
-                event.getLocation(),
-                event.getCreator(),
-                partecipants,
-                admins,
-                event.getImage()
-        );
     }
 
     @Transactional
@@ -360,7 +365,7 @@ public class EventGestorService {
                     .block();
             return result;
         } catch (Exception e) {
-            throw new RuntimeException("Failed to fetch user IDs: " + e.getMessage(), e);
+            throw new RuntimeException("Failed to fetch user Ids: " + e.getMessage(), e);
         }
     }
 
@@ -485,6 +490,31 @@ public class EventGestorService {
         }else {
             return null;
         }
+    }
+
+    public boolean deleteUser(Long magicEventsTag) {
+        Partecipant partecipant = partecipantsRepository.findById(magicEventsTag)
+                .orElseThrow(() -> new IllegalArgumentException("Partecipant not found: " + magicEventsTag));
+        boolean isAdmin = false;
+        for (Event event : partecipant.getEvents()) {
+            if(event.getCreator().equals(partecipant.getMagicEventTag())){
+                delete(event.getEventId(), magicEventsTag);
+            }else {
+                event.getPartecipants().remove(partecipant);
+                if (event.getAdmins().contains(partecipant)) {
+                    isAdmin = true;
+                    event.getAdmins().remove(partecipant);
+                }
+                eventsRepository.save(event);
+            }
+        }
+        partecipantsRepository.delete(partecipant);
+        if(isAdmin){
+            Admin admin = adminsRepository.findById(magicEventsTag)
+                    .orElseThrow(() -> new IllegalArgumentException("Admin not found: " + magicEventsTag));
+            adminsRepository.delete(admin);
+        }
+        return true;
     }
 }
 

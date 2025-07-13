@@ -121,9 +121,9 @@ export function modifyEvent(eventId, event) {
 	});
 }
 
-export function deannullEvent(eventId) {
+export function activeEvent(eventId) {
 	return fetch(
-		`${eventsManagementUrl}/gestion/de-annullevent?eventId=${eventId}&magicEventsTag=${
+		`${eventsManagementUrl}/gestion/activeevent?eventId=${eventId}&magicEventsTag=${
 			JSON.parse(sessionStorage.getItem('user')).magicEventTag
 		}`,
 		{

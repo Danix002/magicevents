@@ -3,7 +3,7 @@ import Button from '../buttons/Button';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { annullEvent, deannullEvent, deleteEvent, getEventId, isActive } from '../../api/eventAPI';
+import { annullEvent, activeEvent, deleteEvent, getEventId, isActive } from '../../api/eventAPI';
 import { useCoordinatesConverter } from '../../utils/coordinatesConverter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faMapMarkerAlt, faCalendarAlt, faSpinner } from '@fortawesome/free-solid-svg-icons';
@@ -44,7 +44,7 @@ const EventCard = ({ localDataTime, day, month, eventName, time, location, descr
 			if (eventEnabled) {
 				await annullEvent(eventId);
 			} else {
-				await deannullEvent(eventId);
+				await activeEvent(eventId);
 			}
 			setEventEnabled((prev) => !prev);
 		} catch (err) {
