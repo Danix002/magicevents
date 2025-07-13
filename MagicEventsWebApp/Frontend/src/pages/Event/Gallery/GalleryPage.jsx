@@ -294,7 +294,6 @@ const GalleryPage = () => {
 			<div className="mb-8">
 				<div className="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl shadow-xl p-6">
 					<h2 className="text-xl sm:text-2xl font-semibold text-[#1a1a1a] mb-6">Tutte le Immagini</h2>
-					
 					<ImageGrid
 						isAdmin={isAdminVar}
 						displayOnloadMore={!messageFinish}
