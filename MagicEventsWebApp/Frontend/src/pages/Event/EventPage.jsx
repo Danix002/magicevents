@@ -47,6 +47,9 @@ const EventsPage = () => {
 			if (!res.ok) {
 				setEvent(null);
 				return;
+			}else if(res.status === 500){
+				setEvent(null);
+				return;
 			}
 			const data = await res.json();
 
