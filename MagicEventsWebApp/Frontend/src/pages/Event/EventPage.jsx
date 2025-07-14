@@ -43,33 +43,37 @@ const EventsPage = () => {
 
 	useEffect(() => {
 		async function fetchAPI() {
-			const res = await getEvent(eventId);
-			if (!res.ok) {
+			try {
+				const res = await getEvent(eventId);
+				if (!res.ok || res.status === 500) {
+					setEvent(null);
+					return;
+				}
+
+				const data = await res.json();
+
+				if (data.admins.includes(JSON.parse(sessionStorage.getItem('user')).email)) {
+					setAdmin(eventId);
+					setIsAdminVar(true);
+				}
+
+				if (data.creator === JSON.parse(sessionStorage.getItem('user')).magicEventTag) {
+					setAdmin(eventId);
+					setIsAdminVar(true);
+				}
+
+				setEvent(data);
+				if (data.location) {
+					const coordinates = data.location.split('-');
+					setLat(Number(coordinates[0]));
+					setLng(Number(coordinates[1]));
+				}
+			} catch (error) {
+				console.error('Error with fetch:', error);
 				setEvent(null);
-				return;
-			}else if(res.status === 500){
-				setEvent(null);
-				return;
+			} finally {
+				setLoading(false);
 			}
-			const data = await res.json();
-
-			if (data.admins.includes(JSON.parse(sessionStorage.getItem('user')).email)) {
-				setAdmin(eventId);
-				setIsAdminVar(true);
-			}
-
-			if (data.creator === JSON.parse(sessionStorage.getItem('user')).magicEventTag) {
-				setAdmin(eventId);
-				setIsAdminVar(true);
-			}
-
-			setEvent(data);
-			if (data.location) {
-				const coordinates = data.location.split('-');
-				setLat(Number(coordinates[0]));
-				setLng(Number(coordinates[1]));
-			}
-			setLoading(false);
 		}
 
 		async function fetchAPIServices() {
