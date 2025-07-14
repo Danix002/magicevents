@@ -8,7 +8,7 @@ CREATE TABLE partecipants (
 CREATE TABLE admins (
     admin_id BIGINT PRIMARY KEY,
     magic_events_tag BIGINT,
-    FOREIGN KEY (magic_events_tag) REFERENCES partecipants(magic_events_tag) ON DELETE CASCADE
+    FOREIGN KEY (magic_events_tag) REFERENCES partecipants(magic_events_tag)
 );
 
 -- Tabella eventi
@@ -25,7 +25,7 @@ CREATE TABLE event_info (
     guest_game_enabled BOOLEAN DEFAULT FALSE,
     image TEXT,
     magic_events_tag BIGINT,
-    FOREIGN KEY (magic_events_tag) REFERENCES partecipants(magic_events_tag) ON DELETE CASCADE
+    FOREIGN KEY (magic_events_tag) REFERENCES partecipants(magic_events_tag)
 );
 
 -- Tabella di join eventi-user partecipants
@@ -33,8 +33,8 @@ CREATE TABLE event_participants (
     event_id BIGINT,
     magic_events_tag BIGINT,
     PRIMARY KEY (event_id, magic_events_tag),
-    FOREIGN KEY (event_id) REFERENCES event_info(event_id) ON DELETE CASCADE,
-    FOREIGN KEY (magic_events_tag) REFERENCES partecipants(magic_events_tag) ON DELETE CASCADE
+    FOREIGN KEY (event_id) REFERENCES event_info(event_id),
+    FOREIGN KEY (magic_events_tag) REFERENCES partecipants(magic_events_tag)
 );
 
 -- Tabella di join eventi-admins
@@ -42,6 +42,6 @@ CREATE TABLE event_admins (
     event_id BIGINT,
     admin_id BIGINT,
     PRIMARY KEY (event_id, admin_id),
-    FOREIGN KEY (event_id) REFERENCES event_info(event_id) ON DELETE CASCADE,
-    FOREIGN KEY (admin_id) REFERENCES admins(admin_id) ON DELETE CASCADE
+    FOREIGN KEY (event_id) REFERENCES event_info(event_id),
+    FOREIGN KEY (admin_id) REFERENCES admins(admin_id)
 );
