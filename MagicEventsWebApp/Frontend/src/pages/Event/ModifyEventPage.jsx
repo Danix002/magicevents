@@ -97,14 +97,20 @@ const ModifyEventPage = () => {
 
 	useEffect(() => {
 		async function fetchAPI() {
-			const res = await getEvent(eventId);
-			if (!res.ok) {
+			try {
+				const res = await getEvent(eventId);
+				if (!res.ok || res.status === 500) {
+					setEvent(null);
+					return;
+				}
+				const data = await res.json();
+				setEvent(data);
+			}catch (error) {
+				console.error('Error with fetch:', error);
 				setEvent(null);
-				return;
+			} finally {
+				setLoading(false);
 			}
-			const data = await res.json();
-			setEvent(data);
-			setLoading(false);
 		}
 		fetchAPI();
 	}, [eventId]);
