@@ -1,12 +1,11 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
-const ProtectedRoute = ({ logged, children }) => {
+const ProtectedRoute = ({ logged }) => {
     if (!logged) {
         return <Navigate to="/login" replace />;
     }
-
-    return children;
+    return <Outlet />;
 };
 
 export default ProtectedRoute;
