@@ -24,6 +24,7 @@ import GamePage from './pages/Event/Game/GamePage';
 import ModifyEventPage from './pages/Event/ModifyEventPage';
 import GameForm from './pages/Event/Game/GameForm';
 import AddPartecipantPage from "./pages/Event/AddPartecipantPage";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
 	const [logged, setLogged] = useState(sessionStorage.getItem('user') ? true : false);
@@ -112,33 +113,55 @@ function App() {
 					<Route path="/" element={logged ? <MagicEventHomePage /> : <HomePage />} />
 					<Route path="/login" element={<LoginPage setLogged={setLogged} />} />
 					<Route path="/register" element={<RegisterPage setLogged={setLogged} />} />
-					<Route path="/home" element={<MagicEventHomePage />} />
-					<Route path="/userprofile" element={<UserProfilePage setLogged={setLogged} />} />
+					<ProtectedRoute logged={logged}>
+						<Route path="/home" element={<MagicEventHomePage />} />
+					</ProtectedRoute>
+					<ProtectedRoute logged={logged}>
+						<Route path="/userprofile" element={<UserProfilePage setLogged={setLogged} />} />
+					</ProtectedRoute>
 					<Route path="/googlecallback" element={<GoogleCallbackPage setLogged={setLogged} />} />
 					<Route path="/changepassword" element={<ChangePasswordPage />} />
-					<Route path="/modifyuser" element={<ModifyUserValuePage setLogged={setLogged} />} />
-					<Route
-						path="/newevent"
-						element={
-							<APIProvider apiKey={'AIzaSyCsKyFbFFxOb4S8luivSquBE4Y3t36rznI'}>
-								<CreationEventPage />
-							</APIProvider>
-						}
-					/>
-					<Route
-						path="/myevents"
-						element={
-							<APIProvider apiKey={'AIzaSyCsKyFbFFxOb4S8luivSquBE4Y3t36rznI'}>
-								<MyEventsPage />
-							</APIProvider>
-						}
-					/>
+					<ProtectedRoute logged={logged}>
+						<Route path="/modifyuser" element={<ModifyUserValuePage setLogged={setLogged} />} />
+					</ProtectedRoute>
+					<ProtectedRoute logged={logged}>
+						<Route
+							path="/newevent"
+							element={
+								<APIProvider apiKey={'AIzaSyCsKyFbFFxOb4S8luivSquBE4Y3t36rznI'}>
+									<CreationEventPage />
+								</APIProvider>
+							}
+						/>
+					</ProtectedRoute>
+					<ProtectedRoute logged={logged}>
+						<Route
+							path="/myevents"
+							element={
+								<APIProvider apiKey={'AIzaSyCsKyFbFFxOb4S8luivSquBE4Y3t36rznI'}>
+									<MyEventsPage />
+								</APIProvider>
+							}
+						/>
+					</ProtectedRoute>
+					<ProtectedRoute logged={logged}>
 					<Route path="/modifyevent/:eventId" element={<ModifyEventPage />} />
-					<Route path="/:eventId/board" element={<BoardPage />} />
-					<Route path="/:eventId/gallery" element={<GalleryPage />} />
-					<Route path="/:eventId" element={<EventsPage />} />
-					<Route path="/:eventId/game" element={<GamePage />} />
-					<Route path="/:eventId/game/form" element={<GameForm />} />
+					</ProtectedRoute>
+					<ProtectedRoute logged={logged}>
+						<Route path="/:eventId/board" element={<BoardPage />} />
+					</ProtectedRoute>
+					<ProtectedRoute logged={logged}>
+						<Route path="/:eventId/gallery" element={<GalleryPage />} />
+					</ProtectedRoute>
+					<ProtectedRoute logged={logged}>
+						<Route path="/:eventId" element={<EventsPage />} />
+					</ProtectedRoute>
+					<ProtectedRoute logged={logged}>
+						<Route path="/:eventId/game" element={<GamePage />} />
+					</ProtectedRoute>
+					<ProtectedRoute logged={logged}>
+						<Route path="/:eventId/game/form" element={<GameForm />} />
+					</ProtectedRoute>
 					<Route path="/:eventId/:idOfWhoGenerated/addpartecipant" element={<AddPartecipantPage />} />
 				</Routes>
 			</div>
