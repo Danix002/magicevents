@@ -117,7 +117,6 @@ function App() {
 					<Route path="/googlecallback" element={<GoogleCallbackPage setLogged={setLogged} />} />
 					<Route path="/changepassword" element={<ChangePasswordPage />} />
 					<Route path="/:eventId/:idOfWhoGenerated/addpartecipant" element={<AddPartecipantPage />} />
-					<Route path="/modifyevent/:eventId" element={<ModifyEventPage />} />
 
 					{/* Protected Routes Wrapper */}
 					<Route element={<ProtectedRoute logged={logged} />}>
@@ -141,6 +140,7 @@ function App() {
 								</APIProvider>
 							}
 						/>
+						<Route path="/modifyevent/:eventId" element={<ModifyEventPage />} />
 						<Route path="/:eventId/board" element={<BoardPage />} />
 						<Route path="/:eventId/gallery" element={<GalleryPage />} />
 						<Route path="/:eventId" element={<EventsPage />} />
