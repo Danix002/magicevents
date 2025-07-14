@@ -110,21 +110,19 @@ function App() {
 			</NavBar>
 			<div className=" h-[calc(100vh-3.5rem)]">
 				<Routes>
+					{/* Public Routes */}
 					<Route path="/" element={logged ? <MagicEventHomePage /> : <HomePage />} />
 					<Route path="/login" element={<LoginPage setLogged={setLogged} />} />
 					<Route path="/register" element={<RegisterPage setLogged={setLogged} />} />
-					<ProtectedRoute logged={logged}>
-						<Route path="/home" element={<MagicEventHomePage />} />
-					</ProtectedRoute>
-					<ProtectedRoute logged={logged}>
-						<Route path="/userprofile" element={<UserProfilePage setLogged={setLogged} />} />
-					</ProtectedRoute>
 					<Route path="/googlecallback" element={<GoogleCallbackPage setLogged={setLogged} />} />
 					<Route path="/changepassword" element={<ChangePasswordPage />} />
-					<ProtectedRoute logged={logged}>
+
+					{/* Protected Routes Wrapper */}
+					<Route element={<ProtectedRoute logged={logged} />}>
+						<Route path="/home" element={<MagicEventHomePage />} />
+						<Route path="/userprofile" element={<UserProfilePage setLogged={setLogged} />} />
 						<Route path="/modifyuser" element={<ModifyUserValuePage setLogged={setLogged} />} />
-					</ProtectedRoute>
-					<ProtectedRoute logged={logged}>
+
 						<Route
 							path="/newevent"
 							element={
@@ -133,8 +131,6 @@ function App() {
 								</APIProvider>
 							}
 						/>
-					</ProtectedRoute>
-					<ProtectedRoute logged={logged}>
 						<Route
 							path="/myevents"
 							element={
@@ -143,26 +139,14 @@ function App() {
 								</APIProvider>
 							}
 						/>
-					</ProtectedRoute>
-					<ProtectedRoute logged={logged}>
-					<Route path="/modifyevent/:eventId" element={<ModifyEventPage />} />
-					</ProtectedRoute>
-					<ProtectedRoute logged={logged}>
+						<Route path="/modifyevent/:eventId" element={<ModifyEventPage />} />
 						<Route path="/:eventId/board" element={<BoardPage />} />
-					</ProtectedRoute>
-					<ProtectedRoute logged={logged}>
 						<Route path="/:eventId/gallery" element={<GalleryPage />} />
-					</ProtectedRoute>
-					<ProtectedRoute logged={logged}>
 						<Route path="/:eventId" element={<EventsPage />} />
-					</ProtectedRoute>
-					<ProtectedRoute logged={logged}>
 						<Route path="/:eventId/game" element={<GamePage />} />
-					</ProtectedRoute>
-					<ProtectedRoute logged={logged}>
 						<Route path="/:eventId/game/form" element={<GameForm />} />
-					</ProtectedRoute>
-					<Route path="/:eventId/:idOfWhoGenerated/addpartecipant" element={<AddPartecipantPage />} />
+						<Route path="/:eventId/:idOfWhoGenerated/addpartecipant" element={<AddPartecipantPage />} />
+					</Route>
 				</Routes>
 			</div>
 		</Router>
