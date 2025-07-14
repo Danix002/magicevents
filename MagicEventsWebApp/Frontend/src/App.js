@@ -116,6 +116,7 @@ function App() {
 					<Route path="/register" element={<RegisterPage setLogged={setLogged} />} />
 					<Route path="/googlecallback" element={<GoogleCallbackPage setLogged={setLogged} />} />
 					<Route path="/changepassword" element={<ChangePasswordPage />} />
+					<Route path="/:eventId/:idOfWhoGenerated/addpartecipant" element={<AddPartecipantPage />} />
 
 					{/* Protected Routes Wrapper */}
 					<Route element={<ProtectedRoute logged={logged} />}>
@@ -145,7 +146,6 @@ function App() {
 						<Route path="/:eventId" element={<EventsPage />} />
 						<Route path="/:eventId/game" element={<GamePage />} />
 						<Route path="/:eventId/game/form" element={<GameForm />} />
-						<Route path="/:eventId/:idOfWhoGenerated/addpartecipant" element={<AddPartecipantPage />} />
 					</Route>
 				</Routes>
 			</div>
