@@ -31,21 +31,29 @@ function RegisterPage({ setLogged }) {
 
 		const password = formData.password;
 		if (password.length < 6) {
-			setError('Password must contain at least 6 characters');
+			setError('La password deve contenere almeno 6 caratteri');
 			return;
 		}
 		try {
 			const res = await register(formData);
 
-			if (!res.ok) throw new Error('Registration invalid');
-			const data = await res;
-			console.log('Success:', data);
+			if (!res.ok) {
+				setError('Email già registrata');
+				return;
+			}
+
 			const loginRes = await login({
 				email: formData.email,
 				password: formData.password,
 			});
+
+			if (!loginRes.ok) {
+				setError('Ops, qualcosa è andato storto durante il login, prova a fare login nella pagina apposita');
+				return;
+			}
+
 			const dataLogin = await loginRes.json();
-			console.log('Success:', data);
+
 			sessionStorage.setItem('user', JSON.stringify(dataLogin));
 			setLogged(true);
 			navigate('/home');
@@ -59,7 +67,7 @@ function RegisterPage({ setLogged }) {
 		<div className="backgroundLogin min-h-screen flex items-center justify-center p-2 sm:p-4">
 			<div className="relative bg-[#363540] text-[#E8F2FC] p-4 sm:p-6 md:p-8 w-full max-w-sm sm:max-w-lg mx-auto rounded-xl shadow-2xl">
 				<h2 className="font-bold text-xl sm:text-2xl md:text-3xl text-center mb-4 sm:mb-6">Crea il tuo account</h2>
-				
+
 				<form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
 					<Input
 						customClassContainer="flex-1"
@@ -77,7 +85,7 @@ function RegisterPage({ setLogged }) {
 						onChange={handleChange}
 						required
 					/>
-					
+
 					<Input
 						customClassContainer="w-full"
 						label="Username"
@@ -86,7 +94,7 @@ function RegisterPage({ setLogged }) {
 						onChange={handleChange}
 						required
 					 />
-					
+
 					<Input
 						customClassContainer="w-full"
 						label="Email"
@@ -96,7 +104,7 @@ function RegisterPage({ setLogged }) {
 						onChange={handleChange}
 						required
 					 />
-					
+
 					<Input
 						customClassContainer="w-full"
 						label="Password"
@@ -107,13 +115,22 @@ function RegisterPage({ setLogged }) {
 						required
 					 />
 
-					{error && <p className="text-red-400 text-xs sm:text-sm text-center">{error}</p>}
-					{successMsg && <p className="text-green-400 text-xs sm:text-sm text-center">{successMsg}</p>}
+					{error &&
+						<div className="mt-6 bg-red-500 bg-opacity-20 border border-red-500 rounded-lg p-4">
+							<p className="text-red-300 font-medium">{error}</p>
+						</div>
+					}
+					{successMsg &&
+						<div className="mt-6 bg-green-500 bg-opacity-20 border border-green-500 rounded-lg p-4">
+							<p className="text-green-300 font-medium">{successMsg}</p>
+						</div>
+					}
 
-					<Button custom="w-full mt-4 sm:mt-6" text="Registrati" />
+					<Button custom="w-full mt-4 sm:mt-6" text="Registrati"/>
 				</form>
-				
-				<div className="flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-2 pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-[#E4DCEF]/20">
+
+				<div
+					className="flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-2 pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-[#E4DCEF]/20">
 					<p className="text-xs sm:text-sm md:text-base">Hai già un account?</p>
 					<Link to="/login">
 						<p className="text-[#EE0E51] hover:underline text-xs sm:text-sm md:text-base">Accedi ora</p>

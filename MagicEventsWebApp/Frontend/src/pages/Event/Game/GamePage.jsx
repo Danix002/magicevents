@@ -60,11 +60,6 @@ const GamePage = () => {
                     </div>
                 ) : error ? (
                     <div className="flex flex-col items-center justify-center space-y-6">
-                        {/* Error state with crystal ball */}
-                        <CrystalBall size="large" className="mb-4">
-                            <div className="text-6xl">😔</div>
-                        </CrystalBall>
-                        
                         <MagicalCard variant="error" className="max-w-md mx-auto">
                             <div className="text-center p-6">
                                 <h2 className="text-xl md:text-2xl font-bold text-red-300 mb-4">

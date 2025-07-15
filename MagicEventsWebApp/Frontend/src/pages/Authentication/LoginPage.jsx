@@ -10,6 +10,7 @@ import { login, helloServer } from '../../api/authentication';
 import { useLocation } from 'react-router-dom';
 
 function LoginPage({ setLogged }) {
+	const [errorMessage, setErrorMessage] = useState('');
 	const navigate = useNavigate();
 	const { setUser } = useAuth();
 	const [formData, setFormData] = useState({ email: '', password: '' });
@@ -25,16 +26,21 @@ function LoginPage({ setLogged }) {
 	}, [navigate]);
 
 	useEffect(() => {
+		setErrorMessage('');
+
 		const protocol = window.location.protocol.replace(':', '');
 		console.log('✅ Trying to contact server...');
+
 		const detectClientProtocol = async () => {
 			try {
 				const res = await helloServer(protocol);
 				if (!res.ok) console.warn('Protocol detection failed');
 			} catch (err) {
 				console.error('Error contacting server:', err);
+				setErrorMessage('Non riesco a contattare il server, riprova più tardi');
 			}
 		};
+
 		detectClientProtocol();
 	}, []);
 
@@ -46,11 +52,14 @@ function LoginPage({ setLogged }) {
 		e.preventDefault();
 
 		const res = await login(formData);
-		if (!res.ok) throw new Error('Credential invalid');
+		if (!res.ok) {
+			setErrorMessage('Email o password non corretti');
+			return;
+		}
 		const data = await res.json();
-		console.log('Success:', data);
 		setUser(data);
 		sessionStorage.setItem('user', JSON.stringify(data));
+
 		setLogged(true);
 		navigate(from, { replace: true });
 		sessionStorage.removeItem('fromAfterLogin');
@@ -87,7 +96,13 @@ function LoginPage({ setLogged }) {
 					/>
 					<Button text="Login" custom="mt-2" />
 				</form>
-				
+
+				{errorMessage && (
+					<div className="mt-6 bg-red-500 bg-opacity-20 border border-red-500 rounded-lg p-4">
+						<p className="text-red-300 font-medium">{errorMessage}</p>
+					</div>
+				)}
+
 				<Button
 					text="Password dimenticata?"
 					link={true}
