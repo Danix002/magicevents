@@ -51,7 +51,7 @@ function ForgotPassword() {
 			</form>
 			{message && (
 				<p className={`mt-3 sm:mt-4 p-2 sm:p-3 rounded-lg text-xs sm:text-sm font-medium ${
-					message.startsWith('Error' || 'Email non trovata') 
+					message.startsWith('Error' || 'Email') 
 						? 'bg-red-500 bg-opacity-20 text-red-300 border border-red-500' 
 						: 'bg-green-500 bg-opacity-20 text-green-300 border border-green-500'
 				}`}>
