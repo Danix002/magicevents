@@ -15,7 +15,7 @@ import LogoutButton from './components/buttons/LogoutButton';
 import CreationEventPage from './pages/Event/CreationEventPage';
 import MyEventsPage from './pages/Event/MyEventsPage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBoxArchive, faPen, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faBoxArchive, faPen, faUser, faInfo } from '@fortawesome/free-solid-svg-icons';
 import { APIProvider } from '@vis.gl/react-google-maps';
 import EventsPage from './pages/Event/EventPage';
 import clsx from 'clsx';
@@ -25,6 +25,7 @@ import ModifyEventPage from './pages/Event/ModifyEventPage';
 import GameForm from './pages/Event/Game/GameForm';
 import AddPartecipantPage from "./pages/Event/AddPartecipantPage";
 import ProtectedRoute from "./ProtectedRoute";
+import InfoPage from "./pages/InfoPage";
 
 function App() {
 	const [logged, setLogged] = useState(sessionStorage.getItem('user') ? true : false);
@@ -87,6 +88,18 @@ function App() {
 					)
 				}
 			>
+				<NavLink to="/info" className="flex items-center gap-2 hover:scale-105 transition-transform">
+					<Button
+						text={
+						<div className="flex max-sm:flex-col gap-2 justify-center items-center">
+							<FontAwesomeIcon className="text-lg" icon={faInfo}/>{' '}
+							<p className="max-sm:text-[0.6rem]">Chi siamo</p>
+						</div>
+					}
+					link
+					custom={clsx({ '!w-max text-md  ': true, hidden: logged })}
+					></Button>
+				</NavLink>
 				<NavLink className="w-fit" to="/myevents">
 					<Button
 						text={
@@ -121,6 +134,7 @@ function App() {
 					<Route path="/googlecallback" element={<GoogleCallbackPage setLogged={setLogged} />} />
 					<Route path="/changepassword" element={<ChangePasswordPage />} />
 					<Route path="/:eventId/:idOfWhoGenerated/addpartecipant" element={<AddPartecipantPage />} />
+					<Route path="/info" element={<InfoPage />} />
 
 					{/* Protected Routes Wrapper */}
 					<Route element={<ProtectedRoute logged={logged} />}>
