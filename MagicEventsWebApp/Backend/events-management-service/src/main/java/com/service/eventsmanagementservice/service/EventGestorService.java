@@ -403,7 +403,7 @@ public class EventGestorService {
             for(Partecipant partecipant: event.getPartecipants()) {
                 EmailDetails emailDetails = new EmailDetails();
                 emailDetails.setRecipient(partecipant.getEmail());
-                emailDetails.setSubject("'" + event.getTitle() + "'" " si terrà!");
+                emailDetails.setSubject("'" + event.getTitle() + "'" + " si terrà!");
                 emailDetails.setBody("Siamo lieti di informarti che l'evento a cui desideravi partecipare si terrà! Vai alla pagina dell'evento " +
                         "'" + event.getTitle() + "'" + " per vedere i dettagli.");
                 emailSender.sendMail(emailDetails);
