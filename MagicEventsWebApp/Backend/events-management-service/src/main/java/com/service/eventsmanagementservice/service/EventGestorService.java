@@ -448,17 +448,21 @@ public class EventGestorService {
     public String removePartecipant(String partecipantEmail, Long eventId, Long creatorId) {
         Event event = eventsRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("Event not found: " + eventId));
-        HashMap<Long, String> partecipantId = getIdForEmails(List.of(partecipantEmail));
-        for (Map.Entry<Long, String> partecipantEntry : partecipantId.entrySet()) {
+        HashMap<Long, String> partecipantsId = getIdForEmails(List.of(partecipantEmail));
+        for (Map.Entry<Long, String> partecipantEntry : partecipantsId.entrySet()) {
             Partecipant partecipant = partecipantsRepository.findById(partecipantEntry.getKey())
-                    .orElseThrow(() -> new IllegalArgumentException("Partecipant not found: " + partecipantId));
-            if (event.getCreator().equals(creatorId) && partecipant.getEvents().contains(event)) {
-                partecipant.getEvents().remove(event);
-                partecipantsRepository.save(partecipant);
-                event.getPartecipants().remove(partecipant);
-                eventsRepository.save(event);
-            }else{
-                return "Error";
+                    .orElseThrow(() -> new IllegalArgumentException("Partecipant not found: " + partecipantEntry.getKey()));
+            if(isAdmin(partecipantEntry.getKey(), eventId)){
+                removeAdmin(partecipantEntry.getValue(), eventId, creatorId);
+            }else {
+                if (event.getCreator().equals(creatorId) && partecipant.getEvents().contains(event)) {
+                    partecipant.getEvents().remove(event);
+                    partecipantsRepository.save(partecipant);
+                    event.getPartecipants().remove(partecipant);
+                    eventsRepository.save(event);
+                } else {
+                    return "Error";
+                }
             }
         }
         return "Success";
