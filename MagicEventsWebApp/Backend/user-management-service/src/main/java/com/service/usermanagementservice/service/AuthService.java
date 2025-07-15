@@ -266,7 +266,7 @@ public class AuthService {
         EmailDetails emailDetails = new EmailDetails();
         emailDetails.setRecipient(user.getEmail());
         emailDetails.setSubject("Reset Password for your account");
-        emailDetails.setBody("Click the link to reset your account password " + link);
+        emailDetails.setBody("Click il link per resettare la password del tuo account: " + link);
 
         if(emailSender.sendMail(emailDetails)) {
             return "Password reset link sent to registered email address";

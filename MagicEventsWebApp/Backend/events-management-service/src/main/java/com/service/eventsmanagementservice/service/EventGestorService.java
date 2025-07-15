@@ -249,8 +249,11 @@ public class EventGestorService {
                 for(Partecipant partecipant: event.getPartecipants()) {
                     EmailDetails emailDetails = new EmailDetails();
                     emailDetails.setRecipient(partecipant.getEmail());
-                    emailDetails.setSubject(event.getTitle() + " event has been cancelled :(");
-                    emailDetails.setBody("We regret to inform you that the creator of the event has decided to no longer do it.");
+                    emailDetails.setSubject("'" + event.getTitle() + "'" + " è stato eliminato :(");
+                    emailDetails.setBody(
+                            "Ci dispiace informarti che l'ideatore dell'evento ha deciso di non tenere più l'evento. " +
+                            "Tutti i dati dell'evento sono stati rimossi."
+                    );
                     emailSender.sendMail(emailDetails);
                 }
                 rabbitTemplate.convertAndSend(exchangeName, deleteBoardRoutingKey, eventId);
@@ -378,8 +381,11 @@ public class EventGestorService {
             for(Partecipant partecipant: event.getPartecipants()) {
                 EmailDetails emailDetails = new EmailDetails();
                 emailDetails.setRecipient(partecipant.getEmail());
-                emailDetails.setSubject(event.getTitle() + " event has been cancelled :(");
-                emailDetails.setBody("We regret to inform you that the creator of the event has decided to no longer do it.");
+                emailDetails.setSubject("'" + event.getTitle() + "'" + " è stato cancellato :(");
+                emailDetails.setBody(
+                        "Ci dispiace informarti che l'ideatore dell'evento ha deciso di non tenere più l'evento. " +
+                        "Ti informeremo se l'ideatore dell'evento decidere di annullare la cancellazione dell'evento."
+                );
                 emailSender.sendMail(emailDetails);
             }
             return "Success";
@@ -398,8 +404,8 @@ public class EventGestorService {
                 EmailDetails emailDetails = new EmailDetails();
                 emailDetails.setRecipient(partecipant.getEmail());
                 emailDetails.setSubject(event.getTitle() + " event will be held!");
-                emailDetails.setBody("We are happy to inform you that the event you wanted to attend will be held! Go to the " +
-                        event.getTitle() + " event page to see details.");
+                emailDetails.setBody("Siamo lieti di informarti che l'evento a cui desideravi partecipare si terrà! Vai alla pagina dell'evento " +
+                        "'" + event.getTitle() + "'" + " per vedere i dettagli.");
                 emailSender.sendMail(emailDetails);
             }
             return "Success";
