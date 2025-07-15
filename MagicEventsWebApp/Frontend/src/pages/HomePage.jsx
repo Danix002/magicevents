@@ -15,12 +15,28 @@ const Homepage = () => {
 					<div
 						className="bg-black/40 backdrop-blur-md p-6 sm:p-8 rounded-2xl text-[#E4DCEF] text-center shadow-2xl max-w-xl mx-auto">
 						<h2 className="text-2xl sm:text-3xl font-extrabold mb-4">Unisciti alla magia</h2>
-						<p className="text-sm sm:text-base">
-							Questa applicazione è pensata per organizzare eventi unici e interattivi, garantendo un'esperienza personalizzata a 360°.
-							È un progetto sviluppato in ambito universitario, per maggiori informazioni contattare gli sviluppatori al seguente indirizzo email: daniela.adelina94@gmail.com
+						<p className="text-sm sm:text-base text-[#E4DCEF]/90 leading-relaxed italic tracking-wide mt-2">
+							Questa applicazione è pensata per organizzare <span className="text-[#EE0E51] font-semibold not-italic">eventi unici</span> e interattivi,
+							garantendo un'esperienza personalizzata a 360°.
+							<br className="hidden sm:block"/>
+							<span className="block mt-3">
+							<span className="font-medium text-[#E4DCEF]/80">
+							  È un progetto sviluppato in ambito universitario.
+							</span>{' '}
+							<br/>
+							<span className="text-sm text-[#E4DCEF]/70">
+							  Per maggiori informazioni contattare:{" "}
+								<a
+									href="mailto:daniela.adelina94@gmail.com"
+									className="underline hover:text-[#EE0E51] transition-colors"
+								>
+								daniela.adelina94@gmail.com
+							  </a>
+							</span>
+						  </span>
 						</p>
 						<div className="flex justify-center mb-3">
-							<img src="/logo192.png" alt="Logo app" className="w-10 h-20 sm:w-25 sm:h-50"/>
+							<img src="/logo192.png" alt="Logo app" className="w-20 h-20 sm:w-25 sm:h-50"/>
 						</div>
 					</div>
 				</div>
@@ -30,9 +46,11 @@ const Homepage = () => {
 
 			<div
 				className="snap-start pt-12 sm:pt-20 pb-8 sm:pb-12 relative w-full px-4 sm:px-8 md:px-16 bg-black/30 backdrop-blur-lg p-6 sm:p-8 rounded-t-4xl shadow-2xl mb-8 sm:mb-0">
-				<p className="absolute top-2 sm:top-0 text-[#E4DCEF] left-1/2 transform -translate-x-1/2 font-extrabold text-lg sm:text-xl p-2">Scopri di più</p>
-				
-				<div className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center sm:items-stretch mt-12 sm:mt-8">
+				<p className="absolute top-2 sm:top-0 text-[#E4DCEF] left-1/2 transform -translate-x-1/2 font-extrabold text-lg sm:text-xl p-2">Scopri
+					di più</p>
+
+				<div
+					className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center sm:items-stretch mt-12 sm:mt-8">
 					<div
 						className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 sm:hover:scale-110 transition-transform w-full sm:min-w-[12rem] sm:max-w-[15rem] text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
 						<h1 className="text-xl font-extrabold mb-2">Crea</h1>
