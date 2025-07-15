@@ -16,32 +16,17 @@ const Homepage = () => {
 						className="bg-black/40 backdrop-blur-md p-6 sm:p-8 rounded-2xl text-[#E4DCEF] text-center shadow-2xl max-w-xl mx-auto">
 						<h2 className="text-2xl sm:text-3xl font-extrabold mb-4">Unisciti alla magia</h2>
 						<p className="text-sm sm:text-base text-[#E4DCEF]/90 leading-relaxed tracking-wide mt-2">
-							Questa applicazione è pensata per organizzare <span className="text-[#EE0E51] font-semibold not-italic">eventi unici e interattivi</span>,
-							garantendo un'esperienza personalizzata a 360°.
-							<br className="hidden sm:block"/>
-							<span className="block mt-3">
-							<span className="font-medium text-[#E4DCEF]/80">
-							  È un progetto sviluppato in ambito universitario.
-							</span>{' '}
-							<br/>
-							<span className="text-sm text-[#E4DCEF]/70">
-							  Per maggiori informazioni contattare:{" "}
-								<a
-									href="mailto:daniela.adelina94@gmail.com"
-									className="underline hover:text-[#EE0E51] transition-colors"
-								>
-								daniela.adelina94@gmail.com
-							  </a>
-							</span>
-						  </span>
+							Questa applicazione è pensata per organizzare <span
+							className="text-[#EE0E51] font-semibold not-italic">eventi unici e interattivi</span>,
+							garantendo un'esperienza personalizzata a 360°
 						</p>
 						<div className="flex justify-center mb-3">
-							<img src="/magicevents-logo-transparent.png" alt="Logo app" className="w-20 h-20 sm:w-50 sm:h-50"/>
+							<img src="/magicevents-logo-transparent.png" alt="Logo app"
+								 className="w-20 h-20 sm:w-50 sm:h-50"/>
 						</div>
 					</div>
 				</div>
-				<div className="block lg:hidden h-40 w-full"></div>
-				<div className="hidden lg:block h-[calc(45vh-10rem)] w-20"></div>
+				<div className="pb-[15vh] sm:pb-[20vh] lg:pb-[25vh]"></div>
 			</div>
 
 			<div
