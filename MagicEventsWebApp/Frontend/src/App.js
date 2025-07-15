@@ -15,7 +15,7 @@ import LogoutButton from './components/buttons/LogoutButton';
 import CreationEventPage from './pages/Event/CreationEventPage';
 import MyEventsPage from './pages/Event/MyEventsPage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBoxArchive, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faBoxArchive, faPen, faUser } from '@fortawesome/free-solid-svg-icons';
 import { APIProvider } from '@vis.gl/react-google-maps';
 import EventsPage from './pages/Event/EventPage';
 import clsx from 'clsx';
@@ -70,14 +70,18 @@ function App() {
 					) : (
 						<div className="flex gap-2 items-center">
 							<LogoutButton setLogged={setLogged}></LogoutButton>
+
 							<NavLink to="/userprofile" className="max-w-full">
-								<button
-									className="w-full sm:w-fit px-4 py-1 bg-[#E4DCEF] text-[#363540] inner-shadow cursor-pointer hover:scale-105 rounded-full max-h-[40px] overflow-hidden whitespace-nowrap text-ellipsis"
-								>
-									<p className="text-[12px] truncate max-w-[10rem] sm:max-w-[15rem]">
-										{JSON.parse(sessionStorage.getItem('user')).username}
-									</p>
-								</button>
+								<Button
+									text={
+										<div className="flex max-sm:flex-col gap-2 justify-center items-center">
+											<FontAwesomeIcon className="text-lg" icon={faUser}/>{' '}
+											<p className="max-sm:text-[0.6rem]">Profilo</p>
+										</div>
+									}
+									link
+									custom={clsx({ '!w-max text-md  ': true, hidden: !logged })}
+								></Button>
 							</NavLink>
 						</div>
 					)
