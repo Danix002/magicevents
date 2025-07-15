@@ -211,8 +211,8 @@ public class EventGestorService {
             for(Partecipant partecipant: event.getPartecipants()) {
                 EmailDetails emailDetails = new EmailDetails();
                 emailDetails.setRecipient(partecipant.getEmail());
-                emailDetails.setSubject(event.getTitle() + " event has been modified!");
-                emailDetails.setBody("Go to the " + event.getTitle() + " event page to see details.");
+                emailDetails.setSubject("'" + event.getTitle() + "'" + " è stato modificato!");
+                emailDetails.setBody("Vai alla pagina dell'evento " + "'" + event.getTitle() + "'" + " per vedere i dettagli.");
                 emailSender.sendMail(emailDetails);
             }
             return "Success";
@@ -403,7 +403,7 @@ public class EventGestorService {
             for(Partecipant partecipant: event.getPartecipants()) {
                 EmailDetails emailDetails = new EmailDetails();
                 emailDetails.setRecipient(partecipant.getEmail());
-                emailDetails.setSubject(event.getTitle() + " event will be held!");
+                emailDetails.setSubject("'" + event.getTitle() + "'" " si terrà!");
                 emailDetails.setBody("Siamo lieti di informarti che l'evento a cui desideravi partecipare si terrà! Vai alla pagina dell'evento " +
                         "'" + event.getTitle() + "'" + " per vedere i dettagli.");
                 emailSender.sendMail(emailDetails);
