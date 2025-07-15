@@ -16,11 +16,8 @@ const Homepage = () => {
 						className="bg-black/40 backdrop-blur-md p-6 sm:p-8 rounded-2xl text-[#E4DCEF] text-center shadow-2xl max-w-xl mx-auto">
 						<h2 className="text-2xl sm:text-3xl font-extrabold mb-4">Unisciti alla magia</h2>
 						<p className="text-sm sm:text-base">
-							Un progetto open source pensato per eventi unici e interattivi. Scopri il codice e
-							contribuisci
-							su <a href="https://github.com/Danix002/magicevents" target="_blank"
-								  rel="noopener noreferrer"
-								  className="text-[#EE0E51] underline">GitHub</a>
+							Questa applicazione è pensata per organizzare eventi unici e interattivi, garantendo un'esperienza personalizzata a 360°.
+							È un progetto sviluppato in ambito universitario, per maggiori informazioni contattare gli sviluppatori al seguente indirizzo email: daniela.adelina94@gmail.com
 						</p>
 						<div className="flex justify-center mb-3">
 							<img src="/logo192.png" alt="Logo app" className="w-10 h-20 sm:w-25 sm:h-50"/>
