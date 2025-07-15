@@ -14,8 +14,14 @@ function ForgotPassword() {
 		try {
 			const res = await forgotPasswordRequest(email);
 			const message = await res.text();
-			if (!res.ok) throw new Error('email not found');
-			if (message === 'Error') throw new Error('internal error');
+			if (!res.ok) {
+				setMessage('Email non trovata');
+				return;
+			}
+			if (message === 'Email address not registered') {
+				setMessage('Email non trovata');
+				return;
+			}
 			setMessage('Apri la tua email per reimpostare la password');
 		} catch (error) {
 			setMessage(`Error: ${error.message}`);
