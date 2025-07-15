@@ -41,7 +41,7 @@ const Homepage = () => {
 					</div>
 				</div>
 				<div className="block lg:hidden h-50 w-full"></div>
-				<div className="hidden lg:block h-[calc(45vh-10rem)] w-20"></div>
+				<div className="hidden lg:block h-[calc(35vh-5rem)] w-20"></div>
 			</div>
 
 			<div
