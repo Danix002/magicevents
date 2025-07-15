@@ -66,7 +66,7 @@ public class EventGestorService {
         Event event = eventsRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("Event not found: " + eventId));
         boolean creator = event.getCreator().equals(magicEventsTag);
-        boolean admin = isAdmin(eventId, magicEventsTag);
+        boolean admin = isAdmin(magicEventsTag, eventId);
         if(creator || admin) {
             addPartecipants(partecipants, eventId);
             return "Success";

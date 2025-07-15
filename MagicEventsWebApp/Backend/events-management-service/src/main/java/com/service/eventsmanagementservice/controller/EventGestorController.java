@@ -95,7 +95,6 @@ public class EventGestorController {
             @RequestParam("eventId") Long eventId,
             @RequestParam("magicEventsTag") Long creatorId
     ) {
-        System.out.println("Event: " + eventId + " Partecipant: " + creatorId);
         return eventGestorService.updateEventPartecipants(partecipants, eventId, creatorId);
     }
 
