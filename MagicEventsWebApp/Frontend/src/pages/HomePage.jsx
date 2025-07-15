@@ -40,8 +40,8 @@ const Homepage = () => {
 						</div>
 					</div>
 				</div>
-				<div className="block lg:hidden h-65 w-full"></div>
-				<div className="hidden lg:block h-[calc(60vh-15rem)] w-20"></div>
+				<div className="block lg:hidden h-50 w-full"></div>
+				<div className="hidden lg:block h-[calc(45vh-10rem)] w-20"></div>
 			</div>
 
 			<div
