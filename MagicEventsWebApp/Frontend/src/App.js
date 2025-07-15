@@ -70,11 +70,11 @@ function App() {
 					) : (
 						<div className="flex gap-2 items-center">
 							<LogoutButton setLogged={setLogged}></LogoutButton>
-							<NavLink to="/userprofile">
+							<NavLink to="/userprofile" className="max-w-full">
 								<button
-									className="w-25 sm:w-fit items-center px-4 py-1 bg-[#E4DCEF] text-[#363540] inner-shadow cursor-pointer hover:scale-105 rounded-full max-h-[40px] overflow-hidden whitespace-nowrap text-ellipsis"
+									className="w-full sm:w-fit px-4 py-1 bg-[#E4DCEF] text-[#363540] inner-shadow cursor-pointer hover:scale-105 rounded-full max-h-[40px] overflow-hidden whitespace-nowrap text-ellipsis"
 								>
-									<p className="text-[12px] max-w-[15rem] truncate">
+									<p className="text-[12px] truncate max-w-[10rem] sm:max-w-[15rem]">
 										{JSON.parse(sessionStorage.getItem('user')).username}
 									</p>
 								</button>

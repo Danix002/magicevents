@@ -38,7 +38,7 @@ function RegisterPage({ setLogged }) {
 			const res = await register(formData);
 
 			if (!res.ok) {
-				setError('Email già registrata');
+				setError('Utente già esistente');
 				return;
 			}
 
@@ -48,7 +48,7 @@ function RegisterPage({ setLogged }) {
 			});
 
 			if (!loginRes.ok) {
-				setError('Ops, qualcosa è andato storto durante il login, prova a fare login nella pagina apposita');
+				setError('Email già registrata con un\'altra password');
 				return;
 			}
 
