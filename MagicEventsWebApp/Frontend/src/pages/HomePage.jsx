@@ -16,7 +16,7 @@ const Homepage = () => {
 						className="bg-black/40 backdrop-blur-md p-6 sm:p-8 rounded-2xl text-[#E4DCEF] text-center shadow-2xl max-w-xl mx-auto">
 						<h2 className="text-2xl sm:text-3xl font-extrabold mb-4">Unisciti alla magia</h2>
 						<p className="text-sm sm:text-base text-[#E4DCEF]/90 leading-relaxed tracking-wide mt-2">
-							Questa applicazione è pensata per organizzare <span className="text-[#EE0E51] font-semibold not-italic">eventi unici</span> e interattivi,
+							Questa applicazione è pensata per organizzare <span className="text-[#EE0E51] font-semibold not-italic">eventi unici e interattivi</span>,
 							garantendo un'esperienza personalizzata a 360°.
 							<br className="hidden sm:block"/>
 							<span className="block mt-3">
