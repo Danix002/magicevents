@@ -504,8 +504,10 @@ public class EventGestorService {
     }
 
     public boolean deleteUser(Long magicEventsTag) {
-        Partecipant partecipant = partecipantsRepository.findById(magicEventsTag)
-                .orElseThrow(() -> new IllegalArgumentException("Partecipant not found: " + magicEventsTag));
+        Partecipant partecipant = partecipantsRepository.findById(magicEventsTag).orElse(null);
+        if(partecipant == null){
+            return true;
+        }
         boolean isAdmin = false;
         for (Event event : partecipant.getEvents()) {
             if(event.getCreator().equals(partecipant.getMagicEventTag())){
