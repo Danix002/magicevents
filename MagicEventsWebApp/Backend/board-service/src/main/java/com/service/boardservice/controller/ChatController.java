@@ -2,20 +2,17 @@ package com.service.boardservice.controller;
 
 import com.service.boardservice.dto.AddNewMessageRequestDTO;
 import com.service.boardservice.dto.DeleteMessageRequestDTO;
-import com.service.boardservice.exception.UnauthorizedException;
 import com.service.boardservice.service.ChatService;
 import com.service.boardservice.service.TokenValidatorService;
 import jakarta.validation.Valid;
-import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @Validated
@@ -34,17 +31,12 @@ public class ChatController {
             @RequestHeader("Authorization") String authorizationHeader,
             @Valid @Payload AddNewMessageRequestDTO message
     ) {
-        String token = extractToken(authorizationHeader);
-        if (!tokenValidatorService.isTokenValid(token)) {
-            return null;
-        }
-
-        try {
-            chatService.addNewMessage(message, token);
-            return message;
-        } catch (Exception e) {
-            return null;
-        }
+        return extractAndValidateToken(authorizationHeader)
+                .map(token -> {
+                    chatService.addNewMessage(message, token);
+                    return message;
+                })
+                .orElse(null);
     }
 
     @MessageMapping("chat/deleteMessage/{eventID}")
@@ -53,22 +45,18 @@ public class ChatController {
             @RequestHeader("Authorization") String authorizationHeader,
             @Valid @Payload DeleteMessageRequestDTO request
     ) {
-        String token = extractToken(authorizationHeader);
-        if (!tokenValidatorService.isTokenValid(token)) {
-            return null;
-        }
-
-        try {
-            return chatService.deleteMessage(request, token);
-        } catch (Exception e) {
-            return null;
-        }
+        return extractAndValidateToken(authorizationHeader)
+                .map(token -> chatService.deleteMessage(request, token))
+                .orElse(null);
     }
 
-    private String extractToken(String header) {
+    private Optional<String> extractAndValidateToken(String header) {
         if (header != null && header.startsWith("Bearer ")) {
-            return header.substring(7);
+            String token = header.substring(7);
+            if (tokenValidatorService.isTokenValid(token)) {
+                return Optional.of(token);
+            }
         }
-        return null;
+        return Optional.empty();
     }
 }
