@@ -32,12 +32,11 @@ public class ChatController {
     @MessageMapping("gallery/sendImage/{eventID}")
     @SendTo("/topic/gallery/{eventID}")
     public AddNewImageRequestDTO receiveImage(
-            @Valid @Payload AddNewImageRequestDTO message,
-            @Headers Map<String, Object> headers
-
+            @RequestHeader("Authorization") String authorizationHeader,
+            @Valid @Payload AddNewImageRequestDTO message
     ) {
         try {
-            String token = extractTokenFromHeaders(headers);
+            String token = extractToken(authorizationHeader);
             if (!tokenValidatorService.isTokenValid(token)) {
                 return null;
             }
@@ -53,11 +52,11 @@ public class ChatController {
     @MessageMapping("gallery/deleteImage/{eventID}")
     @SendTo("/topic/gallery/deleteImage/{eventID}")
     public DeleteImageRequestDTO deleteImage(
-            @Valid @Payload DeleteImageRequestDTO msg,
-            @Headers Map<String, Object> headers
+            @RequestHeader("Authorization") String authorizationHeader,
+            @Valid @Payload DeleteImageRequestDTO msg
     ) {
         try {
-            String token = extractTokenFromHeaders(headers);
+            String token = extractToken(authorizationHeader);
             if (!tokenValidatorService.isTokenValid(token)) {
                 return null;
             }
@@ -72,11 +71,11 @@ public class ChatController {
     @MessageMapping("gallery/imageLike/{eventID}")
     @SendTo("/topic/gallery/imageLike/{eventID}")
     public ImageLikeRequestDTO handleImageLike(
-            @Valid @Payload ImageLikeRequestDTO request,
-            @Headers Map<String, Object> headers
+            @RequestHeader("Authorization") String authorizationHeader,
+            @Valid @Payload ImageLikeRequestDTO request
     ) {
         try {
-            String token = extractTokenFromHeaders(headers);
+            String token = extractToken(authorizationHeader);
             if (!tokenValidatorService.isTokenValid(token)) {
                 return null;
             }
@@ -88,17 +87,9 @@ public class ChatController {
         }
     }
 
-    private String extractTokenFromHeaders(Map<String, Object> headers) {
-        if (headers.containsKey("simpConnectMessage")) {
-            Object raw = headers.get("simpConnectMessage");
-            if (raw instanceof org.springframework.messaging.Message) {
-                org.springframework.messaging.Message<?> connectMessage = (org.springframework.messaging.Message<?>) raw;
-                StompHeaderAccessor accessor = StompHeaderAccessor.wrap(connectMessage);
-                String authHeader = accessor.getFirstNativeHeader("Authorization");
-                if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                    return authHeader.substring(7);
-                }
-            }
+    private String extractToken(String header) {
+        if (header != null && header.startsWith("Bearer ")) {
+            return header.substring(7);
         }
         return null;
     }

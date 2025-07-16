@@ -8,7 +8,6 @@ function DeleteUserButton({ user, setLogged }) {
 	const handleDeleteUser = async (e) => {
 		e.preventDefault();
 		try {
-			console.log(user.email);
 			if (!user.email) {
 				return;
 			}
@@ -16,10 +15,11 @@ function DeleteUserButton({ user, setLogged }) {
 			const res = await deleteUser(JSON.parse(sessionStorage.getItem('user')).email);
 
 			if (!res.ok) throw new Error('Delete user failed');
-			console.log('Success:', res);
+
 			sessionStorage.removeItem('user');
 			setLogged(false);
-			navigate('/');
+
+			navigate('/', { replace: true });
 		} catch (err) {
 			console.error('Error:', err.message);
 		}

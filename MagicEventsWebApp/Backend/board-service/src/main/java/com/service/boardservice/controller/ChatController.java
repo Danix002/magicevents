@@ -13,6 +13,8 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestHeader;
+
 import java.util.Map;
 
 @Controller
@@ -29,10 +31,10 @@ public class ChatController {
     @MessageMapping("chat/sendMessage/{eventID}")
     @SendTo("/topic/chat/{eventID}")
     public AddNewMessageRequestDTO receiveMessage(
-            @Valid @Payload AddNewMessageRequestDTO message,
-            @Headers Map<String, Object> headers
+            @RequestHeader("Authorization") String authorizationHeader,
+            @Valid @Payload AddNewMessageRequestDTO message
     ) {
-        String token = extractTokenFromHeaders(headers);
+        String token = extractToken(authorizationHeader);
         if (!tokenValidatorService.isTokenValid(token)) {
             return null;
         }
@@ -48,10 +50,10 @@ public class ChatController {
     @MessageMapping("chat/deleteMessage/{eventID}")
     @SendTo("/topic/chat/deleteMessage/{eventID}")
     public DeleteMessageRequestDTO deleteMessage(
-            @Valid @Payload DeleteMessageRequestDTO request,
-            @Headers Map<String, Object> headers
+            @RequestHeader("Authorization") String authorizationHeader,
+            @Valid @Payload DeleteMessageRequestDTO request
     ) {
-        String token = extractTokenFromHeaders(headers);
+        String token = extractToken(authorizationHeader);
         if (!tokenValidatorService.isTokenValid(token)) {
             return null;
         }
@@ -63,17 +65,9 @@ public class ChatController {
         }
     }
 
-    private String extractTokenFromHeaders(Map<String, Object> headers) {
-        if (headers.containsKey("simpConnectMessage")) {
-            Object raw = headers.get("simpConnectMessage");
-            if (raw instanceof org.springframework.messaging.Message) {
-                org.springframework.messaging.Message<?> connectMessage = (org.springframework.messaging.Message<?>) raw;
-                StompHeaderAccessor accessor = StompHeaderAccessor.wrap(connectMessage);
-                String authHeader = accessor.getFirstNativeHeader("Authorization");
-                if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                    return authHeader.substring(7);
-                }
-            }
+    private String extractToken(String header) {
+        if (header != null && header.startsWith("Bearer ")) {
+            return header.substring(7);
         }
         return null;
     }

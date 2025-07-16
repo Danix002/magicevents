@@ -327,7 +327,13 @@ public class EventGestorController {
     }
 
     @DeleteMapping("/deletepartecipant")
-    public boolean deleteUser(@RequestParam("magicEventsTag") Long magicEventsTag){
+    public boolean deleteUser(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestParam("magicEventsTag") Long magicEventsTag
+    ){
+        if (!tokenValidatorService.isTokenValid(extractToken(authorizationHeader))) {
+            return false;
+        }
         return eventGestorService.deleteUser(magicEventsTag);
     }
 
