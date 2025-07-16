@@ -9,14 +9,13 @@ import jakarta.validation.Valid;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Optional;
 
 @Controller
 public class ChatController {
-
     private final ImageChatService imageChatService;
     private final TokenValidatorService tokenValidatorService;
 
@@ -28,10 +27,10 @@ public class ChatController {
     @MessageMapping("gallery/sendImage/{eventID}")
     @SendTo("/topic/gallery/{eventID}")
     public AddNewImageRequestDTO receiveImage(
-            @RequestHeader("Authorization") String authorizationHeader,
+            StompHeaderAccessor accessor,
             @Valid @Payload AddNewImageRequestDTO message
     ) {
-        return extractAndValidateToken(authorizationHeader)
+        return extractAndValidateToken(accessor)
                 .map(token -> imageChatService.addNewImage(message, token))
                 .orElse(null);
     }
@@ -39,10 +38,10 @@ public class ChatController {
     @MessageMapping("gallery/deleteImage/{eventID}")
     @SendTo("/topic/gallery/deleteImage/{eventID}")
     public DeleteImageRequestDTO deleteImage(
-            @RequestHeader("Authorization") String authorizationHeader,
+            StompHeaderAccessor accessor,
             @Valid @Payload DeleteImageRequestDTO request
     ) {
-        return extractAndValidateToken(authorizationHeader)
+        return extractAndValidateToken(accessor)
                 .map(token -> imageChatService.deleteImage(request, token))
                 .orElse(null);
     }
@@ -50,15 +49,16 @@ public class ChatController {
     @MessageMapping("gallery/imageLike/{eventID}")
     @SendTo("/topic/gallery/imageLike/{eventID}")
     public ImageLikeRequestDTO handleImageLike(
-            @RequestHeader("Authorization") String authorizationHeader,
+            StompHeaderAccessor accessor,
             @Valid @Payload ImageLikeRequestDTO request
     ) {
-        return extractAndValidateToken(authorizationHeader)
+        return extractAndValidateToken(accessor)
                 .map(token -> imageChatService.handleImageLike(request, token))
                 .orElse(null);
     }
 
-    private Optional<String> extractAndValidateToken(String header) {
+    private Optional<String> extractAndValidateToken(StompHeaderAccessor accessor) {
+        String header = accessor.getFirstNativeHeader("Authorization");
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
             if (tokenValidatorService.isTokenValid(token)) {

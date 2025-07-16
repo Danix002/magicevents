@@ -8,9 +8,9 @@ import jakarta.validation.Valid;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Optional;
 
@@ -28,10 +28,10 @@ public class ChatController {
     @MessageMapping("chat/sendMessage/{eventID}")
     @SendTo("/topic/chat/{eventID}")
     public AddNewMessageRequestDTO receiveMessage(
-            @RequestHeader("Authorization") String authorizationHeader,
+            StompHeaderAccessor accessor,
             @Valid @Payload AddNewMessageRequestDTO message
     ) {
-        return extractAndValidateToken(authorizationHeader)
+        return extractAndValidateToken(accessor)
                 .map(token -> {
                     chatService.addNewMessage(message, token);
                     return message;
@@ -42,15 +42,16 @@ public class ChatController {
     @MessageMapping("chat/deleteMessage/{eventID}")
     @SendTo("/topic/chat/deleteMessage/{eventID}")
     public DeleteMessageRequestDTO deleteMessage(
-            @RequestHeader("Authorization") String authorizationHeader,
+            StompHeaderAccessor accessor,
             @Valid @Payload DeleteMessageRequestDTO request
     ) {
-        return extractAndValidateToken(authorizationHeader)
+        return extractAndValidateToken(accessor)
                 .map(token -> chatService.deleteMessage(request, token))
                 .orElse(null);
     }
 
-    private Optional<String> extractAndValidateToken(String header) {
+    private Optional<String> extractAndValidateToken(StompHeaderAccessor accessor) {
+        String header = accessor.getFirstNativeHeader("Authorization");
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
             if (tokenValidatorService.isTokenValid(token)) {
