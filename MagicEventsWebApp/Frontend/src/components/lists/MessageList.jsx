@@ -29,7 +29,7 @@ const MessageList = ({
 			<div id="board" className="flex p-6  flex-col    overflow-y-auto flex-auto pb-24  ">
 				<div className="absolute border-1 border-[#363540]  bottom-4 right-4 flex bg-[#505458]/50 backdrop-blur-2xl sm:w-[calc(100%-18rem)] w-[calc(100%-2rem)] rounded-full shadow-2xl  h-fit p-2">
 					<Input
-						name="message"
+						name="messaggio"
 						value={value}
 						onChange={(e) => setValue(e.target.value)}
 						customClassContainer="flex-auto"
@@ -38,6 +38,7 @@ const MessageList = ({
 					<Button
 						onClick={() => {
 							onSend(value);
+							setValue('')
 						}}
 						custom="!rounded-full"
 						text="Invia"
@@ -52,7 +53,7 @@ const MessageList = ({
 		<div id="board" className="flex p-6 flex-col overflow-y-auto flex-auto pb-24">
 			<div className="absolute border-1 border-[#363540] bottom-4 right-4 flex bg-[#505458]/50 backdrop-blur-2xl sm:w-[calc(100%-18rem)] w-[calc(100%-2rem)] rounded-full shadow-2xl  h-fit p-2">
 				<Input
-					name="message"
+					name="messaggio"
 					value={value}
 					onChange={(e) => setValue(e.target.value)}
 					customClassContainer="flex-auto"
@@ -61,12 +62,13 @@ const MessageList = ({
 				<Button
 					onClick={() => {
 						onSend(value);
+						setValue('')
 					}}
 					custom="!rounded-full"
 					text="Invia"
 				/>
 			</div>
-			<div id="board2" className=" flex flex-col-reverse ">
+			<div id="boardd" className=" flex flex-col-reverse">
 				{listItems}
 				{displayOnloadMore ? (
 					<div className="w-fit self-center h-20  grid">
@@ -74,7 +76,7 @@ const MessageList = ({
 							onClick={onLoadMore}
 							custom=" !rounded-full !p-2 text-xs bg-[#363540]/30  h-fit"
 							secondary
-							text="Load More"
+							text="Carica più contenuti"
 						></Button>
 					</div>
 				) : (

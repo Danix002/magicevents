@@ -86,6 +86,7 @@ public class SecurityConfig {
                     return config;
                 }))
                 .authorizeHttpRequests(request -> {
+                    request.requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll();
                     request.requestMatchers(WHITELIST_URLS).permitAll();
                     request.requestMatchers(PROTECTEDLIST_URLS).authenticated();
                     request.anyRequest().authenticated();
