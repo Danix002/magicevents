@@ -111,11 +111,11 @@ const GalleryPage = () => {
 
 	const connect = () => {
 		if (!eventId || connected) return;
-
 		const socket = new SockJS(`${galleryUrl}/gallery`);
 		const client = Stomp.over(socket);
 		// Disable debug output (optional)
 		client.debug = null;
+
 		client.connect(
 			{ Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}` },
 			(frame) => {
