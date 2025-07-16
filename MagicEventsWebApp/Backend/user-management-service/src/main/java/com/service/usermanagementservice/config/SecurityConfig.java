@@ -58,8 +58,8 @@ public class SecurityConfig {
                     CorsConfiguration config = new CorsConfiguration();
                     config.setAllowedOrigins(
                             List.of(
-                                    "https://" + clientUrl,
-                                    "http://" + clientUrl,
+                                    "https://" + clientUrl + ":*",
+                                    "http://" + clientUrl + ":*",
                                     eventManagementServiceUrl,
                                     boardServiceUrl,
                                     galleryServiceUrl,

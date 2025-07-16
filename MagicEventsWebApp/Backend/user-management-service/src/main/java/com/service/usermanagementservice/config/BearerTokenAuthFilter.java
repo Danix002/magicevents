@@ -16,8 +16,9 @@ import java.io.IOException;
 
 @Component
 public class BearerTokenAuthFilter extends OncePerRequestFilter {
+
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Override
     protected void doFilterInternal(
@@ -25,18 +26,22 @@ public class BearerTokenAuthFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
-        if(authHeader != null && authHeader.startsWith("Bearer ") && !authHeader.substring(7).isBlank()) {
-            String bearerToken = authHeader.substring(7);
-            Authentication bearerTokenAuthentication = new BearerTokenAuth(bearerToken);
-            try {
-                Authentication authentication = authenticationManager.authenticate(bearerTokenAuthentication);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (AuthenticationException e) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            String authHeader = request.getHeader("Authorization");
+            if (authHeader != null && authHeader.startsWith("Bearer ") && !authHeader.substring(7).isBlank()) {
+                String bearerToken = authHeader.substring(7);
+                Authentication bearerTokenAuthentication = new BearerTokenAuth(bearerToken);
+                try {
+                    Authentication authentication = authenticationManager.authenticate(bearerTokenAuthentication);
+                    authentication.setAuthenticated(true);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } catch (AuthenticationException e) {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
+                }
             }
         }
+
         filterChain.doFilter(request, response);
     }
 }

@@ -38,6 +38,6 @@ public class BearerTokenAuthProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return authentication.equals(BearerTokenAuthentication.class);
+        return BearerTokenAuth.class.isAssignableFrom(authentication);
     }
 }

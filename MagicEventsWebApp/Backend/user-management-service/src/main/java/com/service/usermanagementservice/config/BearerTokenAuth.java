@@ -6,7 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 
 public class BearerTokenAuth implements Authentication {
-    private String  bearerToken;
+    private final String bearerToken;
+    private boolean authenticated = false;
 
     public BearerTokenAuth(String bearerToken) {
         this.bearerToken = bearerToken;
@@ -19,7 +20,7 @@ public class BearerTokenAuth implements Authentication {
 
     @Override
     public Object getCredentials() {
-        return null;
+        return bearerToken;
     }
 
     @Override
@@ -29,16 +30,18 @@ public class BearerTokenAuth implements Authentication {
 
     @Override
     public Object getPrincipal() {
-        return null;
+        return bearerToken;
     }
 
     @Override
     public boolean isAuthenticated() {
-        return false;
+        return authenticated;
     }
 
     @Override
-    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException { }
+    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+        this.authenticated = isAuthenticated;
+    }
 
     @Override
     public String getName() {
