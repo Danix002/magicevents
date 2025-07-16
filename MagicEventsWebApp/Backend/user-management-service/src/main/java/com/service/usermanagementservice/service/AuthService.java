@@ -220,6 +220,7 @@ public class AuthService {
             boolean result = eventManagementWebClient.delete()
                     .uri(uriBuilder -> uriBuilder
                     .path("/gestion/deletepartecipant")
+                    .queryParam("magicEventsTag", user.getMagicEventTag())
                     .build())
                     .retrieve()
                     .bodyToMono(Boolean.class)

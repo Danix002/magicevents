@@ -327,9 +327,7 @@ public class EventGestorController {
     }
 
     @DeleteMapping("/deletepartecipant")
-    public boolean deleteUser(
-            @RequestParam("magicEventsTag") Long magicEventsTag
-    ){
+    public boolean deleteUser(@RequestParam("magicEventsTag") Long magicEventsTag){
         return eventGestorService.deleteUser(magicEventsTag);
     }
 
