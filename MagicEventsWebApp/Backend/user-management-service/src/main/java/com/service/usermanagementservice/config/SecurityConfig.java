@@ -41,14 +41,16 @@ public class SecurityConfig {
             "/login/generateresetpasswordlink",
             "/login/helloserver",
 
-            //"/info/logoutuser",
-            //"/info/deleteuser",
-            //"/info/modifyuser",
-            //"/info",
-            //"/info/profile",
-
             "/validator/verify",
             "/validator/refresh"
+    };
+
+    private static final String[] PROTECTEDLIST_URLS = {
+            "/info/logoutuser",
+            "/info/deleteuser",
+            "/info/modifyuser",
+            "/info",
+            "/info/profile",
     };
 
     @Bean
@@ -83,6 +85,7 @@ public class SecurityConfig {
                 }))
                 .authorizeHttpRequests(request -> {
                     request.requestMatchers(WHITELIST_URLS).permitAll();
+                    request.requestMatchers(PROTECTEDLIST_URLS).authenticated();
                     request.anyRequest().authenticated();
                 })
                 .csrf(AbstractHttpConfigurer::disable)
