@@ -180,8 +180,7 @@ const GalleryPage = () => {
 			magicEventTag: user.magicEventTag.toString(),
 		};
 		try {
-			send(
-				stompClient,
+			stompClient.send(
 				`/app/gallery/deleteImage/${eventId}`,
 				{ Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}` },
 				JSON.stringify(galleryImage)
@@ -209,8 +208,7 @@ const GalleryPage = () => {
 			magicEventTag: user.magicEventTag.toString(),
 		};
 		try {
-			send(
-				stompClient,
+			stompClient.send(
 				`/app/gallery/sendImage/${eventId}`,
 				{ Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}` },
 				JSON.stringify(galleryImage)
@@ -237,8 +235,7 @@ const GalleryPage = () => {
 		};
 
 		try {
-			send(
-				stompClient,
+			stompClient.send(
 				`/app/gallery/imageLike/${eventId}`,
 				{ Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}` },
 				JSON.stringify(galleryImage)
