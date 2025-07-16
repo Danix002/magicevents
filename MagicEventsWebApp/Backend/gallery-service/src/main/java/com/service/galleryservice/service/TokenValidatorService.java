@@ -14,8 +14,8 @@ public class TokenValidatorService {
 
     private final RestTemplate restTemplate;
 
-    public TokenValidatorService(RestTemplateBuilder builder) {
-        this.restTemplate = builder.build();
+    public TokenValidatorService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     public boolean isTokenValid(String token) {
@@ -38,3 +38,4 @@ public class TokenValidatorService {
         }
     }
 }
+
