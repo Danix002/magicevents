@@ -156,7 +156,7 @@ const GalleryPage = () => {
 					);
 				});
 				client.onclose = () => {
-					console.log('Client disconesso');
+					console.log('Client disconnected');
 				};
 			},
 			(error) => {
@@ -177,13 +177,14 @@ const GalleryPage = () => {
 			deletedBy: user.username,
 			eventID: eventId,
 			imageID: mex.imageID,
-			magiceventstag: user.magicEventTag.toString(),
+			magicEventTag: user.magicEventTag.toString(),
 		};
 		try {
-			stompClient.send(
+			send(
+				stompClient,
 				`/app/gallery/deleteImage/${eventId}`,
 				{ Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}` },
-				galleryImage
+				JSON.stringify(galleryImage)
 			);
 		} catch (error) {
 			console.log('Error sending message:', error);
@@ -205,13 +206,14 @@ const GalleryPage = () => {
 			base64Image: image,
 			dateTime: new Date().toISOString(),
 			eventID: eventId,
-			magiceventstag: user.magicEventTag.toString(),
+			magicEventTag: user.magicEventTag.toString(),
 		};
 		try {
-			stompClient.send(
+			send(
+				stompClient,
 				`/app/gallery/sendImage/${eventId}`,
 				{ Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}` },
-				galleryImage
+				JSON.stringify(galleryImage)
 			);
 		} catch (error) {
 			console.log('Error sending message:', error);
@@ -235,7 +237,12 @@ const GalleryPage = () => {
 		};
 
 		try {
-			send(stompClient, `/app/gallery/imageLike/${eventId}`, galleryImage);
+			send(
+				stompClient,
+				`/app/gallery/imageLike/${eventId}`,
+				{ Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}` },
+				JSON.stringify(galleryImage)
+			);
 		} catch (error) {
 			console.log('Error sending message:', error);
 		}

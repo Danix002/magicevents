@@ -21,7 +21,7 @@ public class AddNewImageRequestDTO {
     private Long imageID;
     
     private LocalDateTime dateTime;
-    private String magiceventstag;
+    private String magicEventsTag;
 
     public AddNewImageRequestDTO() { }
 
@@ -32,7 +32,7 @@ public class AddNewImageRequestDTO {
             String uploadedBy,
             Long imageID,
             LocalDateTime dateTime,
-            String magiceventstag
+            String magicEventsTag
     ) {
         if (eventID == null) {
             throw new IllegalArgumentException("eventID cannot be null");
@@ -52,7 +52,7 @@ public class AddNewImageRequestDTO {
         this.uploadedBy = uploadedBy;
         this.imageID = imageID;
         this.dateTime = dateTime;
-        this.magiceventstag = magiceventstag;
+        this.magicEventsTag = magicEventsTag;
     }
 
     public Long getEventID() {
@@ -107,12 +107,12 @@ public class AddNewImageRequestDTO {
         this.dateTime = dateTime;
     }
 
-    public String getMagiceventstag() {
-        return magiceventstag;
+    public String getMagicEventsTag() {
+        return magicEventsTag;
     }
 
-    public void setMagiceventstag(String magiceventstag) {
-        this.magiceventstag = magiceventstag;
+    public void setMagicEventsTag(String magiceventstag) {
+        this.magicEventsTag = magiceventstag;
     }
 
     public Long getImageID() {
@@ -134,12 +134,12 @@ public class AddNewImageRequestDTO {
                Objects.equals(uploadedBy, that.uploadedBy) &&
                Objects.equals(imageID, that.imageID) &&
                Objects.equals(dateTime, that.dateTime) &&
-               Objects.equals(magiceventstag, that.magiceventstag);
+               Objects.equals(magicEventsTag, that.magicEventsTag);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(eventID, title, base64Image, uploadedBy, imageID, dateTime, magiceventstag);
+        return Objects.hash(eventID, title, base64Image, uploadedBy, imageID, dateTime, magicEventsTag);
     }
 
     @Override
@@ -151,7 +151,7 @@ public class AddNewImageRequestDTO {
                ", uploadedBy='" + uploadedBy + '\'' +
                ", imageID=" + imageID +
                ", dateTime=" + dateTime +
-               ", magiceventstag='" + magiceventstag + '\'' +
+               ", magiceventstag='" + magicEventsTag + '\'' +
                '}';
     }
 }

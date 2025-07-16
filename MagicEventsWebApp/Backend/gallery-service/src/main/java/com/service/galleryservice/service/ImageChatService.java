@@ -35,7 +35,7 @@ public class ImageChatService {
     }
 
     public AddNewImageRequestDTO addNewImage(AddNewImageRequestDTO request, String token) {
-        if (!authorizePartecipant(request.getEventID(), Long.parseLong(request.getMagiceventstag()), token)) {
+        if (!authorizePartecipant(request.getEventID(), Long.parseLong(request.getMagicEventsTag()), token)) {
             throw new UnauthorizedException("Not authorized to add image for event ID: " + request.getEventID());
         }
 
