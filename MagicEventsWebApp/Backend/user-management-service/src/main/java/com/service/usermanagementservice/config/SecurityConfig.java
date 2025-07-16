@@ -18,8 +18,6 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    @Autowired
-    BearerTokenAuthFilter bearerTokenAuthFilter;
 
     @Value("${services.eventmanagement.url}")
     private String eventManagementServiceUrl;
@@ -54,7 +52,17 @@ public class SecurityConfig {
     };
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public AuthenticationManager authenticationManager(BearerTokenAuthProvider tokenAuthProvider) {
+        return new ProviderManager(tokenAuthProvider);
+    }
+
+    @Bean
+    public BearerTokenAuthFilter bearerTokenAuthFilter(AuthenticationManager authenticationManager) {
+        return new BearerTokenAuthFilter(authenticationManager);
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, BearerTokenAuthFilter bearerTokenAuthFilter) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
@@ -79,13 +87,8 @@ public class SecurityConfig {
                 })
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterAfter(bearerTokenAuthFilter, BasicAuthenticationFilter.class);
+
         return http.build();
     }
-
-    @Bean
-    public AuthenticationManager authenticationManager(BearerTokenAuthProvider tokenAuthProvider) {
-        return new ProviderManager(tokenAuthProvider);
-    }
-
 }
 

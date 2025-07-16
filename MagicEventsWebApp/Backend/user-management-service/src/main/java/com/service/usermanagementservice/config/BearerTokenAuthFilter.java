@@ -17,8 +17,11 @@ import java.io.IOException;
 @Component
 public class BearerTokenAuthFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+
+    public BearerTokenAuthFilter(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
 
     @Override
     protected void doFilterInternal(
