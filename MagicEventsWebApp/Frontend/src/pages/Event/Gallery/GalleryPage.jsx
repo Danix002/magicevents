@@ -180,7 +180,11 @@ const GalleryPage = () => {
 			magiceventstag: user.magicEventTag.toString(),
 		};
 		try {
-			send(stompClient, `/app/gallery/deleteImage/${eventId}`, galleryImage);
+			stompClient.send(
+				`/app/gallery/deleteImage/${eventId}`,
+				{ Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}` },
+				galleryImage
+			);
 		} catch (error) {
 			console.log('Error sending message:', error);
 		}
@@ -204,7 +208,11 @@ const GalleryPage = () => {
 			magiceventstag: user.magicEventTag.toString(),
 		};
 		try {
-			send(stompClient, `/app/gallery/sendImage/${eventId}`, galleryImage);
+			stompClient.send(
+				`/app/gallery/sendImage/${eventId}`,
+				{ Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}` },
+				galleryImage
+			);
 		} catch (error) {
 			console.log('Error sending message:', error);
 		}

@@ -139,7 +139,7 @@ const BoardPage = () => {
 					setMessages((prev) => prev.filter((item) => !(item.messageID === deletedMessage.messageID)));
 				});
 
-				console.log('Connected...');
+				console.log('Connected');
 
 				client.onclose = () => {
 					console.log('Client disconesso');
@@ -170,7 +170,11 @@ const BoardPage = () => {
 		console.log('Deleting message:', chatMessage);
 
 		try {
-			stompClient.send(`/app/chat/deleteMessage/${eventId}`, {}, JSON.stringify(chatMessage));
+			stompClient.send(
+				`/app/chat/deleteMessage/${eventId}`,
+				{ Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}` },
+				JSON.stringify(chatMessage)
+			);
 		} catch (error) {
 			console.log('Error sending message:', error);
 		}
@@ -197,7 +201,11 @@ const BoardPage = () => {
 		console.log('Sending message:', chatMessage);
 
 		try {
-			stompClient.send(`/app/chat/sendMessage/${eventId}`, {}, JSON.stringify(chatMessage));
+			stompClient.send(
+				`/app/chat/sendMessage/${eventId}`,
+				{ Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}` },
+				JSON.stringify(chatMessage)
+			);
 		} catch (error) {
 			console.log('Error sending message:', error);
 		}

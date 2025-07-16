@@ -217,17 +217,15 @@ public class AuthService {
     public String deleteUser(String email) {
         try {
             User user = userRepository.findByEmail(email);
-            OauthToken oauthToken = tokenRepository.findByUser(user);
             boolean result = eventManagementWebClient.delete()
                     .uri(uriBuilder -> uriBuilder
                     .path("/gestion/deletepartecipant")
-                    .queryParam("magicEventsTag", user.getMagicEventTag())
                     .build())
-                    .headers(headers -> headers.setBearerAuth(oauthToken.getAccessToken()))
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();
             if(result) {
+                OauthToken oauthToken = tokenRepository.findByUser(user);
                 tokenRepository.delete(oauthToken);
                 userRepository.delete(user);
                 return "Delete user with email {" + email + "} successfully";
