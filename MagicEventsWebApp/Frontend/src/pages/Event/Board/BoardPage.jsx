@@ -138,6 +138,9 @@ const BoardPage = () => {
 				const deleteSubscription = subscribe(client, `/topic/chat/deleteMessage/${eventId}`, (deletedMessage, hash) => {
 					setMessages((prev) => prev.filter((item) => !(item.messageID === deletedMessage.messageID)));
 				});
+
+				console.log('Connected...');
+
 				client.onclose = () => {
 					console.log('Client disconesso');
 				};
