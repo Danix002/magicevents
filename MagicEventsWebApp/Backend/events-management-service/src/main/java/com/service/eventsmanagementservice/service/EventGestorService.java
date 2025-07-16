@@ -512,9 +512,13 @@ public class EventGestorService {
                 delete(event.getEventId(), magicEventsTag);
             }else {
                 event.getPartecipants().remove(partecipant);
-                if (event.getAdmins().contains(partecipant)) {
-                    isAdmin = true;
-                    event.getAdmins().remove(partecipant);
+                if (isAdmin(magicEventsTag, event.getEventId())) {
+                    if(!isAdmin){
+                        isAdmin = true;
+                    }
+                    Admin admin = adminsRepository.findById(magicEventsTag)
+                            .orElseThrow(() -> new IllegalArgumentException("Admin not found: " + magicEventsTag));
+                    event.getAdmins().remove(admin);
                 }
                 eventsRepository.save(event);
             }
