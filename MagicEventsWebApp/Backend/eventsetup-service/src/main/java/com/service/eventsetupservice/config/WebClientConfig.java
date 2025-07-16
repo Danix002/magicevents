@@ -16,13 +16,10 @@ import javax.net.ssl.SSLException;
 public class WebClientConfig {
     @Value("${services.eventmanagement.url}")
     private String eventManagementServiceUrl;
-
     @Value("${services.galleryservice.url}")
     private String galleryServiceUrl;
-
     @Value("${services.boardservice.url}")
     private String boardServiceUrl;
-
     @Value("${services.guestgameservice.url}")
     private String guestGameServiceUrl;
 

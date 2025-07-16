@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
 import MessageList from '../../../components/lists/MessageList';
-import { getMessages } from '../../../api/boardApi';
+import { getMessages } from '../../../api/boardAPI';
 import { useNavigate, useParams } from 'react-router-dom';
 import { subscribe } from '../../../utils/webSocket';
 import Button from '../../../components/buttons/Button';
@@ -127,7 +127,7 @@ const BoardPage = () => {
 		console.log('Connecting...');
 
 		client.connect(
-			{},
+			{ Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}` },
 			(frame) => {
 				setStompClient(client);
 				setConnected(true);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Input from '../../components/inputs/Input';
 import Button from '../../components/buttons/Button';
-import { login, register } from '../../api/authentication';
+import { login, register } from '../../api/userAPI';
 import { useNavigate, Link } from 'react-router-dom';
 
 function RegisterPage({ setLogged }) {

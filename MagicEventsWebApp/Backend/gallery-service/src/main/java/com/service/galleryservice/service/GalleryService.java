@@ -22,18 +22,20 @@ public class GalleryService {
     private final ImageUserLikeRepository imageUserLikeRepository;
     private final WebClient eventManagementWebClient;
 
-    public GalleryService(GalleryRepository galleryRepository, 
-                         ImageRepository imageRepository,
-                         ImageUserLikeRepository imageUserLikeRepository,
-                         WebClient eventManagementWebClient) {
+    public GalleryService(
+            GalleryRepository galleryRepository,
+            ImageRepository imageRepository,
+            ImageUserLikeRepository imageUserLikeRepository,
+            WebClient eventManagementWebClient
+    ) {
         this.galleryRepository = galleryRepository;
         this.imageRepository = imageRepository;
         this.imageUserLikeRepository = imageUserLikeRepository;
         this.eventManagementWebClient = eventManagementWebClient;
     }
 
-    public void createGallery(CreateGalleryRequestDTO request) {
-        if (!authorizeCreateDeleteGallery(request.getEventID(), request.getUserMagicEventsTag())) {
+    public void createGallery(CreateGalleryRequestDTO request, String token) {
+        if (!authorizeCreateDeleteGallery(request.getEventID(), request.getUserMagicEventsTag(), token)) {
             throw new UnauthorizedException("Not authorized to create gallery for event ID: " + request.getEventID());
         }
         Gallery gallery = new Gallery();
@@ -42,8 +44,8 @@ public class GalleryService {
         galleryRepository.save(gallery);
     }
 
-    public GalleryDTO getGallery(Long eventID, Long userMagicEventsTag, int pageNumber, int pageSize) {
-        if (!authorizeViewGallery(eventID, userMagicEventsTag)) {
+    public GalleryDTO getGallery(Long eventID, Long userMagicEventsTag, int pageNumber, int pageSize, String token) {
+        if (!authorizeViewGallery(eventID, userMagicEventsTag, token)) {
             throw new UnauthorizedException("Not authorized to view gallery for event ID: " + eventID);
         }
         
@@ -59,7 +61,10 @@ public class GalleryService {
                 .limit(pageSize)
                 .map(img -> {
                     int likesCount = imageUserLikeRepository.countByImage(img);
-                    boolean userLike = !imageUserLikeRepository.findByImageAndUserMagicEventsTag(img, userMagicEventsTag.toString()).isEmpty();
+                    boolean userLike = !imageUserLikeRepository.findByImageAndUserMagicEventsTag(
+                            img,
+                            userMagicEventsTag.toString()
+                    ).isEmpty();
                     return new ImageDTO(
                         img.getId(),
                         img.getTitle(),
@@ -79,8 +84,8 @@ public class GalleryService {
                 .build();
     }
 
-    public GalleryDTO getMostPopularImages(Long eventID, Long userMagicEventsTag, int pageNumber, int pageSize) {
-        if (!authorizeViewGallery(eventID, userMagicEventsTag)) {
+    public GalleryDTO getMostPopularImages(Long eventID, Long userMagicEventsTag, int pageNumber, int pageSize, String token) {
+        if (!authorizeViewGallery(eventID, userMagicEventsTag, token)) {
             throw new UnauthorizedException("Not authorized to view gallery for event ID: " + eventID);
         }
         
@@ -98,7 +103,9 @@ public class GalleryService {
                 .limit(pageSize)
                 .map(img -> {
                     int likesCount = imageUserLikeRepository.countByImage(img);
-                    boolean userLike = !imageUserLikeRepository.findByImageAndUserMagicEventsTag(img, userMagicEventsTag.toString()).isEmpty();
+                    boolean userLike = !imageUserLikeRepository.findByImageAndUserMagicEventsTag(
+                            img, userMagicEventsTag.toString()
+                    ).isEmpty();
                     return new ImageDTO(
                         img.getId(),
                         img.getTitle(),
@@ -118,14 +125,15 @@ public class GalleryService {
                 .build();
     }
 
-    private boolean authorizeCreateDeleteGallery(Long eventID, Long userMagicEventsTag) {
+    private boolean authorizeCreateDeleteGallery(Long eventID, Long userMagicEventsTag, String token) {
         try {
             Boolean isCreator = eventManagementWebClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/gestion/iscreator")
-                            .queryParam("creatorId", userMagicEventsTag)
-                            .queryParam("eventId", eventID)
-                            .build())
+                    .path("/gestion/iscreator")
+                    .queryParam("creatorId", userMagicEventsTag)
+                    .queryParam("eventId", eventID)
+                    .build())
+                    .headers(headers -> headers.setBearerAuth(token))
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();
@@ -136,14 +144,15 @@ public class GalleryService {
         }
     }
 
-    private boolean authorizeViewGallery(Long eventID, Long userMagicEventsTag) {
+    private boolean authorizeViewGallery(Long eventID, Long userMagicEventsTag, String token) {
         try {
             Boolean isParticipant = eventManagementWebClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/gestion/ispartecipant")
-                            .queryParam("partecipantId", userMagicEventsTag)
-                            .queryParam("eventId", eventID)
-                            .build())
+                    .path("/gestion/ispartecipant")
+                    .queryParam("partecipantId", userMagicEventsTag)
+                    .queryParam("eventId", eventID)
+                    .build())
+                    .headers(headers -> headers.setBearerAuth(token))
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();
@@ -159,8 +168,8 @@ public class GalleryService {
     }
 
     @Transactional
-    public void deleteGallery(Long eventID, Long userMagicEventsTag) {
-        if (!authorizeCreateDeleteGallery(eventID, userMagicEventsTag)) {
+    public void deleteGallery(Long eventID, Long userMagicEventsTag, String token) {
+        if (!authorizeCreateDeleteGallery(eventID, userMagicEventsTag, token)) {
             throw new UnauthorizedException("Not authorized to delete gallery for event ID: " + eventID);
         }
         Gallery gallery = galleryRepository.findByEventID(eventID);

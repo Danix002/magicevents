@@ -22,16 +22,20 @@ public class ImageChatService {
     private final ImageUserLikeRepository imageUserLikeRepository;
     private final WebClient eventManagementWebClient;
 
-    public ImageChatService(GalleryRepository galleryRepository, ImageRepository imageRepository,
-                           ImageUserLikeRepository imageUserLikeRepository, WebClient eventManagementWebClient) {
+    public ImageChatService(
+            GalleryRepository galleryRepository,
+            ImageRepository imageRepository,
+            ImageUserLikeRepository imageUserLikeRepository,
+            WebClient eventManagementWebClient
+    ) {
         this.galleryRepository = galleryRepository;
         this.imageRepository = imageRepository;
         this.imageUserLikeRepository = imageUserLikeRepository;
         this.eventManagementWebClient = eventManagementWebClient;
     }
 
-    public AddNewImageRequestDTO addNewImage(AddNewImageRequestDTO request) {
-        if (!authorizePartecipant(request.getEventID(), Long.parseLong(request.getMagiceventstag()))) {
+    public AddNewImageRequestDTO addNewImage(AddNewImageRequestDTO request, String token) {
+        if (!authorizePartecipant(request.getEventID(), Long.parseLong(request.getMagiceventstag()), token)) {
             throw new UnauthorizedException("Not authorized to add image for event ID: " + request.getEventID());
         }
 
@@ -53,8 +57,8 @@ public class ImageChatService {
         return request;
     }
 
-    public DeleteImageRequestDTO deleteImage(DeleteImageRequestDTO request) {
-        if (!authorizeAdmin(request.getEventID(), Long.parseLong(request.getMagiceventstag()))) {
+    public DeleteImageRequestDTO deleteImage(DeleteImageRequestDTO request, String token) {
+        if (!authorizeAdmin(request.getEventID(), Long.parseLong(request.getMagiceventstag()), token)) {
             throw new UnauthorizedException("Not authorized to delete image for event ID: " + request.getEventID());
         }
 
@@ -69,8 +73,8 @@ public class ImageChatService {
         return request;
     }
 
-    public ImageLikeRequestDTO handleImageLike(ImageLikeRequestDTO request) {
-        if (!authorizePartecipant(request.getEventID(), Long.parseLong(request.getUserMagicEventsTag()))) {
+    public ImageLikeRequestDTO handleImageLike(ImageLikeRequestDTO request, String token) {
+        if (!authorizePartecipant(request.getEventID(), Long.parseLong(request.getUserMagicEventsTag()), token)) {
             throw new UnauthorizedException("Not authorized to like image for event ID: " + request.getEventID());
         }
 
@@ -95,14 +99,15 @@ public class ImageChatService {
         return request;
     }
 
-    private boolean authorizeAdmin(Long eventID, Long userMagicEventsTag) {
+    private boolean authorizeAdmin(Long eventID, Long userMagicEventsTag, String token) {
         try {
             Boolean isAdmin = eventManagementWebClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/gestion/isadmin")
-                            .queryParam("partecipantId", userMagicEventsTag)
-                            .queryParam("eventId", eventID)
-                            .build())
+                    .path("/gestion/isadmin")
+                    .queryParam("partecipantId", userMagicEventsTag)
+                    .queryParam("eventId", eventID)
+                    .build())
+                    .headers(headers -> headers.setBearerAuth(token))
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();
@@ -113,14 +118,15 @@ public class ImageChatService {
         }
     }
 
-    private boolean authorizePartecipant(Long eventID, Long userMagicEventsTag) {
+    private boolean authorizePartecipant(Long eventID, Long userMagicEventsTag, String token) {
         try {
             Boolean isPartecipant = eventManagementWebClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/gestion/ispartecipant")
-                            .queryParam("partecipantId", userMagicEventsTag)
-                            .queryParam("eventId", eventID)
-                            .build())
+                    .path("/gestion/ispartecipant")
+                    .queryParam("partecipantId", userMagicEventsTag)
+                    .queryParam("eventId", eventID)
+                    .build())
+                    .headers(headers -> headers.setBearerAuth(token))
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();

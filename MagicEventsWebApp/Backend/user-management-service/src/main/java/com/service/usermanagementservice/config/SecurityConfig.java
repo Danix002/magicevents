@@ -21,14 +21,16 @@ public class SecurityConfig {
 
     @Value("${services.eventmanagement.url}")
     private String eventManagementServiceUrl;
-
+    @Value("${services.boardservice.url}")
+    private String boardServiceUrl;
+    @Value("${services.galleryservice.url}")
+    private String galleryServiceUrl;
+    @Value("${services.guestgameservice.url}")
+    private String guestGameServiceUrl;
     @Value("${client.url}")
     private String clientUrl;
 
     private static final String[] WHITELIST_URLS = {
-            "/test",
-            "/test/users",
-            "/test/tokens",
             "/favicon.ico",
 
             "/login/form",
@@ -39,11 +41,14 @@ public class SecurityConfig {
             "/login/generateresetpasswordlink",
             "/login/helloserver",
 
-            "/info/logoutuser",
-            "/info/deleteuser",
-            "/info/modifyuser",
-            "/info",
-            "/info/profile"
+            //"/info/logoutuser",
+            //"/info/deleteuser",
+            //"/info/modifyuser",
+            //"/info",
+            //"/info/profile",
+
+            "/validator/verify",
+            "/validator/refresh"
     };
 
     @Bean
@@ -55,10 +60,13 @@ public class SecurityConfig {
                             List.of(
                                     "https://" + clientUrl,
                                     "http://" + clientUrl,
-                                    eventManagementServiceUrl
+                                    eventManagementServiceUrl,
+                                    boardServiceUrl,
+                                    galleryServiceUrl,
+                                    guestGameServiceUrl
                             )
                     );
-                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowedHeaders(List.of("*"));
                     config.setAllowCredentials(true);
                     return config;

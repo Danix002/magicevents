@@ -6,7 +6,7 @@ import { useAuth } from '../../auth/AuthContext';
 import ForgotPassword from '../../components/buttons/ForgotPassword';
 import Button from '../../components/buttons/Button';
 import clsx from 'clsx';
-import { login, helloServer } from '../../api/authentication';
+import { login, helloServer } from '../../api/userAPI';
 import { useLocation } from 'react-router-dom';
 
 function LoginPage({ setLogged }) {

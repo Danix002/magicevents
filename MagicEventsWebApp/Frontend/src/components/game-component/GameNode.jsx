@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Button from '../buttons/Button';
-import { getUserFromId } from '../../api/authentication';
+import { getUserFromId } from '../../api/userAPI';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate, useParams } from 'react-router-dom';

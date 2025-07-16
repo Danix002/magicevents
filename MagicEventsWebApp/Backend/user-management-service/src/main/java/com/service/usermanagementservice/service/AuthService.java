@@ -150,7 +150,7 @@ public class AuthService {
         );
     }
 
-    private LoginWithTokenDTO saveTokenForUser(User user) {
+    public LoginWithTokenDTO saveTokenForUser(User user) {
         LoginWithTokenDTO dto = generateToken();
         OauthToken token = new OauthToken();
         token.setAccessToken(dto.getAccessToken());
@@ -205,16 +205,6 @@ public class AuthService {
         JsonObject jsonObject = new Gson().fromJson(response, JsonObject.class);
 
         return jsonObject.get("access_token").toString().replace("\"", "");
-    }
-
-    public LoginWithTokenDTO refreshAccessToken(String refreshToken) {
-        OauthToken oauthToken = tokenRepository.findByRefreshToken(refreshToken);
-        if(oauthToken == null) {
-            throw new BadCredentialsException("Invalid refresh token");
-        }
-        LoginWithTokenDTO res = saveTokenForUser(oauthToken.getUser());
-        tokenRepository.delete(oauthToken);
-        return res;
     }
 
     public String logout(String email) {

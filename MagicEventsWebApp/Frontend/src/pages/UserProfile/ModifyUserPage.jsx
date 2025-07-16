@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useRef } from 'react';
-import { modifyUser } from '../../api/authentication';
+import { modifyUser } from '../../api/userAPI';
 import { faEdit, faClose, faUser, faEnvelope, faIdCard } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Input from '../../components/inputs/Input';

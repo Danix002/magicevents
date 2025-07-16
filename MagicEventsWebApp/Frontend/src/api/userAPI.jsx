@@ -55,7 +55,7 @@ export function modifyUser(user) {
 	return fetch(`${userManagementUrl}/info/modifyuser`, {
 		method: 'PUT',
 		headers: {
-			Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+			Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 			'Content-Type': 'application/json',
 		},
 		body: user,
@@ -66,7 +66,7 @@ export function deleteUser(email) {
 	return fetch(`${userManagementUrl}/info/deleteuser`, {
 		method: 'DELETE',
 		headers: {
-			Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+			Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 			'Content-Type': 'application/x-www-form-urlencoded',
 		},
 		body: new URLSearchParams({
@@ -88,7 +88,7 @@ export function logout() {
 	return fetch(`${userManagementUrl}/info/logoutuser`, {
 		method: 'PUT',
 		headers: {
-			Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+			Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 			'Content-Type': 'application/x-www-form-urlencoded',
 		},
 		body: new URLSearchParams({
@@ -101,7 +101,7 @@ export function getUserFromId(userId) {
 	return fetch(`${userManagementUrl}/info/profile?magicEventTag=${userId}`, {
 		method: 'GET',
 		headers: {
-			Authorization: JSON.parse(sessionStorage.getItem('user')).token,
+			Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}`,
 			'Content-Type': 'application/x-www-form-urlencoded',
 		},
 	});

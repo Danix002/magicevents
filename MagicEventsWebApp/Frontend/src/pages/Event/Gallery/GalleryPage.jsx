@@ -117,7 +117,7 @@ const GalleryPage = () => {
 		// Disable debug output (optional)
 		client.debug = null;
 		client.connect(
-			{},
+			{ Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}` },
 			(frame) => {
 				setStompClient(client);
 				setConnected(true);

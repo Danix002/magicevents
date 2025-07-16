@@ -29,7 +29,6 @@ public class BearerTokenAuthFilter extends OncePerRequestFilter {
         if(authHeader != null && authHeader.startsWith("Bearer ") && !authHeader.substring(7).isBlank()) {
             String bearerToken = authHeader.substring(7);
             Authentication bearerTokenAuthentication = new BearerTokenAuth(bearerToken);
-
             try {
                 Authentication authentication = authenticationManager.authenticate(bearerTokenAuthentication);
                 SecurityContextHolder.getContext().setAuthentication(authentication);

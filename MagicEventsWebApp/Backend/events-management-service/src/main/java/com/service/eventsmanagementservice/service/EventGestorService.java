@@ -52,23 +52,23 @@ public class EventGestorService {
     @Value("${spring.rabbitmq.routing-key.delete-event-guestgame}")
     private String deleteGuestgameRoutingKey;
 
-    public String updateEventAdmins(ArrayList<String> admins, Long eventId, Long creatorId) {
+    public String updateEventAdmins(ArrayList<String> admins, Long eventId, Long creatorId, String token) {
         Event event = eventsRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("Event not found: " + eventId));
         if(event.getCreator().equals(creatorId)) {
-            addAdmins(admins, eventId);
+            addAdmins(admins, eventId, token);
             return "Success";
         }else{
             return "Error";
         }
     }
-    public String updateEventPartecipants(ArrayList<String> partecipants, Long eventId, Long magicEventsTag) {
+    public String updateEventPartecipants(ArrayList<String> partecipants, Long eventId, Long magicEventsTag, String token) {
         Event event = eventsRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("Event not found: " + eventId));
         boolean creator = event.getCreator().equals(magicEventsTag);
         boolean admin = isAdmin(magicEventsTag, eventId);
         if(creator || admin) {
-            addPartecipants(partecipants, eventId);
+            addPartecipants(partecipants, eventId, token);
             return "Success";
         }else {
             return "Error";
@@ -105,7 +105,7 @@ public class EventGestorService {
     }
 
     @Transactional
-    public Long create(@Valid EventDTO eventDTO, String creatorEmail) {
+    public Long create(@Valid EventDTO eventDTO, String creatorEmail, String token) {
         List<EventDTO> eventsForCreator = getEventsCreated(eventDTO.getCreator());
         for(EventDTO eventForCreator : eventsForCreator) {
             if(
@@ -136,13 +136,13 @@ public class EventGestorService {
         event.getPartecipants().add(partecipant);
         partecipant.getEvents().add(event);
         partecipantsRepository.save(partecipant);
-        addAdmins(eventDTO.getAdmins(), event.getEventId());
-        addPartecipants(eventDTO.getPartecipants(), event.getEventId());
+        addAdmins(eventDTO.getAdmins(), event.getEventId(), token);
+        addPartecipants(eventDTO.getPartecipants(), event.getEventId(), token);
         return event.getEventId();
     }
 
-    public List<Admin> addAdmins(List<String> admins, Long eventId){
-        HashMap<Long, String> adminsWithId = getIdForEmails(admins);
+    public List<Admin> addAdmins(List<String> admins, Long eventId, String token){
+        HashMap<Long, String> adminsWithId = getIdForEmails(admins, token);
         return addAdminsWithId(adminsWithId, eventId);
     }
 
@@ -170,8 +170,8 @@ public class EventGestorService {
         return newAdmins;
     }
 
-    public List<Partecipant> addPartecipants(List<String> partecipants, Long eventId) {
-        HashMap<Long, String> partecipantsWithId = getIdForEmails(partecipants);
+    public List<Partecipant> addPartecipants(List<String> partecipants, Long eventId, String token) {
+        HashMap<Long, String> partecipantsWithId = getIdForEmails(partecipants, token);
         return addPartecipantsWithId(partecipantsWithId, eventId);
     }
 
@@ -352,10 +352,11 @@ public class EventGestorService {
         return eventDTOs;
     }
 
-    public HashMap<Long, String> getIdForEmails(List<String> emails) {
+    public HashMap<Long, String> getIdForEmails(List<String> emails, String token) {
         try {
             HashMap<Long, String> result = userManagementWebClient.post()
                     .uri("/info")
+                    .headers(headers -> headers.setBearerAuth(token))
                     .bodyValue(emails)
                     .retrieve()
                     .onStatus(status -> status.is4xxClientError(), 
@@ -445,15 +446,15 @@ public class EventGestorService {
         return services;
     }
 
-    public String removePartecipant(String partecipantEmail, Long eventId, Long creatorId) {
+    public String removePartecipant(String partecipantEmail, Long eventId, Long creatorId, String token) {
         Event event = eventsRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("Event not found: " + eventId));
-        HashMap<Long, String> partecipantsId = getIdForEmails(List.of(partecipantEmail));
+        HashMap<Long, String> partecipantsId = getIdForEmails(List.of(partecipantEmail), token);
         for (Map.Entry<Long, String> partecipantEntry : partecipantsId.entrySet()) {
             Partecipant partecipant = partecipantsRepository.findById(partecipantEntry.getKey())
                     .orElseThrow(() -> new IllegalArgumentException("Partecipant not found: " + partecipantEntry.getKey()));
             if(isAdmin(partecipantEntry.getKey(), eventId)){
-                removeAdmin(partecipantEntry.getValue(), eventId, creatorId);
+                removeAdmin(partecipantEntry.getValue(), eventId, creatorId, token);
             }else {
                 if (event.getCreator().equals(creatorId) && partecipant.getEvents().contains(event)) {
                     partecipant.getEvents().remove(event);
@@ -468,10 +469,10 @@ public class EventGestorService {
         return "Success";
     }
 
-    public String removeAdmin(String adminEmail, Long eventId, Long creatorId) {
+    public String removeAdmin(String adminEmail, Long eventId, Long creatorId, String token) {
         Event event = eventsRepository.findById(eventId)
                 .orElseThrow(() -> new IllegalArgumentException("Event not found: " + eventId));
-        HashMap<Long, String> adminId = getIdForEmails(List.of(adminEmail));
+        HashMap<Long, String> adminId = getIdForEmails(List.of(adminEmail), token);
         for (Map.Entry<Long, String> adminEntry : adminId.entrySet()) {
             Admin admin = adminsRepository.findById(adminEntry.getKey())
                     .orElseThrow(() -> new IllegalArgumentException("Admin not found: " + adminId));
@@ -484,7 +485,7 @@ public class EventGestorService {
                 return "Error";
             }
         }
-        String res = removePartecipant(adminEmail, eventId, creatorId);
+        String res = removePartecipant(adminEmail, eventId, creatorId, token);
         if(res.equals("Success")){
             return "Success";
         } else{

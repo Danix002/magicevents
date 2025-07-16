@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Button from './Button';
-import { forgotPasswordRequest } from '../../api/authentication';
+import { forgotPasswordRequest } from '../../api/userAPI';
 
 function ForgotPassword() {
 	const [email, setEmail] = useState('');

@@ -23,8 +23,8 @@ public class BoardService {
         this.eventManagementWebClient = eventManagementWebClient;
     }
 
-    public void createBoard(CreateBoardRequestDTO request) {
-        if (!authorizeCreateDeleteBoard(request.getEventID(), request.getUserMagicEventsTag())) {
+    public void createBoard(CreateBoardRequestDTO request, String token) throws UnauthorizedException {
+        if (!authorizeCreateDeleteBoard(request.getEventID(), request.getUserMagicEventsTag(), token)) {
             System.err.println("Not authorized to create board for event ID: " + request.getEventID() + " and user tag: " + request.getUserMagicEventsTag());
             throw new UnauthorizedException("Not authorized to create board for event ID: " + request.getEventID());
         }
@@ -44,8 +44,8 @@ public class BoardService {
      * fetch message filtered by page number and size, es. if page number is 1,
      * fetch messages from 0 to 20 (the last 20 messages written on the board
      */
-    public BoardDTO getBoard(Long eventID, Long userMagicEventsTag, int pageNumber, int pageSize) {
-        if (!authorizeViewBoard(eventID, userMagicEventsTag)) {
+    public BoardDTO getBoard(Long eventID, Long userMagicEventsTag, int pageNumber, int pageSize, String token) throws UnauthorizedException {
+        if (!authorizeViewBoard(eventID, userMagicEventsTag, token)) {
             System.err.println("Not authorized to view board for event ID: " + eventID + " and user tag: " + userMagicEventsTag);
             throw new UnauthorizedException("Not authorized to view board for event ID: " + eventID);
         }
@@ -80,8 +80,8 @@ public class BoardService {
     }
 
     @Transactional
-    public void deleteBoard(Long eventID, Long userMagicEventsTag) {
-        if (!authorizeCreateDeleteBoard(eventID, userMagicEventsTag)) {
+    public void deleteBoard(Long eventID, Long userMagicEventsTag, String token) {
+        if (!authorizeCreateDeleteBoard(eventID, userMagicEventsTag, token)) {
             System.err.println("Not authorized to delete board for event ID: " + eventID);
             throw new UnauthorizedException("Not authorized to delete board for event ID: " + eventID);
         }
@@ -91,14 +91,15 @@ public class BoardService {
         }
     }
 
-    private boolean authorizeCreateDeleteBoard(Long eventID, Long userMagicEventsTag) {
+    private boolean authorizeCreateDeleteBoard(Long eventID, Long userMagicEventsTag, String token) {
         try {
             Boolean isAdmin = eventManagementWebClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/gestion/iscreator")
-                            .queryParam("creatorId", userMagicEventsTag)
-                            .queryParam("eventId", eventID)
-                            .build())
+                    .path("/gestion/iscreator")
+                    .queryParam("creatorId", userMagicEventsTag)
+                    .queryParam("eventId", eventID)
+                    .build())
+                    .headers(headers -> headers.setBearerAuth(token))
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();
@@ -109,14 +110,15 @@ public class BoardService {
         }
     }
 
-    private boolean authorizeViewBoard(Long eventID, Long userMagicEventsTag) {
+    private boolean authorizeViewBoard(Long eventID, Long userMagicEventsTag, String token) {
         try {
             Boolean isParticipant = eventManagementWebClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/gestion/ispartecipant")
-                            .queryParam("partecipantId", userMagicEventsTag)
-                            .queryParam("eventId", eventID)
-                            .build())
+                    .path("/gestion/ispartecipant")
+                    .queryParam("partecipantId", userMagicEventsTag)
+                    .queryParam("eventId", eventID)
+                    .build())
+                    .headers(headers -> headers.setBearerAuth(token))
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();

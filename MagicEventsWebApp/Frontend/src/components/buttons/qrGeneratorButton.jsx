@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Button from './Button';
-import { generateQRCodeForEvent } from '../../api/qrGenerator';
+import { generateQRCodeForEvent } from '../../api/qrGeneratorAPI';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faQrcode} from '@fortawesome/free-solid-svg-icons'
 

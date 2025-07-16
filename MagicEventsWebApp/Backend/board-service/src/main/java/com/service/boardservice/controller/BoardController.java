@@ -3,26 +3,38 @@ package com.service.boardservice.controller;
 import com.service.boardservice.dto.BoardDTO;
 import com.service.boardservice.dto.CreateBoardRequestDTO;
 import com.service.boardservice.exception.UnauthorizedException;
+import com.service.boardservice.service.BoardService;
+import com.service.boardservice.service.TokenValidatorService;
 import jakarta.validation.Valid;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/board")
 @Validated
 public class BoardController {
-    private final com.service.boardservice.service.BoardService boardService;
+    private final BoardService boardService;
+    private final TokenValidatorService tokenValidatorService;
 
-    public BoardController(com.service.boardservice.service.BoardService boardService) {
+    public BoardController(BoardService boardService, TokenValidatorService tokenValidatorService) {
         this.boardService = boardService;
+        this.tokenValidatorService = tokenValidatorService;
     }
 
     @PostMapping("/createBoard")
-    public ResponseEntity<Boolean> createBoard(@Valid @RequestBody CreateBoardRequestDTO request) {
+    public ResponseEntity<Boolean> createBoard(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @Valid @RequestBody CreateBoardRequestDTO request
+    ) {
+        String token = extractToken(authorizationHeader);
+        if (!tokenValidatorService.isTokenValid(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+        }
+
         try {
-            boardService.createBoard(request);
+            boardService.createBoard(request, token);
             return ResponseEntity.ok(true);
         } catch (UnauthorizedException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
@@ -32,11 +44,19 @@ public class BoardController {
     }
 
     @GetMapping("/getBoard/{eventID}/{pageNumber}")
-    public ResponseEntity<BoardDTO> getBoard(@PathVariable Long eventID, 
-                                           @PathVariable int pageNumber,
-                                           @RequestParam Long userMagicEventsTag) {
+    public ResponseEntity<BoardDTO> getBoard(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable Long eventID,
+            @PathVariable int pageNumber,
+            @RequestParam Long userMagicEventsTag
+    ) {
+        String token = extractToken(authorizationHeader);
+        if (!tokenValidatorService.isTokenValid(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         try {
-            BoardDTO boardDTO = boardService.getBoard(eventID, userMagicEventsTag, pageNumber, 20);
+            BoardDTO boardDTO = boardService.getBoard(eventID, userMagicEventsTag, pageNumber, 20, token);
             if (boardDTO == null) {
                 return ResponseEntity.notFound().build();
             }
@@ -49,21 +69,43 @@ public class BoardController {
     }
 
     @GetMapping("/isBoardExists/{eventID}")
-    public ResponseEntity<Boolean> isBoardExists(@PathVariable Long eventID) {
+    public ResponseEntity<Boolean> isBoardExists(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable Long eventID
+    ) {
+        if (!tokenValidatorService.isTokenValid(extractToken(authorizationHeader))) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+        }
+
         boolean exists = boardService.isBoardExists(eventID);
         return ResponseEntity.ok(exists);
     }
 
     @DeleteMapping("/deleteBoard/{eventID}")
-    public ResponseEntity<Boolean> deleteBoard(@PathVariable Long eventID,
-                                             @RequestParam Long userMagicEventsTag) {
+    public ResponseEntity<Boolean> deleteBoard(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable Long eventID,
+            @RequestParam Long userMagicEventsTag
+    ) {
+        String token = extractToken(authorizationHeader);
+        if (!tokenValidatorService.isTokenValid(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+        }
+
         try {
-            boardService.deleteBoard(eventID, userMagicEventsTag);
+            boardService.deleteBoard(eventID, userMagicEventsTag, token);
             return ResponseEntity.ok(true);
         } catch (UnauthorizedException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
         }
+    }
+
+    private String extractToken(String header) {
+        if (header != null && header.startsWith("Bearer ")) {
+            return header.substring(7);
+        }
+        return null;
     }
 }

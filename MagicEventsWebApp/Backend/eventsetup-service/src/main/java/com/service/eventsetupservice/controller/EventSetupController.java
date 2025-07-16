@@ -20,10 +20,13 @@ public class EventSetupController {
     }
 
     @PostMapping
-    public ResponseEntity<EventServicesStatusDTO> setupEvent(@Valid @RequestBody EventSetupRequestDTO request) {
+    public ResponseEntity<EventServicesStatusDTO> setupEvent(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @Valid @RequestBody EventSetupRequestDTO request
+    ) {
         try {
-            EventServicesStatusDTO status = eventSetupService.setupEvent(request);
-            
+            String token = extractToken(authorizationHeader);
+            EventServicesStatusDTO status = eventSetupService.setupEvent(request, token);
             if (status.isSetupSuccessful()) {
                 return ResponseEntity.status(HttpStatus.CREATED).body(status);
             } else {
@@ -37,10 +40,13 @@ public class EventSetupController {
     }
 
     @PutMapping("/services")
-    public ResponseEntity<String> activateServices(@Valid @RequestBody ServiceActivationRequestDTO request) {
+    public ResponseEntity<String> activateServices(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @Valid @RequestBody ServiceActivationRequestDTO request
+    ) {
         try {
-            boolean success = eventSetupService.activateEventServices(request);
-            
+            String token = extractToken(authorizationHeader);
+            boolean success = eventSetupService.activateEventServices(request, token);
             if (success) {
                 return ResponseEntity.ok("Services activated successfully");
             } else {
@@ -51,5 +57,12 @@ public class EventSetupController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Internal server error: " + e.getMessage());
         }
+    }
+
+    private String extractToken(String header) {
+        if (header != null && header.startsWith("Bearer ")) {
+            return header.substring(7);
+        }
+        return null;
     }
 }

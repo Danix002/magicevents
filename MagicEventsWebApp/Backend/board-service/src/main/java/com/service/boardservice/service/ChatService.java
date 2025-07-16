@@ -22,8 +22,8 @@ public class ChatService {
         this.eventManagementWebClient = eventManagementWebClient;
     }
 
-    public void addNewMessage(AddNewMessageRequestDTO request) {
-        if (!authorizeSendMessage(request.getEventID(), request.getUserMagicEventsTag())) {
+    public void addNewMessage(AddNewMessageRequestDTO request, String token) throws UnauthorizedException {
+        if (!authorizeSendMessage(request.getEventID(), request.getUserMagicEventsTag(), token)) {
             throw new UnauthorizedException("Not authorized to send message for event ID: " + request.getEventID());
         }
         System.out.println("-------------------->Adding new message: " + request.getContent());
@@ -44,8 +44,8 @@ public class ChatService {
         request.setMessageID(savedMessage.getId());
     }
 
-    public DeleteMessageRequestDTO deleteMessage(DeleteMessageRequestDTO request) {
-        if (!authorizeAdmin(request.getEventID(), request.getUserMagicEventsTag())) {
+    public DeleteMessageRequestDTO deleteMessage(DeleteMessageRequestDTO request, String token) {
+        if (!authorizeAdmin(request.getEventID(), request.getUserMagicEventsTag(), token)) {
             throw new UnauthorizedException("Not authorized to delete message for event ID: " + request.getEventID());
         }
 
@@ -60,14 +60,15 @@ public class ChatService {
         return request;
     }
 
-    private boolean authorizeSendMessage(Long eventID, Long userMagicEventsTag) {
+    private boolean authorizeSendMessage(Long eventID, Long userMagicEventsTag, String token) {
         try {
             Boolean isParticipant = eventManagementWebClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/gestion/ispartecipant")
-                            .queryParam("partecipantId", userMagicEventsTag)
-                            .queryParam("eventId", eventID)
-                            .build())
+                    .path("/gestion/ispartecipant")
+                    .queryParam("partecipantId", userMagicEventsTag)
+                    .queryParam("eventId", eventID)
+                    .build())
+                    .headers(headers -> headers.setBearerAuth(token))
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();
@@ -79,14 +80,15 @@ public class ChatService {
         }
     }
 
-    private boolean authorizeAdmin(Long eventID, Long userMagicEventsTag) {
+    private boolean authorizeAdmin(Long eventID, Long userMagicEventsTag, String token) {
         try {
             Boolean isAdmin = eventManagementWebClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/gestion/isadmin")
-                            .queryParam("partecipantId", userMagicEventsTag)
-                            .queryParam("eventId", eventID)
-                            .build())
+                    .path("/gestion/isadmin")
+                    .queryParam("partecipantId", userMagicEventsTag)
+                    .queryParam("eventId", eventID)
+                    .build())
+                    .headers(headers -> headers.setBearerAuth(token))
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();

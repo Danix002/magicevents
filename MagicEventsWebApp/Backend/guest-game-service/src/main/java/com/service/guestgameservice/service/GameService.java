@@ -27,16 +27,18 @@ public class GameService {
     private final GameRepository gameRepository;
     private final WebClient eventManagementWebClient;
 
-    public GameService(GuestGameRepository guestGameRepository,
-                       GameRepository gameRepository,
-                       WebClient eventManagementWebClient) {
+    public GameService(
+            GuestGameRepository guestGameRepository,
+            GameRepository gameRepository,
+            WebClient eventManagementWebClient
+    ) {
         this.guestGameRepository = guestGameRepository;
         this.gameRepository = gameRepository;
         this.eventManagementWebClient = eventManagementWebClient;
     }
 
-    public void createGame(GameRequestDTO gameRequestDTO) {
-        if (!authorizeAdmin(gameRequestDTO.getEventId(), gameRequestDTO.getUserMagicEventsTag())) {
+    public void createGame(GameRequestDTO gameRequestDTO, String token) {
+        if (!authorizeAdmin(gameRequestDTO.getEventId(), gameRequestDTO.getUserMagicEventsTag(), token)) {
             throw new UnauthorizedException("Not authorized to create game for event ID: " + gameRequestDTO.getEventId());
         }
 
@@ -46,8 +48,8 @@ public class GameService {
         gameRepository.save(game);
     }
 
-    public void deleteGame(Long eventId, Long userMagicEventsTag) {
-        if (!authorizeAdmin(eventId, userMagicEventsTag)) {
+    public void deleteGame(Long eventId, Long userMagicEventsTag, String token) {
+        if (!authorizeAdmin(eventId, userMagicEventsTag, token)) {
             throw new UnauthorizedException("Not authorized to delete game for event ID: " + eventId);
         }
 
@@ -61,9 +63,9 @@ public class GameService {
         return gameRepository.findByEventId(eventId) != null;
     }
 
-    public void insertGuestInfo(GuestInfoRequestDTO guestInfoRequestDTO) {
+    public void insertGuestInfo(GuestInfoRequestDTO guestInfoRequestDTO, String token) {
         Long userTagAsLong = Long.valueOf(guestInfoRequestDTO.getUserMagicEventsTag());
-        if (!authorizePartecipant(guestInfoRequestDTO.getGameId(), userTagAsLong)) {
+        if (!authorizePartecipant(guestInfoRequestDTO.getGameId(), userTagAsLong, token)) {
             throw new UnauthorizedException("Not authorized to insert guest info for game ID: " + guestInfoRequestDTO.getGameId());
         }
 
@@ -85,8 +87,8 @@ public class GameService {
         guestGameRepository.save(guestInfo);
     }
 
-    public DecisionTreeDTO createDecisionTree(Long eventId, Long userMagicEventsTag) {
-        if (!authorizePartecipant(eventId, userMagicEventsTag)) {
+    public DecisionTreeDTO createDecisionTree(Long eventId, Long userMagicEventsTag, String token) {
+        if (!authorizePartecipant(eventId, userMagicEventsTag, token)) {
             throw new UnauthorizedException("Not authorized to access decision tree for event ID: " + eventId);
         }
 
@@ -147,14 +149,15 @@ public class GameService {
         return existingGuestInfo != null;
     }
 
-    private boolean authorizeAdmin(Long eventId, Long userMagicEventsTag) {
+    private boolean authorizeAdmin(Long eventId, Long userMagicEventsTag, String token) {
         try {
             Boolean isAdmin = eventManagementWebClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/gestion/iscreator")
-                            .queryParam("creatorId", userMagicEventsTag)
-                            .queryParam("eventId", eventId)
-                            .build())
+                    .path("/gestion/iscreator")
+                    .queryParam("creatorId", userMagicEventsTag)
+                    .queryParam("eventId", eventId)
+                    .build())
+                    .headers(headers -> headers.setBearerAuth(token))
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();
@@ -165,14 +168,15 @@ public class GameService {
         }
     }
 
-    private boolean authorizePartecipant(Long eventId, Long userMagicEventsTag) {
+    private boolean authorizePartecipant(Long eventId, Long userMagicEventsTag, String token) {
         try {
             Boolean isParticipant = eventManagementWebClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path("/gestion/ispartecipant")
-                            .queryParam("partecipantId", userMagicEventsTag)
-                            .queryParam("eventId", eventId)
-                            .build())
+                    .path("/gestion/ispartecipant")
+                    .queryParam("partecipantId", userMagicEventsTag)
+                    .queryParam("eventId", eventId)
+                    .build())
+                    .headers(headers -> headers.setBearerAuth(token))
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();

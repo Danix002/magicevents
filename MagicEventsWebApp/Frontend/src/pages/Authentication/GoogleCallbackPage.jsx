@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import { useAuth } from '../../auth/AuthContext';
-import { callback } from '../../api/authentication';
+import { callback } from '../../api/userAPI';
 
 function GoogleCallbackPage({ setLogged }) {
 	const location = useLocation();
