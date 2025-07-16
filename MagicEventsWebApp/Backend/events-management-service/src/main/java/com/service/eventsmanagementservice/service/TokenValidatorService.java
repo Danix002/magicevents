@@ -1,6 +1,5 @@
 package com.service.eventsmanagementservice.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -9,13 +8,10 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class TokenValidatorService {
-    @Value("${services.usermanagement.url}")
-    private String userManagementBaseUrl;
-
     private final RestTemplate restTemplate;
 
-    public TokenValidatorService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public TokenValidatorService(RestTemplateBuilder builder) {
+        this.restTemplate = builder.build();
     }
 
     public boolean isTokenValid(String token) {
@@ -24,8 +20,9 @@ public class TokenValidatorService {
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         try {
+            String userManagementUrl = "https://italiamagicevents.it:8443/validator/verify";
             ResponseEntity<Void> response = restTemplate.exchange(
-                    userManagementBaseUrl + "/validator/verify",
+                    userManagementUrl,
                     HttpMethod.GET,
                     entity,
                     Void.class
