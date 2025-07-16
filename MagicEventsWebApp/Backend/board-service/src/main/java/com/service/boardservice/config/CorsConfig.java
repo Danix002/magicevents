@@ -14,10 +14,10 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(Arrays.asList(
-                "ws://italiamagicevents.it",
-                "wss://italiamagicevents.it",
                 "https://italiamagicevents.it",
-                "http://italiamagicevents.it"
+                "https://italiamagicevents.it:8081",
+                "http://italiamagicevents.it",
+                "http://italiamagicevents.it:8081"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
