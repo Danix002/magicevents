@@ -167,6 +167,7 @@ const BoardPage = () => {
 			eventID: eventId,
 			userMagicEventsTag: JSON.parse(sessionStorage.getItem('user')).magicEventTag,
 		};
+
 		console.log('Deleting message:', chatMessage);
 
 		try {

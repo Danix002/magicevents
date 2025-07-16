@@ -123,14 +123,17 @@ const GalleryPage = () => {
 				setConnected(true);
 				// Subscribe to the topic with the correct path format
 				subscribe(client, `/topic/gallery/${eventId}`, (receivedImage, hash) => {
+					console.log('Subscribe in gallery!');
 					setImages((prev) => [receivedImage, ...prev.filter((item) => !(hash(item) === hash(receivedImage)))]);
 				});
 				subscribe(client, `/topic/gallery/deleteImage/${eventId}`, (deletedMessage, hash) => {
+					console.log('Subscribe in deleteImage!');
 					setImages((prev) => prev.filter((item) => !(item.imageID === deletedMessage.imageID)));
 					setImagesPopular((prev) => prev.filter((item) => !(item.imageID === deletedMessage.imageID)));
 				});
 				subscribe(client, `/topic/gallery/imageLike/${eventId}`, (receivedImageLike, hash) => {
-					console.log('Subscribe!');
+
+					console.log('Subscribe in imageLike!');
 
 					setImages((prev) =>
 						prev.map((item) =>
