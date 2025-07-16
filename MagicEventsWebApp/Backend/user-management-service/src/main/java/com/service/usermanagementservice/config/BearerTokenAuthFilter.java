@@ -35,7 +35,6 @@ public class BearerTokenAuthFilter extends OncePerRequestFilter {
                 Authentication bearerTokenAuthentication = new BearerTokenAuth(bearerToken);
                 try {
                     Authentication authentication = authenticationManager.authenticate(bearerTokenAuthentication);
-                    authentication.setAuthenticated(true);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 } catch (AuthenticationException e) {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -46,4 +45,5 @@ public class BearerTokenAuthFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
 }

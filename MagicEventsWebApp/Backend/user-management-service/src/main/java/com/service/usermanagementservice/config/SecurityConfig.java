@@ -18,6 +18,8 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Autowired
+    private BearerTokenAuthProvider tokenAuthProvider;
 
     @Value("${services.eventmanagement.url}")
     private String eventManagementServiceUrl;
@@ -54,7 +56,7 @@ public class SecurityConfig {
     };
 
     @Bean
-    public AuthenticationManager authenticationManager(BearerTokenAuthProvider tokenAuthProvider) {
+    public AuthenticationManager authenticationManager() {
         return new ProviderManager(tokenAuthProvider);
     }
 
