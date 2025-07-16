@@ -24,9 +24,4 @@ public class UserManagementServiceApplication {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(11);
     }
-
-    @Bean
-    public AuthenticationManager authenticationManager() throws Exception {
-        return new ProviderManager(bearerTokenAuthenticationProvider);
-    }
 }
