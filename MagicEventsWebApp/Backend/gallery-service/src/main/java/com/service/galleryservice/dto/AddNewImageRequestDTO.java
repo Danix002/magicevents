@@ -111,8 +111,8 @@ public class AddNewImageRequestDTO {
         return magicEventsTag;
     }
 
-    public void setMagicEventsTag(String magiceventstag) {
-        this.magicEventsTag = magiceventstag;
+    public void setMagicEventsTag(String magicEventsTag) {
+        this.magicEventsTag = magicEventsTag;
     }
 
     public Long getImageID() {

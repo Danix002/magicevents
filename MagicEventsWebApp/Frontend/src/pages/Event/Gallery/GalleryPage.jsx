@@ -180,7 +180,7 @@ const GalleryPage = () => {
 			deletedBy: user.username,
 			eventID: eventId,
 			imageID: mex.imageID,
-			magicEventTag: user.magicEventTag.toString(),
+			magicEventsTag: user.magicEventTag.toString(),
 		};
 		try {
 			stompClient.send(
@@ -208,7 +208,7 @@ const GalleryPage = () => {
 			base64Image: image,
 			dateTime: new Date().toISOString(),
 			eventID: eventId,
-			magicEventTag: user.magicEventTag.toString(),
+			magicEventsTag: user.magicEventTag.toString(),
 		};
 		try {
 			stompClient.send(
