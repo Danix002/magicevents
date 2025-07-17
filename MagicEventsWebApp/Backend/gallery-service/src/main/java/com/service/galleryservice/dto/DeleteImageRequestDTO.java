@@ -15,11 +15,11 @@ public class DeleteImageRequestDTO {
     private String deletedBy;
     
     @NotBlank(message = "Magic Events tag cannot be blank")
-    private String magiceventstag;
+    private String magicEventsTag;
 
     public DeleteImageRequestDTO() { }
 
-    public DeleteImageRequestDTO(Long eventID, Long imageID, String deletedBy, String magiceventstag) {
+    public DeleteImageRequestDTO(Long eventID, Long imageID, String deletedBy, String magicEventsTag) {
         if (eventID == null) {
             throw new IllegalArgumentException("eventID cannot be null");
         }
@@ -32,7 +32,7 @@ public class DeleteImageRequestDTO {
         this.eventID = eventID;
         this.imageID = imageID;
         this.deletedBy = deletedBy;
-        this.magiceventstag = magiceventstag;
+        this.magicEventsTag = magicEventsTag;
     }
 
     public Long getEventID() {
@@ -68,12 +68,12 @@ public class DeleteImageRequestDTO {
         this.deletedBy = deletedBy;
     }
 
-    public String getMagiceventstag() {
-        return magiceventstag;
+    public String getMagicEventsTag() {
+        return magicEventsTag;
     }
 
-    public void setMagiceventstag(String magiceventstag) {
-        this.magiceventstag = magiceventstag;
+    public void setMagicEventsTag(String magicEventsTag) {
+        this.magicEventsTag = magicEventsTag;
     }
 
     @Override
@@ -84,12 +84,12 @@ public class DeleteImageRequestDTO {
         return Objects.equals(eventID, that.eventID) &&
                Objects.equals(imageID, that.imageID) &&
                Objects.equals(deletedBy, that.deletedBy) &&
-               Objects.equals(magiceventstag, that.magiceventstag);
+               Objects.equals(magicEventsTag, that.magicEventsTag);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(eventID, imageID, deletedBy, magiceventstag);
+        return Objects.hash(eventID, imageID, deletedBy, magicEventsTag);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class DeleteImageRequestDTO {
                "eventID=" + eventID +
                ", imageID=" + imageID +
                ", deletedBy='" + deletedBy + '\'' +
-               ", magiceventstag='" + magiceventstag + '\'' +
+               ", magiceventstag='" + magicEventsTag + '\'' +
                '}';
     }
 }
