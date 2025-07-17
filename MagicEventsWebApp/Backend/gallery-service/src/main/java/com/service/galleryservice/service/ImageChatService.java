@@ -58,7 +58,7 @@ public class ImageChatService {
     }
 
     public DeleteImageRequestDTO deleteImage(DeleteImageRequestDTO request, String token) {
-        if (!authorizeAdmin(request.getEventID(), Long.parseLong(request.getMagiceventstag()), token)) {
+        if (!authorizeAdmin(request.getEventID(), Long.parseLong(request.getMagicEventsTag()), token)) {
             throw new UnauthorizedException("Not authorized to delete image for event ID: " + request.getEventID());
         }
 

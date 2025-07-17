@@ -208,7 +208,7 @@ const GalleryPage = () => {
 			base64Image: image,
 			dateTime: new Date().toISOString(),
 			eventID: eventId,
-			magicEventsTag: JSON.parse(sessionStorage.getItem('user')).magicEventsTag,
+			magicEventsTag: user.magicEventsTag.toString(),
 		};
 		try {
 			stompClient.send(
