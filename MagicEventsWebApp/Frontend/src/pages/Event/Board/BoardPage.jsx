@@ -165,7 +165,7 @@ const BoardPage = () => {
 			messageID: mex.messageID,
 			deletedBy: user.username,
 			eventID: eventId,
-			userMagicEventsTag: JSON.parse(sessionStorage.getItem('user')).magicEventsTag,
+			userMagicEventsTag: JSON.parse(sessionStorage.getItem('user')).magicEventTag,
 		};
 
 		console.log('Deleting message:', chatMessage);
@@ -196,7 +196,7 @@ const BoardPage = () => {
 			username: user.username,
 			dateTime: new Date().toISOString(),
 			eventID: eventId,
-			userMagicEventsTag: JSON.parse(sessionStorage.getItem('user')).magicEventsTag,
+			userMagicEventsTag: JSON.parse(sessionStorage.getItem('user')).magicEventTag,
 		};
 
 		console.log('Sending message:', chatMessage);
