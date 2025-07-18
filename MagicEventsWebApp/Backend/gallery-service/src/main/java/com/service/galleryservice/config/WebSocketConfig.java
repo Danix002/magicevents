@@ -46,10 +46,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.enableSimpleBroker("/topic");
         // Prefix for client-to-server messages
         registry.setApplicationDestinationPrefixes("/app");
+ 
+        registry.setPreservePublishOrder(true);
     }
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.taskExecutor().corePoolSize(4).maxPoolSize(10).queueCapacity(100);
         registration.interceptors(new ChannelInterceptor() {
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
