@@ -50,6 +50,14 @@ const Homepage = () => {
 				} transition-transform duration-300 z-40`}
 			>
 				<div className="p-4">
+					<div className="flex justify-end">
+						<button
+							className="text-[#EE0E51] font-bold text-lg"
+							onClick={() => setIsPanelOpen(false)}
+						>
+							&times;
+						</button>
+					</div>
 					<div className="flex flex-col gap-6 mt-12">
 						<div className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 transition-transform text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
 							<h1 className="text-xl font-extrabold mb-2">Crea</h1>
@@ -58,13 +66,13 @@ const Homepage = () => {
 								partecipare solo chi vuoi
 							</p>
 						</div>
-							<div className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 transition-transform text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
+						<div className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 transition-transform text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
 							<h1 className="text-xl font-extrabold mb-2">Partecipa</h1>
 							<p className="text-sm sm:text-base">
 								Gestisci e partecipa ad eventi e divertiti
 							</p>
 						</div>
-							<div className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 transition-transform text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
+						<div className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 transition-transform text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
 							<h1 className="text-xl font-extrabold mb-2">Interagisci</h1>
 							<p className="text-sm sm:text-base">
 								Interagisci con i tuoi invitati: sono disponibili diverse funzionalità che puoi
