@@ -22,9 +22,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Bean
     public ServletServerContainerFactoryBean createWebSocketContainer() {
         ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();
-        // Aumenta i buffer per gestire immagini da 20MB
-        container.setMaxTextMessageBufferSize(20 * 1024 * 1024); // 20MB
-        container.setMaxBinaryMessageBufferSize(20 * 1024 * 1024); // 20MB
+        // Aumenta i buffer per gestire immagini da 5MB
+        container.setMaxTextMessageBufferSize(5 * 1024 * 1024); // 5MB
+        container.setMaxBinaryMessageBufferSize(5 * 1024 * 1024); // 5MB
         container.setMaxSessionIdleTimeout(30 * 60000L); // 30 minuti
         return container;
     }
