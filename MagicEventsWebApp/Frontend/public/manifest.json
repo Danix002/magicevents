@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "MagicEvents",
+  "name": "Per eventi indimenticabili",
+  "description": "L'app ideale per organizzare e scoprire eventi",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +21,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#0D0520",
+  "background_color": "#0D0520"
 }

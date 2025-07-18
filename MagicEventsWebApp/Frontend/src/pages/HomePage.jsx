@@ -26,38 +26,44 @@ const Homepage = () => {
 						</div>
 					</div>
 				</div>
-				<div className="pb-[15vh] sm:pb-[20vh] lg:pb-[25vh]"></div>
 			</div>
 
-			<div
-				className="snap-start pt-12 sm:pt-20 pb-8 sm:pb-12 relative w-full px-4 sm:px-8 md:px-16 bg-black/30 backdrop-blur-lg p-6 sm:p-8 rounded-t-4xl shadow-2xl mb-8 sm:mb-0">
-				<p className="absolute top-2 sm:top-0 text-[#E4DCEF] left-1/2 transform -translate-x-1/2 font-extrabold text-lg sm:text-xl p-2">Scopri
-					di più</p>
+			<div className="flex overflow-x-auto snap-x snap-mandatory w-full h-screen">
+				{/* Slide 1 - solo "Scopri di più" */}
+				<div className="snap-start w-screen h-screen relative flex-shrink-0 bg-black/30 backdrop-blur-lg">
+					<p className="absolute top-1/2 right-0 transform -translate-y-1/2 rotate-90 origin-bottom-right text-[#E4DCEF] font-extrabold text-lg sm:text-xl p-2">
+						Scopri di più
+					</p>
+				</div>
 
+				{/* Slide 2 - contenuto visibile con scroll a destra */}
 				<div
-					className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center sm:items-stretch mt-12 sm:mt-8">
+					className="snap-start w-screen h-screen flex-shrink-0 bg-black/30 backdrop-blur-lg px-4 sm:px-8 md:px-16 pt-24 sm:pt-28 pb-8 sm:pb-12">
 					<div
-						className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 sm:hover:scale-110 transition-transform w-full sm:min-w-[12rem] sm:max-w-[15rem] text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
-						<h1 className="text-xl font-extrabold mb-2">Crea</h1>
-						<p className="text-sm sm:text-base">
-							Crea i tuoi eventi esclusivi, inviando il link o il QR code ai tuoi invitati potrà partecipare
-							solo chi vuoi
-						</p>
-					</div>
-					<div
-						className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 sm:hover:scale-110 transition-transform w-full sm:min-w-[12rem] sm:max-w-[15rem] text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
-						<h1 className="text-xl font-extrabold mb-2">Partecipa</h1>
-						<p className="text-sm sm:text-base">
-							Gestisci e partecipa ad eventi e divertiti
-						</p>
-					</div>
-					<div
-						className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 sm:hover:scale-110 transition-transform w-full sm:min-w-[12rem] sm:max-w-[15rem] text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
-						<h1 className="text-xl font-extrabold mb-2">Interagisci</h1>
-						<p className="text-sm sm:text-base">
-							Interagisci con i tuoi invitati: sono disponibili diverse funzionalità che puoi abilitare per il
-							tuo evento, provale tutte
-						</p>
+						className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center sm:items-stretch mt-12 sm:mt-8">
+						<div
+							className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 sm:hover:scale-110 transition-transform w-full sm:min-w-[12rem] sm:max-w-[15rem] text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
+							<h1 className="text-xl font-extrabold mb-2">Crea</h1>
+							<p className="text-sm sm:text-base">
+								Crea i tuoi eventi esclusivi, inviando il link o il QR code ai tuoi invitati potrà
+								partecipare solo chi vuoi
+							</p>
+						</div>
+						<div
+							className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 sm:hover:scale-110 transition-transform w-full sm:min-w-[12rem] sm:max-w-[15rem] text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
+							<h1 className="text-xl font-extrabold mb-2">Partecipa</h1>
+							<p className="text-sm sm:text-base">
+								Gestisci e partecipa ad eventi e divertiti
+							</p>
+						</div>
+						<div
+							className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 sm:hover:scale-110 transition-transform w-full sm:min-w-[12rem] sm:max-w-[15rem] text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
+							<h1 className="text-xl font-extrabold mb-2">Interagisci</h1>
+							<p className="text-sm sm:text-base">
+								Interagisci con i tuoi invitati: sono disponibili diverse funzionalità che puoi
+								abilitare per il tuo evento, provale tutte
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>
