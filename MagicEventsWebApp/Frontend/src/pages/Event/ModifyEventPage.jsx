@@ -18,6 +18,7 @@ import { convertDataTime } from '../../utils/dataFormatter';
 import LoadingContainer from '../../components/error/LoadingContainer';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
+import {set} from "react-hook-form";
 
 const ModifyEventPage = () => {
 	const navigate = useNavigate();
@@ -29,6 +30,7 @@ const ModifyEventPage = () => {
 	const [partecipantInput, setPartecipantInput] = useState('');
 	const [adminInput, setAdminInput] = useState('');
 	const [loading, setLoading] = useState(true);
+	const [operating, setOperating] = useState(false);
 	const [message, setMessage] = useState(null);
 	const [error, setError] = useState(null);
 	const [editingImage, setEditingImage] = useState(false);
@@ -271,8 +273,10 @@ const ModifyEventPage = () => {
 								{/* Save Button */}
 								<div className="pt-4">
 									<Button
-										text="Salva Modifiche"
+										disabled={operating}
+										text={operating? "Operazione in corso..." : "Salva Modifiche"}
 										onClick={async () => {
+											setOperating(true);
 											setError(null);
 											setMessage(null);
 											try {
@@ -283,12 +287,15 @@ const ModifyEventPage = () => {
 												const res = await modifyEvent(eventId, eventModified);
 												if (res === 'Error' || res.status !== 200) {
 													setError('Errore durante la modifica');
+													setOperating(false);
 												} else {
 													setMessage('Modifica riuscita');
+													setOperating(false);
 													setTimeout(() => navigate(`/${eventId}`), 2000);
 												}
 											} catch (err) {
 												setError(err.message);
+												setOperating(false);
 											}
 										}}
 										custom="w-full py-3 text-lg font-semibold"
@@ -321,21 +328,25 @@ const ModifyEventPage = () => {
 														'hidden': p === user.email 
 													})}
 													onClick={async () => {
+														setOperating(true);
 														setError(null);
 														setMessage(null);
 														try {
 															const res = await removePartecipant(eventId, p);
 															if (res === 'Error' || res.status !== 200) {
 																setError('Errore durante la rimozione');
+																setOperating(false);
 															} else {
 																setMessage('Partecipante rimosso');
 																setEvent((prev) => ({ 
 																	...prev, 
 																	partecipants: prev.partecipants.filter((item) => item !== p) 
 																}));
+																setOperating(false);
 															}
 														} catch (err) {
 															setError(err.message);
+															setOperating(false);
 														}
 													}}
 													text={<FontAwesomeIcon icon={faClose} />}
@@ -388,21 +399,26 @@ const ModifyEventPage = () => {
 									{eventDetail.participants.length > 0 && (
 										<div className="mt-4">
 											<Button
-												text="Aggiungi Partecipanti"
+												disabled={operating}
+												text={operating? "Operazione in corso" : "Aggiungi Partecipanti"}
 												onClick={async () => {
+													setOperating(true);
 													setError(null);
 													setMessage(null);
 													try {
 														const res = await updatePartecipants(eventId, eventDetail.participants);
 														if (res === 'Error' || res.status !== 200) {
 															setError('Errore durante l\'aggiunta');
+															setOperating(false);
 														} else {
 															setMessage('Partecipanti aggiunti');
 															setEventDetail((prev) => ({ ...prev, participants: [] }));
+															setOperating(false);
 															setTimeout(() => navigate(`/${eventId}`), 2000);
 														}
 													} catch (err) {
 														setError(err.message);
+														setOperating(false);
 													}
 												}}
 												custom="w-full py-3 font-semibold"
@@ -433,21 +449,25 @@ const ModifyEventPage = () => {
 												</div>
 												<Button
 													onClick={async () => {
+														setOperating(true);
 														setError(null);
 														setMessage(null);
 														try {
 															const res = await removeAdmin(eventId, p);
 															if (res === 'Error' || res.status !== 200) {
 																setError('Errore durante la rimozione');
+																setOperating(false);
 															} else {
 																setMessage('Admin rimosso');
 																setEvent((prev) => ({ 
 																	...prev, 
 																	admins: prev.admins.filter((item) => item !== p) 
 																}));
+																setOperating(false);
 															}
 														} catch (err) {
 															setError(err.message);
+															setOperating(false);
 														}
 													}}
 													custom="!bg-transparent text-red-400 hover:text-red-300 !border-none p-1"
@@ -501,21 +521,26 @@ const ModifyEventPage = () => {
 									{eventDetail.admins.length > 0 && (
 										<div className="mt-4">
 											<Button
-												text="Aggiungi Amministratori"
+												disabled={operating}
+												text={operating? "Operazione in corso..." : "Aggiungi Amministratori"}
 												onClick={async () => {
+													setOperating(true);
 													setError(null);
 													setMessage(null);
 													try {
 														const res = await updateAdmins(eventId, eventDetail.admins);
 														if (res === 'Error' || res.status !== 200) {
 															setError('Errore durante l\'aggiunta');
+															setOperating(false);
 														} else {
 															setMessage('Amministratori aggiunti');
 															setEventDetail((prev) => ({ ...prev, admins: [] }));
+															setOperating(false);
 															setTimeout(() => navigate(`/${eventId}`), 2000);
 														}
 													} catch (err) {
 														setError(err.message);
+														setOperating(false);
 													}
 												}}
 												custom="w-full py-3 font-semibold"
