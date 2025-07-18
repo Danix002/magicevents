@@ -13,6 +13,7 @@ import ImageDrop from '../../../components/popup/ImageDrop';
 import clsx from 'clsx';
 import { isAdmin, url } from '../../../utils/utils';
 import LoadingContainer from '../../../components/error/LoadingContainer';
+import ProgressBar from '../../../components/progress/ProgressBar'; // Import the ProgressBar component
 
 const GalleryPage = () => {
 	const [images, setImages] = useState([]);
@@ -31,6 +32,7 @@ const GalleryPage = () => {
 	const [loading, setLoading] = useState(true);
 	const [messageFinish, setMessageFinish] = useState(false);
 	const [messageFinishp, setMessageFinishp] = useState(false);
+	const [uploadProgress, setUploadProgress] = useState(0); // State for upload progress
 
 	const { eventId } = useParams();
 	const [isAdminVar, setIsAdminVar] = useState(isAdmin(eventId));
@@ -210,7 +212,20 @@ const GalleryPage = () => {
 			eventID: eventId,
 			magicEventsTag: user.magicEventTag.toString(),
 		};
+
+		setUploadProgress(0); // Reset progress bar
 		try {
+			// Simulate upload progress
+			const interval = setInterval(() => {
+				setUploadProgress((prev) => {
+					if (prev >= 100) {
+						clearInterval(interval);
+						return 100;
+					}
+					return prev + 10;
+				});
+			}, 100);
+
 			stompClient.send(
 				`/app/gallery/sendImage/${eventId}`,
 				{ Authorization: `Bearer ${JSON.parse(sessionStorage.getItem('user')).token}` },
@@ -218,6 +233,7 @@ const GalleryPage = () => {
 			);
 		} catch (error) {
 			console.log('Error sending message:', error);
+			setUploadProgress(0); // Reset progress on error
 		}
 	};
 
@@ -323,7 +339,12 @@ const GalleryPage = () => {
 
 			 {/* Floating Drag and Drop Component */}
 			<div className="fixed bottom-6 right-6 z-40">
-				<ImageDrop onSend={(title, image) => sendImage(title, image)}/>
+				<ImageDrop onSend={(title, image) => sendImage(title, image)} />
+				{uploadProgress > 0 && uploadProgress < 100 && (
+					<div className="mt-2">
+						<ProgressBar progress={uploadProgress} />
+					</div>
+				)}
 			</div>
 
 			{/* Enhanced Image Popup */}

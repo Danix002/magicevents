@@ -30,10 +30,10 @@ const ImageDrop = ({ onSend }) => {
 
 		let reader = new FileReader();
 		const options = {
-			maxSizeMB: 2, // Massimo 15MB
+			maxSizeMB: 4, // Massimo 15MB
 			maxWidthOrHeight: 800, // Massimo 800px
 			useWebWorker: true, // Usa Web Worker per non bloccare l'UI
-			fileType: 'image/png',
+			fileType: 'image/jpg',
 		};
 		const compressedFile = await imageCompression(file, options);
 
