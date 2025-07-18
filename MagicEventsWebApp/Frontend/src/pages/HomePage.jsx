@@ -34,14 +34,13 @@ const Homepage = () => {
 						</div>
 					</div>
 				</div>
+				<button
+					className="mt-6 bg-[#EE0E51] text-white px-4 py-2 rounded-md shadow-lg"
+					onClick={togglePanel}
+				>
+					{isPanelOpen ? "Chiudi" : "Scopri di più"}
+				</button>
 			</div>
-
-			<button
-				className="fixed top-1/2 right-0 transform -translate-y-1/2 bg-[#EE0E51] text-white p-2 rounded-l-md shadow-lg z-50"
-				onClick={togglePanel}
-			>
-				{isPanelOpen ? "Chiudi" : "Scopri di più"}
-			</button>
 
 			<div
 				className={`fixed top-0 right-0 h-full w-80 bg-black/30 backdrop-blur-lg transform ${
