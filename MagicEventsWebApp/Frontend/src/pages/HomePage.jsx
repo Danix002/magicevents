@@ -1,4 +1,12 @@
+import { useState } from "react";
+
 const Homepage = () => {
+	const [isPanelOpen, setIsPanelOpen] = useState(false);
+
+	const togglePanel = () => {
+		setIsPanelOpen(!isPanelOpen);
+	};
+
 	return (
 		<div className="h-full backgroundHome overflow-y-auto overscroll-none snap-y">
 			<div className="snap-start p-4">
@@ -35,29 +43,36 @@ const Homepage = () => {
 						Scopri di più
 					</p>
 				</div>
+			</div>
 
-				{/* Slide 2 - contenuto visibile con scroll a destra */}
-				<div
-					className="snap-start w-screen h-screen flex-shrink-0 bg-black/30 backdrop-blur-lg px-4 sm:px-8 md:px-16 pt-24 sm:pt-28 pb-8 sm:pb-12">
-					<div
-						className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center sm:items-stretch mt-12 sm:mt-8">
-						<div
-							className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 sm:hover:scale-110 transition-transform w-full sm:min-w-[12rem] sm:max-w-[15rem] text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
+			<button
+				className="fixed top-1/2 right-0 transform -translate-y-1/2 bg-[#EE0E51] text-white p-2 rounded-l-md shadow-lg z-50"
+				onClick={togglePanel}
+			>
+				{isPanelOpen ? "Chiudi" : "Apri"}
+			</button>
+
+			<div
+				className={`fixed top-0 right-0 h-full w-80 bg-black/30 backdrop-blur-lg transform ${
+					isPanelOpen ? "translate-x-0" : "translate-x-full"
+				} transition-transform duration-300 z-40`}
+			>
+				<div className="p-4">
+					<div className="flex flex-col gap-6 mt-12">
+						<div className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 transition-transform text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
 							<h1 className="text-xl font-extrabold mb-2">Crea</h1>
 							<p className="text-sm sm:text-base">
 								Crea i tuoi eventi esclusivi, inviando il link o il QR code ai tuoi invitati potrà
 								partecipare solo chi vuoi
 							</p>
 						</div>
-						<div
-							className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 sm:hover:scale-110 transition-transform w-full sm:min-w-[12rem] sm:max-w-[15rem] text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
+							<div className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 transition-transform text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
 							<h1 className="text-xl font-extrabold mb-2">Partecipa</h1>
 							<p className="text-sm sm:text-base">
 								Gestisci e partecipa ad eventi e divertiti
 							</p>
 						</div>
-						<div
-							className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 sm:hover:scale-110 transition-transform w-full sm:min-w-[12rem] sm:max-w-[15rem] text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
+							<div className="bg-[#363540] hover:shadow-xl hover:shadow-[#EE0E51] hover:scale-105 transition-transform text-[#E4DCEF] p-4 rounded-2xl border border-[#EE0E51]">
 							<h1 className="text-xl font-extrabold mb-2">Interagisci</h1>
 							<p className="text-sm sm:text-base">
 								Interagisci con i tuoi invitati: sono disponibili diverse funzionalità che puoi
