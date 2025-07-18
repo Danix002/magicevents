@@ -36,20 +36,11 @@ const Homepage = () => {
 				</div>
 			</div>
 
-			<div className="flex overflow-x-auto snap-x snap-mandatory w-full h-screen">
-				{/* Slide 1 - solo "Scopri di più" */}
-				<div className="snap-start w-screen h-screen relative flex-shrink-0 bg-black/30 backdrop-blur-lg">
-					<p className="absolute top-1/2 right-0 transform -translate-y-1/2 rotate-90 origin-bottom-right text-[#E4DCEF] font-extrabold text-lg sm:text-xl p-2">
-						Scopri di più
-					</p>
-				</div>
-			</div>
-
 			<button
 				className="fixed top-1/2 right-0 transform -translate-y-1/2 bg-[#EE0E51] text-white p-2 rounded-l-md shadow-lg z-50"
 				onClick={togglePanel}
 			>
-				{isPanelOpen ? "Chiudi" : "Apri"}
+				{isPanelOpen ? "Chiudi" : "Scopri di più"}
 			</button>
 
 			<div
