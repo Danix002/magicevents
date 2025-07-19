@@ -9,16 +9,27 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo512-transparent.png",
+      "src": "logo192.png",
       "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "maskable"
+      "sizes": "192x192"
     },
     {
       "src": "logo192-transparent.png",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "maskable"
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo512-transparent.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "magicevents-logo-transparent.png",
+      "type": "image/png",
+      "sizes": "1024x1024",
+      "purpose": "any maskable"
     }
   ],
   "start_url": ".",
