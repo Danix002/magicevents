@@ -12,19 +12,19 @@
       "src": "logo512-transparent.png",
       "type": "image/png",
       "sizes": "512x512",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     },
     {
       "src": "logo192-transparent.png",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     },
     {
       "src": "magicevents-logo-transparent.png",
       "type": "image/png",
       "sizes": "1024x1024",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     }
   ],
   "start_url": ".",
