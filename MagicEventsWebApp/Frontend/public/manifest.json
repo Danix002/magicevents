@@ -23,12 +23,11 @@
     {
       "src": "magicevents-logo-transparent.png",
       "type": "image/png",
-      "sizes": "1024x1024",
-      "purpose": "any maskable"
+      "sizes": "1024x1024"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#00000066",
-  "background_color": "#00000066"
+  "theme_color": "#0D0520",
+  "background_color": "#0D0520"
 }
