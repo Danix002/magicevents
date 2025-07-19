@@ -19,12 +19,6 @@
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "maskable"
-    },
-    {
-      "src": "magicevents-logo-transparent.png",
-      "type": "image/png",
-      "sizes": "1024x1024",
-      "purpose": "any"
     }
   ],
   "start_url": ".",
