@@ -11,13 +11,14 @@
     {
       "src": "logo512-transparent.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "maskable"
     },
     {
       "src": "logo192-transparent.png",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     },
     {
       "src": "magicevents-logo-transparent.png",
@@ -26,7 +27,5 @@
     }
   ],
   "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#0D0520",
-  "background_color": "#0D0520"
+  "display": "standalone"
 }
