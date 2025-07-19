@@ -77,15 +77,15 @@ function UserEditPage({ setLogged }) {
 
 	return (
 		<div className="h-full overflow-y-auto bg-gradient-to-br from-[#505458] to-[#363540] p-4 flex justify-center items-center">
-			<div className="w-full max-w-2xl bg-[#E4DCEF] shadow-2xl rounded-2xl overflow-hidden">
+			<div className="w-full max-w-lg sm:max-w-2xl bg-[#E4DCEF] shadow-2xl rounded-2xl overflow-hidden">
 				{/* Header */}
-				<div className="bg-gradient-to-r from-[#EE0E51] to-[#ff4574] p-6 text-center">
-					<h2 className="text-3xl font-bold text-white">Modifica Profilo</h2>
+				<div className="bg-gradient-to-r from-[#EE0E51] to-[#ff4574] p-4 sm:p-6 text-center">
+					<h2 className="text-2xl sm:text-3xl font-bold text-white">Modifica Profilo</h2>
 				</div>
 
-				<div className="p-6">
+				<div className="p-4 sm:p-6">
 					{/* Profile Image Section */}
-					<div className="flex flex-col items-center mb-8">
+					<div className="flex flex-col items-center mb-6 sm:mb-8">
 						<div className="relative group">
 							<img
 								src={
@@ -96,7 +96,7 @@ function UserEditPage({ setLogged }) {
 											: 'data:image/*;base64,' + img
 								}
 								alt="Profile"
-								className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
+								className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-white shadow-lg"
 							/>
 							<div
 								className="absolute inset-0 bg-opacity-50 rounded-full opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10">
@@ -145,10 +145,10 @@ function UserEditPage({ setLogged }) {
 					</div>
 
 					{/* Form */}
-					<form onSubmit={handleSubmit} className="space-y-6">
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
 							<div className="space-y-2">
-								<label className="flex items-center gap-2 text-sm font-semibold text-[#363540] uppercase tracking-wide">
+								<label className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#363540] uppercase tracking-wide">
 									<FontAwesomeIcon icon={faUser} className="text-[#EE0E51]" />
 									Username
 								</label>
@@ -157,13 +157,13 @@ function UserEditPage({ setLogged }) {
 									name="username"
 									value={user.username}
 									onChange={handleChange}
-									className="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-[#EE0E51] transition-colors bg-white"
+									className="w-full border-2 border-gray-200 rounded-lg px-3 py-2 sm:px-4 sm:py-3 focus:outline-none focus:border-[#EE0E51] transition-colors bg-white"
 									required
 								/>
 							</div>
 
 							<div className="space-y-2">
-								<label className="flex items-center gap-2 text-sm font-semibold text-[#363540] uppercase tracking-wide">
+								<label className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#363540] uppercase tracking-wide">
 									<FontAwesomeIcon icon={faEnvelope} className="text-[#EE0E51]" />
 									Email
 								</label>
@@ -172,13 +172,13 @@ function UserEditPage({ setLogged }) {
 									name="email"
 									value={user.email}
 									readOnly
-									className="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-[#EE0E51] transition-colors bg-white"
+									className="w-full border-2 border-gray-200 rounded-lg px-3 py-2 sm:px-4 sm:py-3 focus:outline-none focus:border-[#EE0E51] transition-colors bg-white"
 									required
 								/>
 							</div>
 
 							<div className="space-y-2">
-								<label className="flex items-center gap-2 text-sm font-semibold text-[#363540] uppercase tracking-wide">
+								<label className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#363540] uppercase tracking-wide">
 									<FontAwesomeIcon icon={faIdCard} className="text-[#EE0E51]" />
 									Nome
 								</label>
@@ -187,12 +187,12 @@ function UserEditPage({ setLogged }) {
 									name="name"
 									value={user.name}
 									onChange={handleChange}
-									className="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-[#EE0E51] transition-colors bg-white"
+									className="w-full border-2 border-gray-200 rounded-lg px-3 py-2 sm:px-4 sm:py-3 focus:outline-none focus:border-[#EE0E51] transition-colors bg-white"
 								/>
 							</div>
 
 							<div className="space-y-2">
-								<label className="flex items-center gap-2 text-sm font-semibold text-[#363540] uppercase tracking-wide">
+								<label className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#363540] uppercase tracking-wide">
 									<FontAwesomeIcon icon={faIdCard} className="text-[#EE0E51]" />
 									Cognome
 								</label>
@@ -201,7 +201,7 @@ function UserEditPage({ setLogged }) {
 									name="surname"
 									value={user.surname}
 									onChange={handleChange}
-									className="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-[#EE0E51] transition-colors bg-white"
+									className="w-full border-2 border-gray-200 rounded-lg px-3 py-2 sm:px-4 sm:py-3 focus:outline-none focus:border-[#EE0E51] transition-colors bg-white"
 								/>
 							</div>
 						</div>
@@ -221,7 +221,7 @@ function UserEditPage({ setLogged }) {
 						{/* Submit Button */}
 						<div className="pt-4">
 							<Button 
-								custom="w-full py-3 text-lg font-semibold" 
+								custom="w-full py-2 sm:py-3 text-base sm:text-lg font-semibold" 
 								text={loading ? "Salvando..." : "Salva modifiche"} 
 								type="submit"
 								disabled={loading}
