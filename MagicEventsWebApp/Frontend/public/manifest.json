@@ -16,7 +16,8 @@
     {
       "src": "logo192-transparent.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any"
     },
     {
       "src": "magicevents-logo-transparent.png",
